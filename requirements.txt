@@ -1,0 +1,8 @@
+csvkit
+docker
+mysql
+requests
+tableschema
+apache-airflow[gcp_api,google_auth,s3,slack,mysql]
+apache-airflow-backport-providers-docker
+apache-airflow-providers-cncf-kubernetes
