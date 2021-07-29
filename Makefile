@@ -82,7 +82,7 @@ status: ##@infrastructure Infrastructure status
 
 destroy: ##@infrastructure Delete the docker images
 	$(MAKE) --directory=infrastructure clean
-	@docker rmi ollin18/planea:0.1 ingest:latest
+	@docker rmi ollin18/gpspipeline:0.1 gpspipeline:latest
 
 nuke: ##@infrastructure Destroy all infrastructure (TODO)
 	$(MAKE) --directory=infrastructure nuke
