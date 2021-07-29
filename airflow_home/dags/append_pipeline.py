@@ -32,7 +32,7 @@ default_args = {
         }
 
 dag = DAG(
-    'gpspipeline',
+    'appendpipeline',
     default_args=default_args,
     description='GPS mobility pipeline',
     schedule_interval=timedelta(days=10),
