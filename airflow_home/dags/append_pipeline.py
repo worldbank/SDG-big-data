@@ -42,17 +42,17 @@ dag = DAG(
 
 stop_locations_append = SparkSubmitOperator(
         task_id='stopLocationsAppend',
-        application_file='/src/stop_locations_append.py ', \
+        application_file='/src/pipeline/stop_locations_append.py ', \
         dag = dag)
 
 geocode_stops = SparkSubmitOperator(
         task_id='geocodeStops',
-        application_file='/src/geocode_stop_locations.scala ', \
+        application_file='/src/pipeline/geocode_stop_locations.scala ', \
         dag = dag)
 
 labeling = SparkSubmitOperator(
         task_id='HWlabeling',
-        application_file='/src/compute_home_and_work_locations.py ', \
+        application_file='/src/pipeline/compute_home_and_work_locations.py ', \
         dag = dag)
 
 

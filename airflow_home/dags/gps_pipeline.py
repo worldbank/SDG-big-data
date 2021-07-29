@@ -42,28 +42,28 @@ dag = DAG(
 
 geocoded_pings = SparkSubmitOperator(
         task_id='geocodePings',
-        application_file='/src/get_geocoded_pings.scala ', \
+        application_file='/src/pipeline/get_geocoded_pings.scala ', \
         dag = dag)
 
 tz_offset = SparkSubmitOperator(
         task_id='tzOffset',
-        application_file='/src/tz_offset.scala ', \
+        application_file='/src/pipeline/tz_offset.scala ', \
         dag = dag)
 
 stop_locations = SparkSubmitOperator(
         task_id='stopLocations',
-        application_file='/src/stop_locations.py ', \
+        application_file='/src/pipeline/stop_locations.py ', \
         dag = dag)
 
 geocode_stops = SparkSubmitOperator(
         task_id='geocodeStops',
-        application_file='/src/geocode_stop_locations.scala ', \
+        application_file='/src/pipeline/geocode_stop_locations.scala ', \
         dag = dag)
 
 
 labeling = SparkSubmitOperator(
         task_id='HWlabeling',
-        application_file='/src/compute_home_and_work_locations.py ', \
+        application_file='/src/pipeline/compute_home_and_work_locations.py ', \
         dag = dag)
 
 
