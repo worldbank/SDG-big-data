@@ -69,7 +69,7 @@ else:
 sl = (pings
       .orderBy("epoch_time")
       .groupBy("user_id")
-      .apply(get_stop_location)
+      .apply(get_stop_location, args=(radius, stay_time, min_pts_per_stop_location, max_time_stop_location, max_accuracy, db_scan_radius))
       .dropna())
 
 # split stop location that span mutiple days into single days

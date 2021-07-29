@@ -5,11 +5,12 @@ import numpy as np
 import seaborn as sns
 
 import pyspark.sql.functions as F
+from pyspark.sql.types import IntegerType
 from pyspark.sql.functions import col, desc, lit
 from pyspark.sql import Window
 
 
-def google_change_metric(df_original):
+def google_change_metric(df_original, start_baseline, end_baseline):
     '''
     INPUT:  dataframe with (at least) 2 columns named "mean" and "sem"
     OUTPUT: dataframe with the values of the two columns converted to google
@@ -160,7 +161,7 @@ def compute_durations_and_admins(country, data_date, activity_level=0,
     return durations_and_admins
 
 
-def compute_durations_normalized_by_wealth_home(durations_and_admins, admins):
+def compute_durations_normalized_by_wealth_home(durations_and_admins, admins, labels_wealth, bins_wealth):
     admins['wealth_label'] = pd.cut(
         admins['pct_wealth'], bins_wealth, labels=labels_wealth)
     admins['geom_id'] = admins['geom_id'].astype(str)
@@ -199,7 +200,7 @@ def output(out, column):
     return durations_normalized_by_wealth_home
 
 
-def compute_durations_normalized_by_wealth_home_wealth_work(durations_and_admins, admins):
+def compute_durations_normalized_by_wealth_home_wealth_work(durations_and_admins, admins, labels_wealth, bins_wealth):
     admins['wealth_label'] = pd.cut(
         admins['pct_wealth'], bins_wealth, labels=labels_wealth)
     admins['geom_id'] = admins['geom_id'].astype(str)
@@ -240,7 +241,7 @@ def output_hw(out, column):
     return durations_normalized_by_wealth_home_wealth_work
 
 
-def plot_results(axes, row, column, indicator, country, data, ma=28):
+def plot_results(axes, row, column, indicator, country, data, labels_wealth, start_date, end_date, ma=28):
     data = data.sort_index(level='date')
     for k, wealth_label_home in enumerate(labels_wealth):
         if 'hw' in indicator:
@@ -248,7 +249,7 @@ def plot_results(axes, row, column, indicator, country, data, ma=28):
                                == labels_wealth[k]].loc[wealth_label_home]
         else:
             city_wealth = data.loc[wealth_label_home]
-        city_wealth = google_change_metric(city_wealth)
+        city_wealth = google_change_metric(city_wealth, start_baseline, end_baseline)
         city_wealth = city_wealth.loc[start_date:end_date]
         x2 = city_wealth.index
         y2 = city_wealth['mean'].rolling(ma, center=True, min_periods=1).mean()
@@ -284,62 +285,6 @@ def read_admin(country):
              .withColumn('urban/rural', F.when(col('metro_area_name').isNull(), lit('rural')).otherwise(lit('urban')))
              .select('geom_id', 'urban/rural'))
     return admin
-
-
-def compute_rural_migration_stats(country, metro):
-    # read admin
-    admin = read_admin(country)
-
-    # get list of active users
-    fname_nf = f'durations_window_hw{hw}_ww{ww}_wa{wa}_mph{mph}_mpw{mpw}'
-    durations_path_nf = f'/mnt/Geospatial/results/veraset/{country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{c_dates[country]}/' + fname_nf
-    durations = spark.read.parquet(durations_path_nf)
-    active_users = get_active_list(durations, country, activity_level)
-
-    # read stops, filter actives, get most frequented daily geom id, and get rural/urban info
-    personal_nf = f"personal_stop_location_hw{hw}_ww{ww}_wa{wa}_mph{mph}_mpw{mpw}"
-    stops = spark.read.parquet(
-        f"/mnt/Geospatial/results/veraset/{country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{c_dates[country]}/" + personal_nf)
-    users_metro = stops.where(col('location_type') == 'H').filter(
-        F.col("geom_id").isin(metro)).select('user_id').distinct()
-    stops = stops.join(users_metro, on='user_id', how='inner').join(
-        active_users, on='user_id', how='inner')
-
-    w = Window.partitionBy('user_id', 'date_trunc')
-    h_stops = (stops
-               .where(col('location_type') == 'H')
-               .join(active_users, on='user_id', how='inner')
-               .groupby('user_id', 'date_trunc', 'geom_id')
-               .agg(F.sum('duration').alias('duration'))
-               .withColumn('max_duration', F.max('duration').over(w))
-               .where(col('duration') == col('max_duration'))
-               .groupby('user_id', 'date_trunc')
-               .agg(F.first('geom_id').alias('geom_id'))
-               .join(admin, on='geom_id', how='inner'))
-
-    # look-up previous geom id to identify migrations with direction
-    w = Window.partitionBy('user_id').orderBy('date_trunc')
-    h_stops = (h_stops
-               .withColumn('prev_geom_id', F.lag('geom_id', offset=1).over(w))
-               .withColumn('prev_urban/rural', F.lag('urban/rural', offset=1).over(w))
-               .withColumn('prev_date', F.lag('date_trunc', offset=1).over(w))
-               .where(col('prev_geom_id').isNotNull())
-               .withColumn('change', F.when(col('urban/rural') == col('prev_urban/rural'), 'no change')
-                                      .otherwise(F.when(col('urban/rural') == 'urban', 'rural to urban')
-                                                  .otherwise(F.when(col('urban/rural') == 'rural', 'urban to rural'))))
-               .withColumn('gap', F.datediff(col('date_trunc'), col('prev_date')))
-               .withColumn('rand_gap', (-1*F.rand()*(col('gap')-1)).astype(IntegerType()))
-               .withColumn('new_date', F.expr("date_add(date_trunc, rand_gap)"))
-               .withColumn('date_trunc', F.when(col('gap') > 30, col('new_date')).otherwise(col('date_trunc'))))
-
-    # aggregate by day and change and return as pandas df
-    out = (h_stops
-           .groupby('date_trunc', 'change')
-           .agg(F.countDistinct('user_id').alias('n_users'))
-           .withColumnRenamed('date_trunc', 'date')
-           .toPandas())
-
-    return out
 
 
 def compute_rural_migration_stats_city(country, metro, bins_wealth, labels_wealth, hw, ww, wa, mph, mpw, activity_level, c_dates):
@@ -445,7 +390,7 @@ def compute_rural_migration_stats_city(country, metro, bins_wealth, labels_wealt
     return out, usrs
 
 
-def compute_rural_migration_stats(country, metro):
+def compute_rural_migration_stats(country, metro, hw, ww, wa, mph, mpw, c_dates):
     # read admin
     admin = read_admin(country)
 

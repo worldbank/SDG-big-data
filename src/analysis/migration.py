@@ -47,3 +47,5 @@ usr_df = pd.DataFrame()
 for country in countries:
     print(country)
     out, usrs = compute_rural_migration_stats_city(country, bins_wealth, labels_wealth, hw, ww, wa, mph, mpw, activity_level, c_dates)
+    usr_df = pd.concat([usr_df, usrs])
+    df_wl = pd.concat([df_wl, out], sort=True)

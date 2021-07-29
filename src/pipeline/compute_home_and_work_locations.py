@@ -10,6 +10,9 @@ import numpy as np
 import os
 from datetime import datetime, timedelta
 
+#  we need to define this
+#  start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average, country, end_date, suffix
+
 results_path_spark = f"/mnt/Geospatial/results/veraset/{c.country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{c.end_date}/"
 df = spark.read.parquet(os.path.join(c.results_path_spark, 'stops_geocoded'))
 
@@ -39,7 +42,7 @@ schema_df = StructType([
     StructField('t_end_hour', IntegerType(), True),
     StructField("date_trunc", TimestampType(), True)
 ])
-res_df = df.groupBy("user_id").apply(compute_home_work_label_dynamic)
+res_df = df.groupBy("user_id").apply(compute_home_work_label_dynamic, args = (start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average))
 
 fname = f"personal_stop_location_{c.suffix}"
 res_df.write.mode("overwrite").parquet(
@@ -49,5 +52,5 @@ fname = f"personal_stop_location_{c.suffix}"
 res_df = spark.read.parquet(os.path.join(c.results_path_spark, fname))
 
 fname = f"durations_window_{c.suffix}"
-res = get_durations(res_df)
+res = get_durations(res_df, start_hour_day, end_hour_day)
 res.write.mode("overwrite").parquet(os.path.join(c.results_path_spark, fname))

@@ -62,10 +62,8 @@ for country in countries:
                                                         activity_level=activity_level,
                                                         hw=hw, ww=ww, wa=wa, mph=mph, mpw=mpw)
     durations_and_admins.cache()
-    out1 = compute_durations_normalized_by_wealth_home(
-        durations_and_admins, admins_by_country)
-    out2 = compute_durations_normalized_by_wealth_home_wealth_work(
-        durations_and_admins, admins_by_country)
+    out1 = compute_durations_normalized_by_wealth_home(durations_and_admins, admins_by_country, labels_wealth, bins_wealth)
+    out2 = compute_durations_normalized_by_wealth_home_wealth_work(durations_and_admins, admins_by_country, labels_wealth, bins_wealth)
     results[(country, 't_home')] = output(out1, column='H')
     results[(country, 't_work')] = output(out1, column='W')
     results[(country, 't_other')] = output(out1, column='O')
