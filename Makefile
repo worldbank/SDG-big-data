@@ -45,6 +45,9 @@ pip: requirements.txt
 	@conda install -c conda-forge --file $<
 	# @pip install -r $<
 
+wbgps:
+	@pip install src/wbgps
+
 airdb:
 	@source .env
 	--directory=$(AIRFLOW_HOME)
