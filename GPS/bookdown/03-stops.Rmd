@@ -1,0 +1,169 @@
+# Finding Stops
+
+## Definition
+
+A critical endeavor to perform the sugested analysis is to give sense to indiviual
+pings by providing them with structure. In order to do this we need to derive a way
+to discern wether a person is at a specific place or traveling between two locations.
+
+## Infostop
+
+In order to do this we need both the spatial and the temporal data from each ping. This
+is, how far are consecutive pings from eachother in time and space. We rely on the firtst part of the
+[infostop](https://arxiv.org/pdf/2003.14370.pdf) algorithm to detect stop-locations
+or *stays* from pings using the time stamp and the coordinates where it was
+created. Infostop is based in some heuristics:
+
+* $r_1$: The maximum distance between any pair of points within the same stop.
+* $n_{min}$: The minimum number of points that make up a stop.
+* $t_{min}$: The minimum duration of a stop.
+* $t_{max}$: The maximum time difference between two consecutive pings.
+
+Then in order to have a _stop_ we would need to satisfy that some consecutive pings are all less than $r_1$ meters apart,
+the time span between the first and the last pings is more than $t_{min}$ seconds, there's no more than $t_{max}$
+seconds between consecutive pairs and each stop cannot be composed of less than $n_{min}$ pings.
+
+Particularely we use the Python function ```get_stationary_events()``` in the [Infostop package](https://github.com/ulfaslak/infostop).
+
+## Code
+### Data preparation
+
+Once we load the required data, we make make sure that they meet the timezone metadata requirements and that their coordinates
+are valid geographical points.
+
+```{python eval=FALSE}
+filter_string = f"accuracy >=0 AND accuracy <= 200 AND lat > -90 AND lat < 90 AND lon > -180 AND lon < 180"
+
+if not tz: # add a check on TZ_OFFSET
+  pings = spark.sql(f"SELECT  device_id AS user_id, lat, lon, accuracy, timestamp, TZ_OFFSET_SEC FROM default.veraset_{c.country}_tz WHERE country = '{c.country}' AND {filter_string}")
+  pings = (pings
+           .withColumn('epoch_time', col("timestamp") + col("TZ_OFFSET_SEC").cast("long"))
+           .drop("TZ_OFFSET_SEC", "timestamp"))
+elif tz:
+  pings = spark.sql(f"SELECT  device_id AS user_id, lat, lon, accuracy, timestamp FROM default.veraset_primary_1  WHERE country = '{c.country}' AND {filter_string}")
+  pings = (pings
+           .withColumn('time', F.to_timestamp('timestamp'))
+           .withColumn('new_time', F.from_utc_timestamp('time', tz))
+           .withColumn('epoch_time', F.unix_timestamp('new_time'))
+           .drop('timestamp', 'time', 'new_time'))
+else:
+  raise Exception ("Undefined time zone in config or tz_offset in input table")
+```
+
+### Get stop locations
+
+Now we have the data ready to identify stops, we only need to sort pings by their timestamp for each user.
+
+```{python eval=FALSE}
+sl = (pings
+      .orderBy("epoch_time")
+      .groupBy("user_id")
+      .apply(get_stop_location, args=(radius, stay_time,
+             min_pts_per_stop_location, max_time_stop_location,
+             max_accuracy, db_scan_radius))
+      .dropna())
+```
+
+Where the user defined function ```get_stop_location()``` composed by other functions which at the end will yield
+a data frame with user id, stop beginning timestamp, stop end timestamp, a centroid coordinate pair from the original pings,
+a cluster label from a [DBSCAN clustering algorithm](https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf), the median accuracy of
+the pings and the total number of pings that compose the given stop.
+
+For DBSCAN we also use $\epsilon=50m$ and the minimum accuracy for us to keep a ping is $100m$
+
+```{python eval=FALSE}
+def compute_intervals(centroids, labels, timestamps, accuracy, input_data):
+    # if the label is -1 it means that the point doesn't belong to any cluster. Otherwise there should be at least 2 points for a stop locations
+    # and they should
+    #     assert (len(centroids) == len(community_labels))
+    i = 0
+    seen = 0
+    trajectory = []
+    while i < len(labels):
+        if labels[i] == -1:
+            i += 1
+        else:
+            start_index = i
+            while (i + 1 < len(labels)) and (labels[i] == labels[i + 1]):
+                i += 1
+            trajectory.append((timestamps[start_index], timestamps[i], *centroids[seen],
+                               np.median(accuracy[start_index: i]), i - start_index + 1))
+            seen += 1
+            i += 1
+
+    return trajectory
+
+def run_infostop(data, r1, min_staying_time, min_size, max_time_between, distance_metric):
+    data_assertions(data)
+    centroids, stat_labels = get_stationary_events(
+        data[:, :3], r1, min_size, min_staying_time, max_time_between, distance_metric)
+    return compute_intervals(centroids, stat_labels, data[:, 2], data[:, 3], data)
+
+
+schema_df = StructType([
+    StructField('user_id', StringType(), False),
+    StructField('t_start', LongType(), False),
+    StructField('t_end', LongType(), False),
+    StructField('lat', DoubleType(), False),
+    StructField('lon', DoubleType(), False),
+    StructField('cluster_label', LongType(), True),
+    StructField('median_accuracy', DoubleType(), True),
+    StructField('total_pings_stop', LongType(), True),
+])
+@pandas_udf(schema_df, PandasUDFType.GROUPED_MAP)
+def get_stop_location(df, radius, stay_time, min_pts_per_stop_location, max_time_stop_location, max_accuracy, db_scan_radius):
+
+    identifier = df['user_id'].values[0]
+    df.sort_values(by='epoch_time', inplace=True)  # shouldnt be necessary
+
+    data = df[["lat", "lon", 'epoch_time', "accuracy"]].values
+    res = run_infostop(data, r1=radius, min_staying_time=stay_time, min_size=min_pts_per_stop_location,
+                       max_time_between=max_time_stop_location, distance_metric='haversine')
+
+    df = pd.DataFrame(res, columns=[
+                      "t_start",  "t_end", "lat", "lon", "median_accuracy", "total_pings_stop"])
+
+    # new filtering step based on median accuracy
+    df = df[df['median_accuracy'] < max_accuracy]
+
+    df['user_id'] = identifier
+    if not df.empty:
+        #       df['cluster_label'] = get_labels(df[['lat', 'lon']])
+        # notice that we don't have noise here, since any point that we consider is a stop location and hence has been already pre filtered by run_infostop (min_samples = 1 => no label =-1)
+        db = DBSCAN(eps=db_scan_radius, min_samples=1, metric='haversine',
+                    algorithm='ball_tree').fit(np.radians(df[['lat', 'lon']].values))
+        df['cluster_label'] = db.labels_
+    else:
+        df['cluster_label'] = None
+    return df
+```
+
+## Clustering recurrent stops
+
+The clustering part is where our approach differs from the Infostop one, as the assign cluster labels by building a network of
+stops if they're located closer than a distance $r_2$ and then use the [Infomap](https://www.mapequation.org/assets/publications/RosvallBergstromPNAS2008Full.pdf)
+community detection algorithm while we proceed by clustering with DBSCAN as previously discussed. It is important to notice that
+these clusters don't depend on the time but only on the spatial distribution as we are interested in finding recurrent
+visited locations.
+
+Finally we split those stops that span multiple days into single ones
+
+```{python eval=FALSE}
+sl = (sl
+      .withColumn("total_duration_stop_location", F.col("t_end") - F.col("t_start"))
+      .withColumn('my_list', make_list(F.to_timestamp(col('t_start')), F.to_timestamp(col('t_end'))))
+      .drop('t_start', 't_end')
+      .withColumn("tmp", F.explode("my_list"))
+      .withColumn("t_start", F.col("tmp").t_start)
+      .withColumn("t_end", F.col("tmp").t_end)
+      .drop("tmp", "my_list")
+      .withColumn("duration", F.col("t_end") - F.col("t_start")))
+```
+
+## Appending pings from recent dates
+
+GPS data is passively gathered and as so it's continiously growing, this translates in the need for contiously find stops and
+assign cluster labels to them. This whole process is very computationally expensive and running it on the whole data would be
+highly inefficient, this is why we keep old stops and only compute new ones, but there's no way around the clustering part as
+the labels can change every time. Fortunately the number of stops is several order magnitudes lower than the pings as the smallest
+stop has at least two of them and we drop those that didn't make up a stop.

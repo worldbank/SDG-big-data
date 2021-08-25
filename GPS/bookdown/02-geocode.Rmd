@@ -114,7 +114,7 @@ pings_geocoded.write.format("delta").mode("overwrite").saveAsTable(out_table_tem
 ## Final exact join with a subset of the shapefiles
 Finally perform the accurate spatial join on the reduced subset of shapes and pings without the spatial index and save it.
 
-```
+```{scala eval=FALSE}
 val out_table_temp = s"pings.${c("source")}_${c("country")}_geocoded_temp"
 
 val admin = spark.sql(s"select geom_id, polygon from admin_with_polygon")
