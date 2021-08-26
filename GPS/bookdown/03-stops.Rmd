@@ -2,17 +2,18 @@
 
 ## Definition
 
-A critical endeavor to perform the sugested analysis is to give sense to indiviual
-pings by providing them with structure. In order to do this we need to derive a way
-to discern wether a person is at a specific place or traveling between two locations.
-
+Pings recorded from the gps devices are often noisy: unless an user is perfectly still in a place, the mobile will record
+slightly different positions. As an example, if an user is at home and he moves between the different rooms of the house, we want to
+group all the pings under a single label, home, to analyze the time spent at each location.
+This would not be possible by considering individual pings. A standard procedure to
+reduce the noise is to compute stop locations, by spatially and temporally clustering the raw pings.
 ## Infostop
 
 In order to do this we need both the spatial and the temporal data from each ping. This
-is, how far are consecutive pings from eachother in time and space. We rely on the firtst part of the
+is, how far are consecutive pings from each other in time and space. We rely on the first part of the
 [infostop](https://arxiv.org/pdf/2003.14370.pdf) algorithm to detect stop-locations
-or *stays* from pings using the time stamp and the coordinates where it was
-created. Infostop is based in some heuristics:
+or *stays*.
+Infostop is based in some heuristics:
 
 * $r_1$: The maximum distance between any pair of points within the same stop.
 * $n_{min}$: The minimum number of points that make up a stop.
@@ -23,12 +24,17 @@ Then in order to have a _stop_ we would need to satisfy that some consecutive pi
 the time span between the first and the last pings is more than $t_{min}$ seconds, there's no more than $t_{max}$
 seconds between consecutive pairs and each stop cannot be composed of less than $n_{min}$ pings.
 
-Particularely we use the Python function ```get_stationary_events()``` in the [Infostop package](https://github.com/ulfaslak/infostop).
+Particularly we use the Python function ```get_stationary_events()``` in the [Infostop package](https://github.com/ulfaslak/infostop),
+that is a wrapper around an efficient c++ implementation for computing stationary events, i.e. points of a trace that are
+close in time and space and that can be grouped together under a single label. Each time we find a stationary event, we
+associate it to a stop location, with as coordinates the centroid of the points that form the event and as duration
+the difference in time between the first point of the event and the last point of the event.
 
+Differently from infostop, we choose to use DBSCAN instead of Infomap to cluster stop locations.
 ## Code
 ### Data preparation
 
-Once we load the required data, we make make sure that they meet the timezone metadata requirements and that their coordinates
+Once we load the required data, we make sure that they meet the timezone metadata requirements and that their coordinates
 are valid geographical points.
 
 ```{python eval=FALSE}
@@ -146,7 +152,9 @@ community detection algorithm while we proceed by clustering with DBSCAN as prev
 these clusters don't depend on the time but only on the spatial distribution as we are interested in finding recurrent
 visited locations.
 
-Finally we split those stops that span multiple days into single ones
+Finally we split those stops that span multiple days into mutiple stops that are within a day: i.e. if we have a stop location
+that spans from 22pm to 1am, we will split it into a stop location from 22pm to 23.59pm and another stop location from
+00.00am to 1am.
 
 ```{python eval=FALSE}
 sl = (sl
