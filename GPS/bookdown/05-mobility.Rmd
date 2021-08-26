@@ -39,13 +39,13 @@ def process_admin(country,admin_path):
   return admins_by_country, admins_by_metro_area, pop_metro_areas
 ```
 
-## Individual's selection
+## Individual's selection {#selection}
 Following the preprocessing pipeline description presented in the previous sections of the book, here we introduce an additional step aiming at refinining the pool of individuals analysed. Our intent is to measure mobility patterns only for individuals whose activity level is sufficiently high to ensure a minimum level of representativeness of the data. Individuals with recods over only a small number of days cannot be considered as a complete and correct representation fairly proxying the mobility features of an individual.
 
 To this extent we use the duration of each individuals records, which have been computed during the pipeline run.
 The selection imposes two requirements on individuals: i) each individual should be active (i.e. should have at least one stop record) for a minimum number of days during the pre-pandemic period (which is choose to run from the beginning of January 2020 until March 15, 2020; ii) each individual should be active for a minimum fraction of days after the pre-pandemic period until the end of 2020. This selection process is obtained invoking the following python function which returns a list of the users to be included during the analyses.
 
-```{python eval=FALSE}
+```{python, active-list, eval=FALSE}
 def get_active_list(durations, country, activity_level):
   '''
   For each country invoke the following function to get a list of all active individuals.
