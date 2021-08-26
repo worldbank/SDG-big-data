@@ -1,6 +1,7 @@
-fig:nice-fig
+fig:h3fig
 fig:home-patterns
 fig:work-patterns
+fig:mobility-fig
 introduction
 data
 gps-data
@@ -23,10 +24,12 @@ defining-home-and-work-locations
 seasonal-patterns
 code-1
 mobility
+socio-economic-groups
 individuals-selection
 measures
-measuring-mobility
+measuring-mobility-patterns
 measuring-change
+home-isolated-commuters-and-low-wealth-commuters
 migration
 optimization
 windex
