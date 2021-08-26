@@ -6,20 +6,17 @@ and the stringency index are indices based on the same shapefiles, and to group 
 as city or region for more general analysis. We will refer to the process of associating a ping to a shape in the county's
 shapefile as geocoding.
 The data we are utilizing was provided by Veraset. If a user has installed one of the Veraset's
-partners' apps on his or her mobile phone, the users' position and postion's accuracy is sent to the Veraset server where
+partners' apps on his or her mobile phone, the users' position and position's accuracy is sent to the Veraset server where
 it is recorded at regular intervals.
 
 ## Efficient spatial joining and Geospatial Indexing
 To be able to deal with billions of points, we need an efficient way to perform spatial queries. Since it is not feasible
 to join directly thousands of shapes with the billions of points, for computational reasons, we need an efficient way to reduce the
 computational cost by checking only few shapes that are in the surroundings of the point we want to join.
-As geo-spatial index we use the [H3](https://eng.uber.com/h3/) indexing created by Uber
-which partitions the World in hexagons (and some pentagons in the ocean) at different sizes.
-
-Since the shape-files cannot be exactly tasseled by hexagons of a size that is reasonable for a quick spatial join, we
-run the risk of mis-join pings that end up close to the border: since the hexagon tesselation is fixed, we might end up
-with points close to the borders that belongs to the hexagon of a wrong adjacent shape.
-
+As geo-spatial index we use the [H3](https://eng.uber.com/h3/) indexing created by Uber which partitions the World in hexagons.
+Since the admin shapes cannot be exactly covered by hexagons that are included in the shape. The hexagon should have a size
+that is reasonable for a quick spatial join and hence be quite large: this implies we
+run the risk of mis-joining pings that end up close to the borders of the shapes.
 ## TODO: put an image or create one
 
 To overcome this problem we perform two joins: the first one will use a geospatial index, and will get the shapes that are close enough to
