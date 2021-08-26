@@ -1,0 +1,111 @@
+# Training data preparation
+
+## Sampling
+
+The first step in order to train classifiers to detect disclosures of labor market situation is to sample informative tweets and have them labelled. Owing to the very low share of tweets containing these disclosures, a random sampling would yield very few positive examples which would not allow to train a good-performing classifier. We instead decided to opt for stratified sampling, namely by defining a list of n-grams, both specific to the labor market context and frequent enough, and sampling tweets containing these n-grams.
+
+In practice, we wrote code in PySpark as we had to handle big amounts of data. Here's a snippet of the code we used: after loading the data in the dataframe `df` and having `text_lowercase` as the column where the lowercased text is stored, we define the list of ngrams to sample from and then sample from it.
+
+```{python nice-fig, fig.cap='', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+ngram_list = [[' i ', 'fired '], ['fired me'], ['laid off'], ['lost my job']]
+for ngram in ngram_list:
+    if len(ngram) == 1:
+        df_ngram = df.filter(df.text_lowercase.contains(ngram[0]))
+    elif len(ngram) == 2:
+        regex = f"{ngram[0]}[.\w\s\d]*{ngram[1]}"
+        df_ngram = df.filter(df.text_lowercase.rlike(regex))
+    share = min(float(150 / df_ngram.count()), 1.0)
+    df_ngram_sample = df_ngram.sample(False, share, seed=0)
+```
+We sample 150 tweets per n-gram for each class and language. In total, we end up with approximately 5000 samples for each language. A detailed list of n-grams for each language and class can be found in XXXX.
+
+## Labelling
+
+After sampling informative tweets, we have them labelled by crowdworkers. We use the crowdsourcing platform Amazon Mechanical Turk. This platform has the advantage of having an international workforce speaking several languages, including Spanish and Brazilian Portuguese on top of English.
+
+### Creating a Qualtrics survey
+
+The first step was to create a survey we would then send to crowdworkers. For this, we use Qualtrics which implies having a Qualtrics API token and a datacenter ID. We build beforehand a survey template one can create manually on Qualtrics that we can then load questions from for the different labelling sessions.
+
+With this information, we are able to create a new blank survey for which we can define the name `SurveyName` and the `language`:
+
+```{python nice-fig, fig.cap='', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+def create_survey(SurveyName, apiToken, dataCenter, language):
+    baseUrl = "https://{0}.qualtrics.com/API/v3/survey-definitions".format(
+        dataCenter)
+
+    headers = {
+        "x-api-token": apiToken,
+        "content-type": "application/json",
+        "Accept": "application/json"
+    }
+
+    data = {
+        "SurveyName": SurveyName,
+        "Language": language,
+        "ProjectCategory": "CORE"
+    }
+
+    response = requests.post(baseUrl, json=data, headers=headers)
+
+    if json.loads(response.text)["meta"]["httpStatus"] != '200 - OK':
+        print(json.loads(response.text)["meta"]["httpStatus"])
+
+    SurveyID = json.loads(response.text)['result']['SurveyID']
+    DefaultBlockID = json.loads(response.text)['result']['DefaultBlockID']
+
+    return SurveyID, DefaultBlockID
+```
+We can then retrieve questions from our template, by specifying the `QuestionID` from the question we want to retrieve and the `SurveyID` from the template.
+
+```{python nice-fig, fig.cap='', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+def get_question(QuestionID, SurveyID, apiToken, dataCenter):
+    baseUrl = "https://{0}.qualtrics.com/API/v3/survey-definitions/{1}/questions/{2}".format(
+        dataCenter, SurveyID, QuestionID)
+
+    headers = {
+        "x-api-token": apiToken,
+    }
+
+    response = requests.get(baseUrl, headers=headers)
+
+    if json.loads(response.text)["meta"]["httpStatus"] != '200 - OK':
+        print(json.loads(response.text)["meta"]["httpStatus"])
+
+    return json.loads(response.text)["result"]
+```
+
+The survey template contains questions that don't need to be modified, such as asking for a participant's MTurk ID. For the labelling question though, we need to update the question's text with the tweet to be labelled. We do this the following way, with `tweet` being the tweet in string format:
+
+```python
+def update_question(QuestionData, QuestionID, SurveyID, apiToken, dataCenter):
+    baseUrl = "https://{0}.qualtrics.com/API/v3/survey-definitions/{1}/questions/{2}".format(
+        dataCenter, SurveyID, QuestionID)
+
+    headers = {
+        'accept': "application/json",
+        'content-type': "application/json",
+        "x-api-token": apiToken,
+    }
+
+    response = requests.put(baseUrl, json=QuestionData, headers=headers)
+
+    if json.loads(response.text)["meta"]["httpStatus"] != '200 - OK':
+        print(json.loads(response.text)["meta"]["httpStatus"])
+
+QuestionData = get_question(QuestionID=QuestionID, SurveyID=SurveyID, apiToken=apiToken, dataCenter=dataCenter)
+QuestionData['QuestionText'] = tweet
+update_question(QuestionData=QuestionData, QuestionID=QuestionID, SurveyID=SurveyID, apiToken=apiToken,
+                dataCenter=dataCenter)
+```
+
+The entire code we used to create a Qualtrics survey using Python and the Qualtrics API is available at `src/1-training_data_preparation/qualtrics/get_training_set_to_qualtrics_API_classification.py`. After loading the questions and embedding the data into them, the survey is ready to be sent to crowdworkers.
+
+### Sharing the survey on MTurk
+
+**send tweets to labelling (code)**
+
+
+
+
+
