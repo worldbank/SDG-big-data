@@ -1,4 +1,4 @@
-# Finding Stops
+# Finding Stops {#stops}
 
 ## Definition
 
@@ -167,3 +167,8 @@ assign cluster labels to them. This whole process is very computationally expens
 highly inefficient, this is why we keep old stops and only compute new ones, but there's no way around the clustering part as
 the labels can change every time. Fortunately the number of stops is several order magnitudes lower than the pings as the smallest
 stop has at least two of them and we drop those that didn't make up a stop.
+
+## Stops geocoding
+
+Now that our data is composed by new aggregated points we replicate the indexing from \@ref(geocode) but with the stops instead
+of the pings.

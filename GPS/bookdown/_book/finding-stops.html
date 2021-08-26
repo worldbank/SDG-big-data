@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="geocode.html"/>
-<link rel="next" href="applications.html"/>
+<link rel="next" href="defining-home-and-work-locations.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -158,14 +158,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="finding-stops.html"><a href="finding-stops.html"><i class="fa fa-check"></i><b>4</b> Finding Stops</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="finding-stops.html"><a href="finding-stops.html#math-example"><i class="fa fa-check"></i><b>4.1</b> math example</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<li class="chapter" data-level="4.1" data-path="finding-stops.html"><a href="finding-stops.html#definition"><i class="fa fa-check"></i><b>4.1</b> Definition</a></li>
+<li class="chapter" data-level="4.2" data-path="finding-stops.html"><a href="finding-stops.html#infostop"><i class="fa fa-check"></i><b>4.2</b> Infostop</a></li>
+<li class="chapter" data-level="4.3" data-path="finding-stops.html"><a href="finding-stops.html#code-1"><i class="fa fa-check"></i><b>4.3</b> Code</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
-<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+<li class="chapter" data-level="4.3.1" data-path="finding-stops.html"><a href="finding-stops.html#data-preparation"><i class="fa fa-check"></i><b>4.3.1</b> Data preparation</a></li>
+<li class="chapter" data-level="4.3.2" data-path="finding-stops.html"><a href="finding-stops.html#get-stop-locations"><i class="fa fa-check"></i><b>4.3.2</b> Get stop locations</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="4.4" data-path="finding-stops.html"><a href="finding-stops.html#clustering-recurrent-stops"><i class="fa fa-check"></i><b>4.4</b> Clustering recurrent stops</a></li>
+<li class="chapter" data-level="4.5" data-path="finding-stops.html"><a href="finding-stops.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>4.5</b> Appending pings from recent dates</a></li>
+<li class="chapter" data-level="4.6" data-path="finding-stops.html"><a href="finding-stops.html#stops-geocoding"><i class="fa fa-check"></i><b>4.6</b> Stops geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html"><i class="fa fa-check"></i><b>5</b> Defining Home and Work Locations</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -189,12 +193,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="finding-stops" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Finding Stops</h1>
+<div id="definition" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Definition</h2>
 <p>A critical endeavor to perform the sugested analysis is to give sense to indiviual
 pings by providing them with structure. In order to do this we need to derive a way
 to discern wether a person is at a specific place or traveling between two locations.</p>
+</div>
+<div id="infostop" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Infostop</h2>
 <p>In order to do this we need both the spatial and the temporal data from each ping. This
-is, how far are consecutive pings from eachother in time and space. We rely on the <a href="https://arxiv.org/pdf/2003.14370.pdf">infostop</a>
-algorithm to detect stop-locations or <em>stays</em> from pings using the time stamp and the coordinates where it was
+is, how far are consecutive pings from eachother in time and space. We rely on the firtst part of the
+<a href="https://arxiv.org/pdf/2003.14370.pdf">infostop</a> algorithm to detect stop-locations
+or <em>stays</em> from pings using the time stamp and the coordinates where it was
 created. Infostop is based in some heuristics:</p>
 <ul>
 <li><span class="math inline">\(r_1\)</span>: The maximum distance between any pair of points within the same stop.</li>
@@ -206,6 +216,11 @@ created. Infostop is based in some heuristics:</p>
 the time span between the first and the last pings is more than <span class="math inline">\(t_{min}\)</span> seconds, there’s no more than <span class="math inline">\(t_{max}\)</span>
 seconds between consecutive pairs and each stop cannot be composed of less than <span class="math inline">\(n_{min}\)</span> pings.</p>
 <p>Particularely we use the Python function <code>get_stationary_events()</code> in the <a href="https://github.com/ulfaslak/infostop">Infostop package</a>.</p>
+</div>
+<div id="code-1" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Code</h2>
+<div id="data-preparation" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Data preparation</h3>
 <p>Once we load the required data, we make make sure that they meet the timezone metadata requirements and that their coordinates
 are valid geographical points.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="finding-stops.html#cb6-1" aria-hidden="true" tabindex="-1"></a>filter_string <span class="op">=</span> <span class="ss">f&quot;accuracy &gt;=0 AND accuracy &lt;= 200 AND lat &gt; -90 AND lat &lt; 90 AND lon &gt; -180 AND lon &lt; 180&quot;</span></span>
@@ -224,16 +239,22 @@ are valid geographical points.</p>
 <span id="cb6-14"><a href="finding-stops.html#cb6-14" aria-hidden="true" tabindex="-1"></a>           .drop(<span class="st">&#39;timestamp&#39;</span>, <span class="st">&#39;time&#39;</span>, <span class="st">&#39;new_time&#39;</span>))</span>
 <span id="cb6-15"><a href="finding-stops.html#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb6-16"><a href="finding-stops.html#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">raise</span> <span class="pp">Exception</span> (<span class="st">&quot;Undefined time zone in config or tz_offset in input table&quot;</span>)</span></code></pre></div>
+</div>
+<div id="get-stop-locations" class="section level3" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Get stop locations</h3>
 <p>Now we have the data ready to identify stops, we only need to sort pings by their timestamp for each user.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="finding-stops.html#cb7-1" aria-hidden="true" tabindex="-1"></a>sl <span class="op">=</span> (pings</span>
 <span id="cb7-2"><a href="finding-stops.html#cb7-2" aria-hidden="true" tabindex="-1"></a>      .orderBy(<span class="st">&quot;epoch_time&quot;</span>)</span>
 <span id="cb7-3"><a href="finding-stops.html#cb7-3" aria-hidden="true" tabindex="-1"></a>      .groupBy(<span class="st">&quot;user_id&quot;</span>)</span>
-<span id="cb7-4"><a href="finding-stops.html#cb7-4" aria-hidden="true" tabindex="-1"></a>      .<span class="bu">apply</span>(get_stop_location, args<span class="op">=</span>(radius, stay_time, min_pts_per_stop_location, max_time_stop_location, max_accuracy, db_scan_radius))</span>
-<span id="cb7-5"><a href="finding-stops.html#cb7-5" aria-hidden="true" tabindex="-1"></a>      .dropna())</span></code></pre></div>
+<span id="cb7-4"><a href="finding-stops.html#cb7-4" aria-hidden="true" tabindex="-1"></a>      .<span class="bu">apply</span>(get_stop_location, args<span class="op">=</span>(radius, stay_time,</span>
+<span id="cb7-5"><a href="finding-stops.html#cb7-5" aria-hidden="true" tabindex="-1"></a>             min_pts_per_stop_location, max_time_stop_location,</span>
+<span id="cb7-6"><a href="finding-stops.html#cb7-6" aria-hidden="true" tabindex="-1"></a>             max_accuracy, db_scan_radius))</span>
+<span id="cb7-7"><a href="finding-stops.html#cb7-7" aria-hidden="true" tabindex="-1"></a>      .dropna())</span></code></pre></div>
 <p>Where the user defined function <code>get_stop_location()</code> composed by other functions which at the end will yield
 a data frame with user id, stop beginning timestamp, stop end timestamp, a centroid coordinate pair from the original pings,
 a cluster label from a <a href="https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf">DBSCAN clustering algorithm</a>, the median accuracy of
 the pings and the total number of pings that compose the given stop.</p>
+<p>For DBSCAN we also use <span class="math inline">\(\epsilon=50m\)</span> and the minimum accuracy for us to keep a ping is <span class="math inline">\(100m\)</span></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="finding-stops.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_intervals(centroids, labels, timestamps, accuracy, input_data):</span>
 <span id="cb8-2"><a href="finding-stops.html#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if the label is -1 it means that the point doesn&#39;t belong to any cluster. Otherwise there should be at least 2 points for a stop locations</span></span>
 <span id="cb8-3"><a href="finding-stops.html#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and they should</span></span>
@@ -298,27 +319,40 @@ the pings and the total number of pings that compose the given stop.</p>
 <span id="cb8-62"><a href="finding-stops.html#cb8-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
 <span id="cb8-63"><a href="finding-stops.html#cb8-63" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">&#39;cluster_label&#39;</span>] <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb8-64"><a href="finding-stops.html#cb8-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code></pre></div>
-<p>Math can be added in body using usual syntax like this</p>
-<div id="math-example" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> math example</h2>
-<p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span></p>
-<p>You can also use math in footnotes like this<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
-<p>We will approximate standard error to 0.027<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+</div>
+</div>
+<div id="clustering-recurrent-stops" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Clustering recurrent stops</h2>
+<p>The clustering part is where our approach differs from the Infostop one, as the assign cluster labels by building a network of
+stops if they’re located closer than a distance <span class="math inline">\(r_2\)</span> and then use the <a href="https://www.mapequation.org/assets/publications/RosvallBergstromPNAS2008Full.pdf">Infomap</a>
+community detection algorithm while we proceed by clustering with DBSCAN as previously discussed. It is important to notice that
+these clusters don’t depend on the time but only on the spatial distribution as we are interested in finding recurrent
+visited locations.</p>
+<p>Finally we split those stops that span multiple days into single ones</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="finding-stops.html#cb9-1" aria-hidden="true" tabindex="-1"></a>sl <span class="op">=</span> (sl</span>
+<span id="cb9-2"><a href="finding-stops.html#cb9-2" aria-hidden="true" tabindex="-1"></a>      .withColumn(<span class="st">&quot;total_duration_stop_location&quot;</span>, F.col(<span class="st">&quot;t_end&quot;</span>) <span class="op">-</span> F.col(<span class="st">&quot;t_start&quot;</span>))</span>
+<span id="cb9-3"><a href="finding-stops.html#cb9-3" aria-hidden="true" tabindex="-1"></a>      .withColumn(<span class="st">&#39;my_list&#39;</span>, make_list(F.to_timestamp(col(<span class="st">&#39;t_start&#39;</span>)), F.to_timestamp(col(<span class="st">&#39;t_end&#39;</span>))))</span>
+<span id="cb9-4"><a href="finding-stops.html#cb9-4" aria-hidden="true" tabindex="-1"></a>      .drop(<span class="st">&#39;t_start&#39;</span>, <span class="st">&#39;t_end&#39;</span>)</span>
+<span id="cb9-5"><a href="finding-stops.html#cb9-5" aria-hidden="true" tabindex="-1"></a>      .withColumn(<span class="st">&quot;tmp&quot;</span>, F.explode(<span class="st">&quot;my_list&quot;</span>))</span>
+<span id="cb9-6"><a href="finding-stops.html#cb9-6" aria-hidden="true" tabindex="-1"></a>      .withColumn(<span class="st">&quot;t_start&quot;</span>, F.col(<span class="st">&quot;tmp&quot;</span>).t_start)</span>
+<span id="cb9-7"><a href="finding-stops.html#cb9-7" aria-hidden="true" tabindex="-1"></a>      .withColumn(<span class="st">&quot;t_end&quot;</span>, F.col(<span class="st">&quot;tmp&quot;</span>).t_end)</span>
+<span id="cb9-8"><a href="finding-stops.html#cb9-8" aria-hidden="true" tabindex="-1"></a>      .drop(<span class="st">&quot;tmp&quot;</span>, <span class="st">&quot;my_list&quot;</span>)</span>
+<span id="cb9-9"><a href="finding-stops.html#cb9-9" aria-hidden="true" tabindex="-1"></a>      .withColumn(<span class="st">&quot;duration&quot;</span>, F.col(<span class="st">&quot;t_end&quot;</span>) <span class="op">-</span> F.col(<span class="st">&quot;t_start&quot;</span>)))</span></code></pre></div>
+</div>
+<div id="appending-pings-from-recent-dates" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Appending pings from recent dates</h2>
+<p>GPS data is passively gathered and as so it’s continiously growing, this translates in the need for contiously find stops and
+assign cluster labels to them. This whole process is very computationally expensive and running it on the whole data would be
+highly inefficient, this is why we keep old stops and only compute new ones, but there’s no way around the clustering part as
+the labels can change every time. Fortunately the number of stops is several order magnitudes lower than the pings as the smallest
+stop has at least two of them and we drop those that didn’t make up a stop.</p>
+</div>
+<div id="stops-geocoding" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> Stops geocoding</h2>
+<p>Now that our data is composed by new aggregated points we replicate the indexing from <a href="geocode.html#geocode">3</a> but with the stops instead
+of the pings.</p>
 
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p>where we mention <span class="math inline">\(p = \frac{a}{b}\)</span><a href="finding-stops.html#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span><a href="finding-stops.html#fnref2" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
             </section>
 
@@ -326,7 +360,7 @@ SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
         </div>
       </div>
 <a href="geocode.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="applications.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="defining-home-and-work-locations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

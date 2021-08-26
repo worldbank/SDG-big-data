@@ -1,0 +1,3 @@
+# Wealth Index {#index}
+
+Explain how the wealth index is obtained.

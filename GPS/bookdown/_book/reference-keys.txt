@@ -1,4 +1,6 @@
 fig:nice-fig
+fig:home-patterns
+fig:work-patterns
 introduction
 data
 gps-data
@@ -12,9 +14,13 @@ loading-administrative-units
 loading-ping-data-and-h3-indexing
 initial-coarse-geo-spatial-join-with-shapefiles
 final-exact-join-with-a-subset-of-the-shapefiles
-finding-stops
-math-example
-applications
-example-one
-example-two
-final-words
+stops
+definition
+infostop
+code-1
+data-preparation
+get-stop-locations
+clustering-recurrent-stops
+appending-pings-from-recent-dates
+stops-geocoding
+defining-home-and-work-locations
