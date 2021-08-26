@@ -58,7 +58,7 @@ In the `.csv` file, we provide three types of news sentiment indicators:
 <a id="1">[1]</a> 
 Fraiberger, Samuel P, Do Lee, Damien Puy, and Romain Ranciere. 
 Media Sentiment and International Asset Prices
-Working Paper 25353, National Bureau of Economic Research, December 2018. 
+Journal of International Economics, 2021, 133, 103526. 
 
 <a id="2">[2]</a> 
 Loughran, Tim and Bill Mcdonald.
