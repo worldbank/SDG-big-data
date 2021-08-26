@@ -183,7 +183,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>7</b> Migration Patterns</a></li>
 <li class="chapter" data-level="8" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>8</b> Parameter Optimization</a></li>
-<li class="chapter" data-level="9" data-path="windex.html"><a href="windex.html"><i class="fa fa-check"></i><b>9</b> Wealth Index</a></li>
+<li class="chapter" data-level="9" data-path="windex.html"><a href="windex.html"><i class="fa fa-check"></i><b>9</b> Wealth Index</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="windex.html"><a href="windex.html#variables-to-estimate-the-social-gap-index-in-mexico"><i class="fa fa-check"></i><b>9.1</b> Variables to estimate the Social Gap Index in Mexico</a></li>
+<li class="chapter" data-level="9.2" data-path="windex.html"><a href="windex.html#a.-education"><i class="fa fa-check"></i><b>9.2</b> A. Education</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="windex.html"><a href="windex.html#b.-health-services-access"><i class="fa fa-check"></i><b>9.2.1</b> B. Health Services Access</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="windex.html"><a href="windex.html#c.-household-characteristics"><i class="fa fa-check"></i><b>9.3</b> C. Household characteristics</a></li>
+<li class="chapter" data-level="9.4" data-path="windex.html"><a href="windex.html#d.-assets-ownership"><i class="fa fa-check"></i><b>9.4</b> D. Assets Ownership</a></li>
+</ul></li>
 <li class="chapter" data-level="10" data-path="voronoi.html"><a href="voronoi.html"><i class="fa fa-check"></i><b>10</b> Voronoi</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -207,8 +216,137 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="windex" class="section level1" number="9">
 <h1><span class="header-section-number">Chapter 9</span> Wealth Index</h1>
-<p>Explain how the wealth index is obtained.</p>
+<p>In order to explain how the Wealth Index was built we’re going to exemplify
+the methodology used for Mexico. For the rest of the countries it was
+an analogous procedure, but the variables names are different.</p>
+<div id="variables-to-estimate-the-social-gap-index-in-mexico" class="section level2" number="9.1">
+<h2><span class="header-section-number">9.1</span> Variables to estimate the Social Gap Index in Mexico</h2>
+<p>To estimate the “Social Gap Index” for Mexico at localidad level, we followed the methodology
+of Coneval (National Council of Social Policy Evaluation) in Mexico.
+This methodology creates a unique indicator of wealth by reducing the dimensions of a vector of
+characteristics related to education, health, basic services and quality of home infrastructure.
+To do this, we used principal components using the following variables:</p>
+<ul>
+<li><strong>Education</strong>
+<ul>
+<li>Percentage of illiterate population aged 15 or more</li>
+<li>Percentage of population aged 6-14 that does not attend to school</li>
+<li>Percentage of population aged 15 or more years without complete elementary school</li>
+</ul></li>
+<li><strong>Health services access</strong>
+<ul>
+<li>Percentage of population with no access to health services</li>
+</ul></li>
+<li><strong>Household characteristics</strong>
+<ul>
+<li>Log of average occupants per room</li>
+<li>Percentage of with dirt floor</li>
+<li>Percentage of households with no toilet</li>
+<li>Percentage of households with no piped water</li>
+<li>Percentage of households with no sewer system</li>
+<li>Percentage of households with no electricity</li>
+<li>Percentage of households with no washing machine</li>
+<li>Percentage of inhabited private households with no fridge</li>
+</ul></li>
+</ul>
+<p>Then, we estimated the variables of interest as follows:</p>
+</div>
+<div id="a.-education" class="section level2" number="9.2">
+<h2><span class="header-section-number">9.2</span> A. Education</h2>
+<ul>
+<li><p><strong>Percentage of illiterate population aged 15 or more</strong></p>
+<ul>
+<li>p15ym_an: Population 15-130 years old who cannot read or write</li>
+<li>p_15ymas: Total population older than 15</li>
+</ul>
+<p><strong>illiterate = p15ym_an/p_15ymas x 100</strong></p></li>
+<li><p><strong>Percentage of population aged 6-14 that does not attend school</strong></p>
+<ul>
+<li>p6a11_noa: Population aged 6-11 that do not attend to school</li>
+<li>p12a14noa: Population aged 12-14 that do not attend to school</li>
+<li>p_6a11: Population aged 6-11</li>
+<li>p_12a14: Population aged 12-14</li>
+</ul>
+<p><strong>not_attend_school = (p6a11_noa + p12a14noa)/ (p_6a11 + p_12a14) x 100</strong></p></li>
+<li><p><strong>Percentage of population aged &gt; 15 years old without full primary education</strong></p>
+<ul>
+<li><p>p15pri_in: Population 15-130 years old who completed 5th grade as maximum. It includes people who did not specify the grade passed in the this education level</p></li>
+<li><p>p15pri_co: Population 15-130 years old who completed 6th grade as maximum. It includes people who did not specify the grade passed in the this education level</p></li>
+<li><p>p15ym_se: Population 15-130 who do not passed any grade of schooling or that only have pre-school</p></li>
+<li><p>p15sec_in: Population 15-130 years old who did not complete secondary school</p></li>
+<li><p>p_15ymas: Total population older than 15</p>
+<p><strong>no_primary_educ = p15pri_in+ p15pri_co + p15ym_se + p15sec_in / p_15ymas x 100</strong></p></li>
+</ul></li>
+</ul>
+<div id="b.-health-services-access" class="section level3" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> B. Health Services Access</h3>
+<ul>
+<li><strong>Percentage of population with no access to health services</strong>
+<ul>
+<li>p_sinder: Total population who are not entitled to receive medical services in any public or private institution</li>
+<li>pobtot: Total population</li>
+</ul>
+<strong>no_access_health = psinder/pobtot x 100</strong></li>
+</ul>
+</div>
+</div>
+<div id="c.-household-characteristics" class="section level2" number="9.3">
+<h2><span class="header-section-number">9.3</span> C. Household characteristics</h2>
+<ul>
+<li><p><strong>Percentage of Households with dirt floor</strong></p>
+<ul>
+<li>vph_pisodt: Households with dirt floor. It includes households for which the characteristics of the house were captured, classified as independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class</li>
+<li>vivpar_hab: Total inhabited homes.</li>
+</ul>
+<p><strong>dirt_floor = vph_pisodt/ vivpar_hab x 100</strong></p></li>
+<li><p><strong>Average occupants per room</strong>
+Result of dividing the number of people residing in inhabited homes by the number of rooms in those homes.</p>
+<p><strong>LOG(pro_ocup_c)</strong>
+It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</p></li>
+<li><p><strong>Percentage of homes with no toilet</strong></p>
+<ul>
+<li>vph_excsa: Total number of homes with toilet.</li>
+<li>vivpar_hab: Total inhabited homes.</li>
+</ul>
+<p><strong>no_toilet = 1 - (vph_excsa)/(vivpar_hab) x 100</strong></p></li>
+<li><p><strong>Percentage of homes with no piped water</strong></p>
+<ul>
+<li>vph_aguafv: Households that have water availability from a public or hydrant tap, anotherdwelling, a pipe, a well, a river, a stream, a lake or another. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Total inhabited homes</li>
+</ul>
+<p><strong>no_water = (vph_aguafv) /(vivpar_hab) x 100</strong></p></li>
+<li><p><strong>Percentage of homes with no sewer system</strong></p>
+<ul>
+<li>vph_nodren: Households that have no drainage connected to the public network, septic tank, canyon, crack, river, lake or sea. It includes households for which the characteristics of the house were captured, classified as independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class</li>
+<li>vivpar_hab: Total inhabited homes</li>
+</ul>
+<p><strong>no_sewing = (vph_nodren) /(vivpar_hab) x 100</strong></p></li>
+<li><p><strong>Percentage of homes with no electricity</strong></p>
+<ul>
+<li>vph_s_elec: Inhabited private homes that do not have electricity. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Total inhabited homes</li>
+</ul>
+<p><strong>no_electricity = (vph_s_elec) /(vivpar_hab) x 100</strong></p></li>
+</ul>
+</div>
+<div id="d.-assets-ownership" class="section level2" number="9.4">
+<h2><span class="header-section-number">9.4</span> D. Assets Ownership</h2>
+<ul>
+<li><p><strong>Percentage of Households with no washing machine</strong></p>
+<ul>
+<li>vph_lavad: Households that have washing machine. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Households of any kind: independent house, apartment in building, housing or room in neighborhood, housing or rooftop room, premises not built for room, mobile home, shelters or unspecified class. Includes households without occupant information.</li>
+</ul>
+<p><strong>no_washingmachine = 1 - (vph_lavad) / (vivpar_hab)</strong></p></li>
+<li><p><strong>Percentage of Households with no fridge</strong></p>
+<ul>
+<li>vph_refri: Households that have a refrigerator. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Private dwellings inhabited of any kind: independent house, apartment in building, housing or room in neighborhood, housing or rooftop room, premises not built for room, mobile home, shelters or unspecified class. Includes households without occupant information.</li>
+</ul>
+<p><strong>no_fridge = 1 - (vph_refri) / vivpar_hab</strong></p></li>
+</ul>
 
+</div>
 </div>
             </section>
 

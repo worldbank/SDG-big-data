@@ -33,6 +33,11 @@ home-isolated-commuters-and-low-wealth-commuters
 migration
 optimization
 windex
+variables-to-estimate-the-social-gap-index-in-mexico
+a.-education
+b.-health-services-access
+c.-household-characteristics
+d.-assets-ownership
 voronoi
 todo-put-an-image-or-create-one
 infostop
