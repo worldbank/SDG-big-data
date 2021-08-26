@@ -1,0 +1,3 @@
+# Wealth Index {#windex}
+
+Explain how the wealth index is obtained.

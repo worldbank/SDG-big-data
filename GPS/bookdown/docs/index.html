@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>GPS Analytics</title>
+  <meta name="description" content="Guided step by step analysis of income based mobility patterns from GPS data." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="GPS Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guided step by step analysis of income based mobility patterns from GPS data." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="GPS Analytics" />
+  
+  <meta name="twitter:description" content="Guided step by step analysis of income based mobility patterns from GPS data." />
+  
+
+<meta name="author" content="GPS Analytics Group" />
+
+
+<meta name="date" content="2021-08-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="data.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">GPS Mobility Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#gps-data"><i class="fa fa-check"></i><b>2.1</b> GPS Data</a></li>
+<li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#wealth-index-data"><i class="fa fa-check"></i><b>2.2</b> Wealth Index Data</a></li>
+<li class="chapter" data-level="2.3" data-path="data.html"><a href="data.html#administrative-boundaries-data"><i class="fa fa-check"></i><b>2.3</b> Administrative Boundaries Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="geocode.html"><a href="geocode.html"><i class="fa fa-check"></i><b>3</b> Geocode</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="geocode.html"><a href="geocode.html#efficient-spatial-joining-and-geospatial-indexing"><i class="fa fa-check"></i><b>3.1</b> Efficient spatial joining and Geospatial Indexing</a></li>
+<li class="chapter" data-level="3.2" data-path="geocode.html"><a href="geocode.html#todo-put-an-image-or-create-one"><i class="fa fa-check"></i><b>3.2</b> TODO: put an image or create one</a></li>
+<li class="chapter" data-level="3.3" data-path="geocode.html"><a href="geocode.html#code"><i class="fa fa-check"></i><b>3.3</b> Code</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="geocode.html"><a href="geocode.html#loading-administrative-units"><i class="fa fa-check"></i><b>3.3.1</b> Loading administrative units</a></li>
+<li class="chapter" data-level="3.3.2" data-path="geocode.html"><a href="geocode.html#loading-ping-data-and-h3-indexing"><i class="fa fa-check"></i><b>3.3.2</b> Loading ping data and h3 indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="geocode.html"><a href="geocode.html#initial-coarse-geo-spatial-join-with-shapefiles"><i class="fa fa-check"></i><b>3.4</b> Initial coarse geo-spatial join with shapefiles</a></li>
+<li class="chapter" data-level="3.5" data-path="geocode.html"><a href="geocode.html#final-exact-join-with-a-subset-of-the-shapefiles"><i class="fa fa-check"></i><b>3.5</b> Final exact join with a subset of the shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="stops.html"><a href="stops.html"><i class="fa fa-check"></i><b>4</b> Finding Stops</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="stops.html"><a href="stops.html#definition"><i class="fa fa-check"></i><b>4.1</b> Definition</a></li>
+<li class="chapter" data-level="4.2" data-path="stops.html"><a href="stops.html#infostop"><i class="fa fa-check"></i><b>4.2</b> Infostop</a></li>
+<li class="chapter" data-level="4.3" data-path="stops.html"><a href="stops.html#code-1"><i class="fa fa-check"></i><b>4.3</b> Code</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="stops.html"><a href="stops.html#data-preparation"><i class="fa fa-check"></i><b>4.3.1</b> Data preparation</a></li>
+<li class="chapter" data-level="4.3.2" data-path="stops.html"><a href="stops.html#get-stop-locations"><i class="fa fa-check"></i><b>4.3.2</b> Get stop locations</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="stops.html"><a href="stops.html#clustering-recurrent-stops"><i class="fa fa-check"></i><b>4.4</b> Clustering recurrent stops</a></li>
+<li class="chapter" data-level="4.5" data-path="stops.html"><a href="stops.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>4.5</b> Appending pings from recent dates</a></li>
+<li class="chapter" data-level="4.6" data-path="stops.html"><a href="stops.html#stops-geocoding"><i class="fa fa-check"></i><b>4.6</b> Stops geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html"><i class="fa fa-check"></i><b>5</b> Defining Home and Work Locations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html#seasonal-patterns"><i class="fa fa-check"></i><b>5.1</b> Seasonal patterns</a></li>
+<li class="chapter" data-level="5.2" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html#code-2"><i class="fa fa-check"></i><b>5.2</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="6" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>6</b> Migration Patterns</a></li>
+<li class="chapter" data-level="7" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>7</b> Parameter Optimization</a></li>
+<li class="chapter" data-level="8" data-path="index.html"><a href="index.html#index"><i class="fa fa-check"></i><b>8</b> Wealth Index</a></li>
+<li class="chapter" data-level="9" data-path="voronoi.html"><a href="voronoi.html"><i class="fa fa-check"></i><b>9</b> Voronoi</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GPS Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">GPS Analytics</h1>
+<p class="author"><em>GPS Analytics Group</em></p>
+<p class="date"><em>2021-08-25</em></p>
+</div>
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
+<p>In latest years new sources of data have been proven to be valuable assets to understand human behavior and thus
+help in the creation of public policies based on evidence. Among those lies mobile phone data which is commonly used
+to study spatio-temporal patterns in the form of mobility or social connections. This type of data usually comes in two
+flavors; Call Detail Record (CDR), which is basicaly the information generated by a telecom transaction between at least two
+devices, i.e. phone calls or SMS and it can be used to determine connections between users and a location proxy given the
+connection of the device to the nearest antenna. The second type is GPS data. In present times mobile phones, particularely smart phones,
+which global penetration is estimated to be almost 50%, are used for much more than Pier to Pier (P2P) transactions as they
+are capable of connecting to the internet through apps. There are companies that partner up with app creators in order to
+store information about the usage of their products, this way when used in a phone they store a token with a unique device ID
+and time stamp plus any extra information that the user has consent to share, such as geolocation which is obtained via the
+high precision GPS anthenas the phones are equiped with plus WiFi triangulation in some cases to upscale it.</p>
+<p>We are interested in the latter source of information as the aim of our study is to untangle the universal disparities, if any,
+in mobility reduction during the COVID-19 pandemic between socioeconomic groups. We focused our study in 6 middle-income countries (Brazil, Colombia,
+Indonesia, Mexico, Philippines and South Africa).</p>
+<p>A summary plot of our results is displayed in the interactive chart below. The first panel represents the percentage
+change of the total time spent at home by socioeconomic group,
+the second one is the percentage change of daily users commuting to work also by socioeconomic group and the last one
+shows the percentage change of work commutes in the low-income group by the wealth of the neighborhood where the work is located.</p>
+<iframe src="chart.html" width="672" height="400px">
+</iframe>
+<p>A more detailed explanation of these results and the procedure to obtained them is described in the following chapters.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="data.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/worldbank/SDG-big-data/tree/GPS-analytics/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["gps-mobility.pdf", "gps-mobility.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

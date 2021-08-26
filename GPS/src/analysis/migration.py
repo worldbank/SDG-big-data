@@ -1,51 +1,66 @@
-from wbgps import *
-import datetime
-import seaborn as sns
-from sklearn.neighbors import DistanceMetric
-from pyspark.sql.functions import col, desc, lit, pandas_udf, PandasUDFType
-from pyspark.sql.types import DoubleType, ArrayType, MapType, StructType, StructField, LongType, StringType, IntegerType
-from pyspark.sql.window import Window
-import matplotlib.pyplot as plt
-import pyspark.sql.functions as F
-import json
-import numpy as np
 import os
-from itertools import product
 import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+import seaborn as sns
 
-spark.conf.set("spark.sql.shuffle.partitions", 500)
+import pyspark.sql.functions as F
+from pyspark.sql.functions import col, desc, lit
+from pyspark.sql import Window
 
+spark.conf.set("spark.sql.shuffle.partitions", 1500)
+
+start_baseline = '2020-02-01'
+end_baseline = '2020-03-01'
+start_date = '2020-02-01'
+end_date = '2021-04-15'
+
+results_dir = '/dbfs/mnt/Geospatial/results/veraset/'
+admin_path = f'/mnt/Geospatial/admin/' # country specific admin files should be stored as "{admin_path}/{country}/admin.csv"
+stop_path = '/mnt/Geospatial/results/veraset/'
 
 bins_wealth = [0, 0.4, 0.8, 1]
-labels_wealth = [x+' ('+str(int(bins_wealth[i]*100))+'%-'+str(int(bins_wealth[i+1]*100)) +
-                 '%)' for i, x in zip(range(len(bins_wealth)-1), ['Low', 'Medium', 'High'])]
-
 bins_dist = [0, 0.4, 0.8, 1]
-labels_dist = [x+' ('+str(int(bins_dist[i]*100))+'%-'+str(int(bins_dist[i+1]*100)) +
-               '%)' for i, x in zip(range(len(bins_dist)-1), ['Low', 'Medium', 'High'])]
-print(labels_dist)
 
-c_dates = {'BR': '2021-01-01',
+countries = ['ID', 'PH', 'BR', 'CO', 'MX', 'ZA']
+# countries = ['PH']
+
+c_dates = {'BR': '2021-05-16',
            'CO': '2021-05-16',
-           'ID': '2021-01-01',
-           'MX': '2020-12-01',
-           'PH': '2021-01-01',
-           'ZA': '2021-05-16'}
-
-hw=49
-ww=49
-wa=3600
-mph=0.2
-mpw=0.2
+           'ID': '2021-05-16',
+           'MX': '2021-05-16',
+           'PH': '2021-05-16',
+           'ZA': '2021-05-16',
+           'AR': '2021-05-16'}
 
 activity_level = 0.2
 
-countries = ['BR', 'CO', 'ID', 'MX', 'PH', 'ZA']
+hw = 49
+ww = 49
+wa = 3600
+mph = 0.2
+mpw = 0.2
 
+# Smoothing size for mobility
+ma = 28
+# Smoothing size for migrations
+mw = 28
+
+labels_wealth = [x+' ('+str(int(bins_wealth[i]*100))+'%-'+str(int(bins_wealth[i+1]*100)) +'%)' for i, x in zip(range(len(bins_wealth)-1), ['Low', 'Medium', 'High'])]
+labels_dist = [x+' ('+str(int(bins_dist[i]*100))+'%-'+str(int(bins_dist[i+1]*100)) +'%)' for i, x in zip(range(len(bins_dist)-1), ['Low', 'Medium', 'High'])]
+country_capitals = {'MX': 'Mexico City', 'BR': 'São Paulo', 'CO': 'Bogota',
+                    'PH': 'Quezon City [Manila]', 'ID': 'Jakarta', 'ZA': 'Johannesburg', 'AR': 'GBuenos Aires'}
+
+
+### Comute migration per socio economic group
 df_wl = pd.DataFrame()
 usr_df = pd.DataFrame()
 for country in countries:
     print(country)
-    out, usrs = compute_rural_migration_stats_city(country, bins_wealth, labels_wealth, hw, ww, wa, mph, mpw, activity_level, c_dates)
+    out, usrs = compute_rural_migration_stats_city(country, bins_wealth, labels_wealth, hw, ww, wa, mph, mpw, activity_level, c_dates, admin_path, stop_path)
     usr_df = pd.concat([usr_df, usrs])
     df_wl = pd.concat([df_wl, out], sort=True)
+
+df_wl.to_csv(results_dir+'df_wl_migration_weighted.csv')
+usr_df.to_csv(results_dir+'df_usr_migration_weighted.csv')

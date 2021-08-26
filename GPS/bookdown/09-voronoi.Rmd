@@ -1,0 +1,3 @@
+# Voronoi {#voronoi}
+
+Explain the polygon voronoi process and importance.

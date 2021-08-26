@@ -1,0 +1,172 @@
+# Defining Home and Work Locations
+
+From the census data we have socioeconomic information for every geographical region in
+each country and we used that to assign a Wealth Index value to them. A good proxy of
+the demographic of the users can be obtained by the location of their home which we
+can infeer from the recurrent stop locations we did in the previous chapter \@ref(stops)
+given some regularity patterns and use the administrative information of the geometry where
+it falls into. Moreover we can do this for every stops' cluster. Our focus lies on the
+home and the work locations as they're likely to be the places where indiviuals spend more time
+and define the largest bulk of their mobility patterns.
+
+## Seasonal patterns
+```{r home-patterns, fig.cap='Number of stops by weekday and start hour at home location', out.width='100%', fig.asp=1, fig.align='center', echo=FALSE}
+img <- png::readPNG("figures/home_patterns.png")
+grid::grid.raster(img)
+```
+
+```{r work-patterns, fig.cap='Number of stops by weekday and start hour at work location', out.width='100%', fig.asp=1, fig.align='center', echo=FALSE}
+img <- png::readPNG("figures/work_patterns.png")
+grid::grid.raster(img)
+```
+
+As we can see from \@ref(fig:home-patterns) and \@ref(fig:work-patterns) usually a person's mobility patterns have seasonal
+structure so we label each stop with it's corresponding day of the week. For this reason we need to label each stop with the
+weekday value when it was created.
+
+## Code
+```{python eval=FALSE}
+df = df.withColumn("t_start_hour", F.hour( F.to_timestamp("t_start")))
+        .withColumn("t_end_hour", F.hour( F.to_timestamp("t_end")))
+        .withColumn('weekday', F.dayofweek( F.to_timestamp("t_start")))
+        .withColumn("date", F.to_timestamp("t_start"))
+        .withColumn("date_trunc", F.date_trunc("day", F.col("date")))
+```
+
+Then we use the following function to label the home and work candidates. Notice that as this is a user defined
+function, the schema at the top contains the output variables.
+
+```{python eval=FALSE}
+schema_df = StructType([
+    StructField('user_id', StringType(), False),
+    StructField('t_start', LongType(), False),
+    StructField('t_end', LongType(), False),
+    StructField('duration', LongType(), False),
+    StructField('lat', DoubleType(), False),
+    StructField('lon', DoubleType(), False),
+    StructField('total_duration_stop_location', LongType(), False),
+    StructField('total_pings_stop', LongType(), False),
+    StructField('cluster_label', LongType(), False),
+    StructField('median_accuracy', DoubleType(), False),
+    StructField('location_type', StringType(), True),
+    StructField('home_label', LongType(), True),
+    StructField('work_label', LongType(), True),
+    StructField('geom_id', StringType(), False),
+    StructField('date', TimestampType(), True),
+    StructField('t_start_hour', IntegerType(), True),
+    StructField('t_end_hour', IntegerType(), True),
+    StructField("date_trunc", TimestampType(), True)
+])
+@pandas_udf(schema_df, PandasUDFType.GROUPED_MAP)
+def compute_home_work_label_dynamic(user_df, start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average):
+    # We start by assuming every cluster falls into the "Other" category.
+    # Meaning they're not home nor work.
+    user_df['location_type'] = 'O'
+    user_df['home_label'] = -1
+    user_df['work_label'] = -1
+
+    # HOME
+    # filter candidates as night-time stops
+    home_tmp = user_df[(user_df['t_start_hour'] >= end_hour_day) | (
+        user_df['t_end_hour'] <= start_hour_day)].copy()  # restrictive version of daytimes
+
+    if home_tmp.empty:  # if we don't have at least a home location, we return and not attemp to compute work location
+        return remove_unused_cols(user_df)
+    first_day = home_tmp['date_trunc'].min()
+    last_day = home_tmp['date_trunc'].max()
+
+    # work on clusters with "duration" attribute per day ("date_trunc")
+    home_tmp = home_tmp[['cluster_label', 'date_trunc', 'duration', 'total_pings_stop']].groupby(
+        ['cluster_label', 'date_trunc']).sum().reset_index().sort_values('date_trunc')
+    # computer cumulative duration of candidates over "period" window
+    home_tmp = home_tmp.merge(home_tmp[['date_trunc', 'cluster_label', 'duration', 'total_pings_stop']].groupby(
+        ['cluster_label']).apply(home_rolling_on_date).reset_index(), on=['date_trunc', 'cluster_label'], suffixes=('', '_cum'))
+    print(home_tmp.columns)
+######
+    home_tmp = home_tmp[home_tmp.total_pings_stop_cum >
+                        min_pings_home_cluster_label].drop('total_pings_stop_cum', axis=1)
+
+    # filter out nan rows, equivalent to filter on min_days
+    home_tmp = home_tmp.dropna(subset=['duration_cum'])
+
+    if home_tmp.empty:  # if we don't have at least a home location, we return and not attemp to compute work location
+        return remove_unused_cols(user_df)
+
+
+    #####################
+    date_cluster = home_tmp.drop_duplicates(['cluster_label', 'date_trunc'])[
+        ['date_trunc', 'cluster_label']].copy()
+    date_cluster = date_cluster.drop_duplicates(['date_trunc'])
+    home_label = list(zip(date_cluster.cluster_label, date_cluster.date_trunc))
+    # creating a multinidex over which locating tuples of "date_trunc" and "home_label"
+    idx = pd.MultiIndex.from_frame(user_df[['cluster_label', 'date_trunc']])
+    user_df.loc[idx.isin(home_label), 'home_label'] = user_df.loc[idx.isin(
+        home_label), 'cluster_label']
+    #####################
+    base_dates = pd.date_range(start=first_day, end=last_day)
+    date_cluster = date_cluster.sort_values(
+        by='date_trunc').set_index('date_trunc')
+    date_cluster = date_cluster.reindex(base_dates)
+    if pd.notna(date_cluster['cluster_label']).sum() > 1:
+        date_cluster = date_cluster.interpolate(
+            method='nearest').ffill().bfill()
+    else:
+        date_cluster = date_cluster.ffill().bfill()
+    date_cluster.index.name = 'date_trunc'
+    date_cluster = date_cluster.reset_index()
+
+    home_label = list(zip(date_cluster.cluster_label, date_cluster.date_trunc))
+    # creating a multindex over which locating tuples of "date_trunc" and "home_label"
+    idx = pd.MultiIndex.from_frame(user_df[['cluster_label', 'date_trunc']])
+
+    user_df.loc[idx.isin(home_label), 'location_type'] = 'H'
+
+    home_list = home_tmp.cluster_label.unique()
+    if home_list.size == 0:
+        return remove_unused_cols(user_df)
+
+    ########
+    # WORK #
+    ########
+    work_tmp = user_df[~(user_df['cluster_label'].isin(home_list))].copy()
+    if work_tmp.empty:  # if we can't compute work location we return
+        return remove_unused_cols(user_df)
+#   if daytime: ######don't like it
+    work_tmp = work_tmp[((work_tmp['t_start_hour'] >= start_hour_day+4) & (work_tmp['t_end_hour']
+                                                                             <= end_hour_day-6)) & (~work_tmp['weekday'].isin([1, 7]))]  # restrictive version of daytimes
+
+    if work_tmp.empty:  # if we can't compute work location we return
+        return remove_unused_cols(user_df)
+    first_day = work_tmp['date_trunc'].min()
+    # drop duplicates, smooth over "period" time window
+    work_tmp = work_tmp[['date_trunc', 'cluster_label', 'duration']].groupby(
+        ['cluster_label', 'date_trunc']).sum().reset_index()
+
+    work_tmp = work_tmp.merge(work_tmp[['date_trunc', 'cluster_label', 'duration']]
+                              .groupby(['cluster_label'])
+                              .apply(work_rolling_on_date)
+                              .reset_index(), on=['date_trunc', 'cluster_label'], suffixes=('', '_average'))
+
+    # filter out candidates which on average on the period do not pass the constraint
+    work_tmp = work_tmp[(work_tmp.duration_average >= work_activity_average)]
+    # Select work clusters candidate: the clusters that passed the previous criteria are selected as work for the day
+    if work_tmp.empty:  # if we can't compute work location we return
+        return remove_unused_cols(user_df)
+
+    #####################
+    work_label = list(zip(work_tmp.cluster_label, work_tmp.date_trunc))
+    idx = pd.MultiIndex.from_frame(user_df[['cluster_label', 'date_trunc']])
+    work_list = work_tmp.cluster_label.unique()
+    if work_list.size == 0:
+        return remove_unused_cols(user_df)
+    # add cluster label to work_label on the day on which it is found to be work_location only
+    user_df.loc[idx.isin(work_label), 'work_label'] = user_df.loc[idx.isin(
+        work_label), 'cluster_label']
+    #####################
+    # add work labels to all user dataset
+    work_label = work_tmp['cluster_label'].unique()
+    idx = pd.Index(user_df['cluster_label'])
+    user_df.loc[idx.isin(work_label), 'location_type'] = 'W'
+
+    return remove_unused_cols(user_df)
+```
