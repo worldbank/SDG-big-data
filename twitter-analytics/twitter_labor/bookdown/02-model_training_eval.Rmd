@@ -11,14 +11,14 @@ In this part, we show how to fine-tune a BERT-based model for tweet classificati
 
 After loading the set of labelled tweets in a dataframe `df`, we perform a train-test split (70-30) on it:
 
-```python
+```{python eval=FALSE}
 train_df = df.sample(frac=0.7,random_state=0)
 val_df = df.drop(train_df.index).reset_index(drop=True)
 ```
 
 We then define specific arguments for the fine-tuning such as the batch size `train_batch_size`, the number of epochs `num_train_epochs` or the output path `output_dir`. The models are evaluated at every epoch in terms of AUROC on the test set. The model with the highest AUROC on the test set is considered the best model and saved at `best_model_dir`. We also use early stopping which consists in stopping the training if the AUROC on the test set has not improved after `early_stopping_patience` epochs. A complete list of the training arguments can be found [here](https://simpletransformers.ai/docs/usage/#configuring-a-simple-transformers-model).
 
-```python
+```{python eval=FALSE}
     classification_args = { 'train_batch_size': 8,
                             'overwrite_output_dir': True,
                             'evaluate_during_training': True,
@@ -37,7 +37,7 @@ We then define specific arguments for the fine-tuning such as the batch size `tr
 
 Once the classification arguments are defined, we can initiate the fine-tuning. In our case, for English tweet classification, we use a version of BERT that was further pretrained on English tweets by [Deep Pavlov](https://deeppavlov.ai), therefore enhancing the classification performance in the Twitter context. We need to define the `model_name`, which is `bert` in our case but can also be other more sophisticated architectures such as `roberta`. The `model_type` refers to the model name on the [Hugging Face model hub](https://huggingface.co/models). As we only cover binary classification here, the number of labels `num_labels` is set to 2.
 
-```python
+```{python eval=FALSE}
 from simpletransformers.classification import ClassificationModel
 model = ClassificationModel(model_name='bert',
                             model_type='DeepPavlov/bert-base-cased-conversational',
@@ -48,7 +48,7 @@ model = ClassificationModel(model_name='bert',
 
 Once the model has been loaded, we can launch the fine-tuning:
 
-```python
+```{python eval=FALSE}
 model.train_model(train_df=train_df, eval_df=eval_df, output_dir=path_to_store_model)
 ```
 
@@ -58,7 +58,7 @@ The training is now launched. When it is finished, we can use the best model in 
 
 While evaluating the model on the test set is useful to determine which classifier is best suited for the task, this performance might not be representative of the performance on a random set of tweets as the imbalance on the latter is much more extreme than on the test set. In this case, we needed to find a way to evaluate our classifiers in real-world settings. To do so, we used the best model from our training iterations to infer the confidences scores of each tweet out of a large random sample of 100 million tweets. We then ranked the tweets based on their confidence score in a descending way and sampled tweets along the confidence score distribution, overweighting the top of the distribution. In total, we sampled 200 tweets out of the 100 million random sample with ranks ranging from 1 to 1 million. The function used to do this sampling is as follows:
 
-```python
+```{python eval=FALSE}
 def get_sampled_indices(n_sample=10, n_cutoff=6):
     sampled_points = []  # index of scores around which we sample n_sample tweets
     sampled_ranks = []  # ranks of sampled tweets

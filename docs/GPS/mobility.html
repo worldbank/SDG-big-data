@@ -217,7 +217,7 @@ The selection imposes two requirements on individuals: i) each individual should
 <span id="cb12-4"><a href="mobility.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    INPUT: dataframe with precomputed individual stops&#39; durations, country ISO code, minimum activity level required</span></span>
 <span id="cb12-5"><a href="mobility.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    OUTPUT: list of active individuals &quot;user_id&quot;</span></span>
 <span id="cb12-6"><a href="mobility.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
-<span id="cb12-7"><a href="mobility.html#cb12-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-7"><a href="mobility.html#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-8"><a href="mobility.html#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Indonesia experiences a major dropout from the service during January 2020. For this reason, a specific pre-pandemic period was adopted</span></span>
 <span id="cb12-9"><a href="mobility.html#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> country <span class="op">==</span> <span class="st">&#39;ID&#39;</span>:</span>
 <span id="cb12-10"><a href="mobility.html#cb12-10" aria-hidden="true" tabindex="-1"></a>      durations_2 <span class="op">=</span> durations.where(col(<span class="st">&#39;date_trunc&#39;</span>) <span class="op">&gt;=</span> <span class="st">&#39;2020-02-01&#39;</span>)</span>
@@ -251,7 +251,7 @@ The selection imposes two requirements on individuals: i) each individual should
 <span id="cb12-38"><a href="mobility.html#cb12-38" aria-hidden="true" tabindex="-1"></a>                  .where(col(<span class="st">&#39;pre&#39;</span>) <span class="op">&gt;=</span> activity_level<span class="op">*</span>max_days_pre)</span>
 <span id="cb12-39"><a href="mobility.html#cb12-39" aria-hidden="true" tabindex="-1"></a>                  .where(col(<span class="st">&#39;tot&#39;</span>) <span class="op">&gt;=</span> activity_level<span class="op">*</span>max_days_all))</span>
 <span id="cb12-40"><a href="mobility.html#cb12-40" aria-hidden="true" tabindex="-1"></a>  active_days.unpersist()</span>
-<span id="cb12-41"><a href="mobility.html#cb12-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-41"><a href="mobility.html#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-42"><a href="mobility.html#cb12-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> active_users</span></code></pre></div>
 </div>
 <div id="measures" class="section level2" number="6.2">
@@ -268,7 +268,7 @@ The selection imposes two requirements on individuals: i) each individual should
 <span id="cb13-5"><a href="mobility.html#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="al">NOTE</span><span class="co">: Google uses as baseline period the 5-weeks period from Jan 3 to Feb 6</span></span>
 <span id="cb13-6"><a href="mobility.html#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
 <span id="cb13-7"><a href="mobility.html#cb13-7" aria-hidden="true" tabindex="-1"></a>  df <span class="op">=</span> df_original.copy()</span>
-<span id="cb13-8"><a href="mobility.html#cb13-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-8"><a href="mobility.html#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-9"><a href="mobility.html#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute weekday baseline values</span></span>
 <span id="cb13-10"><a href="mobility.html#cb13-10" aria-hidden="true" tabindex="-1"></a>  baseline <span class="op">=</span> df.loc[start_baseline:end_baseline,[<span class="st">&#39;mean&#39;</span>,<span class="st">&#39;sem&#39;</span>]<span class="op">+</span>other_groups].copy()</span>
 <span id="cb13-11"><a href="mobility.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  baseline[<span class="st">&#39;weekday&#39;</span>] <span class="op">=</span> <span class="bu">list</span>(baseline.index.dayofweek.values)</span>
@@ -277,12 +277,12 @@ The selection imposes two requirements on individuals: i) each individual should
 <span id="cb13-14"><a href="mobility.html#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-15"><a href="mobility.html#cb13-15" aria-hidden="true" tabindex="-1"></a>  date <span class="op">=</span> df.index.copy()</span>
 <span id="cb13-16"><a href="mobility.html#cb13-16" aria-hidden="true" tabindex="-1"></a>  df <span class="op">=</span> df.merge(baseline, on<span class="op">=</span>[<span class="st">&#39;weekday&#39;</span>]<span class="op">+</span>other_groups, how<span class="op">=</span><span class="st">&#39;left&#39;</span>, <span class="op">=</span>(<span class="st">&#39;&#39;</span>, <span class="st">&#39;_baseline&#39;</span>))</span>
-<span id="cb13-17"><a href="mobility.html#cb13-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-17"><a href="mobility.html#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-18"><a href="mobility.html#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute &quot;mean&quot; change with respect to weekday baseline values</span></span>
 <span id="cb13-19"><a href="mobility.html#cb13-19" aria-hidden="true" tabindex="-1"></a>  df[<span class="st">&#39;mean&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;mean&#39;</span>]<span class="op">-</span> df[<span class="st">&#39;mean_baseline&#39;</span>]) <span class="op">/</span> np.<span class="bu">abs</span>(df[<span class="st">&#39;mean_baseline&#39;</span>])</span>
 <span id="cb13-20"><a href="mobility.html#cb13-20" aria-hidden="true" tabindex="-1"></a>  df[<span class="st">&#39;sem&#39;</span>] <span class="op">=</span> np.<span class="bu">abs</span>(df[<span class="st">&#39;sem&#39;</span>]<span class="op">/</span>df[<span class="st">&#39;mean_baseline&#39;</span>])</span>
 <span id="cb13-21"><a href="mobility.html#cb13-21" aria-hidden="true" tabindex="-1"></a>  df.index <span class="op">=</span> date</span>
-<span id="cb13-22"><a href="mobility.html#cb13-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-22"><a href="mobility.html#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-23"><a href="mobility.html#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return input dataframe with &quot;mean&quot; and &quot;sem&quot; column now expressing the relative change and its error</span></span>
 <span id="cb13-24"><a href="mobility.html#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df.drop([<span class="st">&#39;weekday&#39;</span>,<span class="st">&#39;mean_baseline&#39;</span>],axis<span class="op">=</span><span class="dv">1</span>,errors<span class="op">=</span><span class="st">&#39;ignore&#39;</span>)</span></code></pre></div>
 

@@ -6,7 +6,7 @@ The first step in order to train classifiers to detect disclosures of labor mark
 
 In practice, we wrote code in PySpark as we had to handle big amounts of data. Here's a snippet of the code we used: after loading the data in the dataframe `df` and having `text_lowercase` as the column where the lowercased text is stored, we define the list of ngrams to sample from and then sample from it.
 
-```{python nice-fig, fig.cap='', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+```{python eval=FALSE}
 ngram_list = [[' i ', 'fired '], ['fired me'], ['laid off'], ['lost my job']]
 for ngram in ngram_list:
     if len(ngram) == 1:
@@ -29,7 +29,7 @@ The first step was to create a survey we would then send to crowdworkers. For th
 
 With this information, we are able to create a new blank survey for which we can define the name `SurveyName` and the `language`:
 
-```{python nice-fig, fig.cap='', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+```{python eval=FALSE}
 def create_survey(SurveyName, apiToken, dataCenter, language):
     baseUrl = "https://{0}.qualtrics.com/API/v3/survey-definitions".format(
         dataCenter)
@@ -58,7 +58,7 @@ def create_survey(SurveyName, apiToken, dataCenter, language):
 ```
 We can then retrieve questions from our template, by specifying the `QuestionID` from the question we want to retrieve and the `SurveyID` from the template.
 
-```{python nice-fig, fig.cap='', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+```{python eval=FALSE}
 def get_question(QuestionID, SurveyID, apiToken, dataCenter):
     baseUrl = "https://{0}.qualtrics.com/API/v3/survey-definitions/{1}/questions/{2}".format(
         dataCenter, SurveyID, QuestionID)
@@ -77,7 +77,7 @@ def get_question(QuestionID, SurveyID, apiToken, dataCenter):
 
 The survey template contains questions that don't need to be modified, such as asking for a participant's MTurk ID. For the labelling question though, we need to update the question's text with the tweet to be labelled. We do this the following way, with `tweet` being the tweet in string format:
 
-```python
+```{python eval=FALSE}
 def update_question(QuestionData, QuestionID, SurveyID, apiToken, dataCenter):
     baseUrl = "https://{0}.qualtrics.com/API/v3/survey-definitions/{1}/questions/{2}".format(
         dataCenter, SurveyID, QuestionID)
@@ -105,7 +105,7 @@ The entire code we used to create a Qualtrics survey using Python and the Qualtr
 
 To share the Qualtrics survey on MTurk, we use the Python package `boto3`. After collecting our access and secret access keys (respectively `access_key_id` and `secret_access_key`), we initiate the client:
 
-```python
+```{python eval=FALSE}
 mturk = boto3.client('mturk',
                      aws_access_key_id=access_key_id,
                      aws_secret_access_key=secret_access_key,
@@ -116,7 +116,7 @@ mturk = boto3.client('mturk',
 
 To create an MTurk task, usually called a HIT, we need to provide an XML file containing all of the HIT information and content. We therefore prepare dictionaries containing specific content, such as HIT title or description, for each language. For instance, for the HIT title, we create this dictionary with `ntweets` being the number of tweets:
 
-```python
+```{python eval=FALSE}
 title_dict = {
     'US': 'Read %d English Tweets and answer a few questions' % (ntweets),
     'MX': 'Lea %d Tweets en español mexicano y responda algunas preguntas' % (ntweets),
@@ -126,7 +126,7 @@ title_dict = {
 
 After preparing all of these dictionaries, we can then feed them to the `question_generator` function which will load a template previously created in HTML format (`template.html`), adapt it to the related survey and prepare the content of the related XML file in string format:
 
-```python
+```{python eval=FALSE}
 def question_generator(country_code, survey_link, instructions_dict, survey_link_text_dict, worker_input_text_dict,
                        submit_dict):
     xml_wrapper_begin = """
@@ -159,7 +159,7 @@ def question_generator(country_code, survey_link, instructions_dict, survey_link
 
 Afterwards, when the HIT content is ready, we need to preselect the crowdworkers to make sure they live in the same country as the authors from the tweets that they will label. That way, they speak the same language but also can better understand linguistic subtleties, such as humor or specific words from the region of origin. For instance, to make sure the crowdworkers working on our HIT are based in the U.S., we create this qualification requirements list:
 
-```python
+```{python eval=FALSE}
 QualificationRequirements_list = [
     {
         'QualificationTypeId': '00000000000000000071',  # Worker_Locale
@@ -173,7 +173,7 @@ QualificationRequirements_list = [
 
 Finally, we can create the HIT. At this step, we can specify specific parameters, such as the maximum number of workers allowed to take the survey `n_workers` or the amount of money they get to complete the survey `money_for_hit`.
 
-```python
+```{python eval=FALSE}
 new_hit = mturk.create_hit(
     MaxAssignments=n_workers,
     AutoApprovalDelayInSeconds=172800,
