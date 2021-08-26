@@ -1,6 +1,44 @@
 # Mobility Patterns {#mobility}
 Individual mobility analysis represent a key ingredient to understand and timely follow changes in their behavioural patterns. In this book we relie on heavily tested and robust GPS traces preprocessing to measure and quantify individual mobility patterns.
 
+## Socio-economic groups
+Particular attention is devoted to different socio-economig groups. Groups are assigned to individuals based on the administrative unit where their principal pre-pandemic home-location is detected. Three main socio-economic groups are analysed here: the 40% with lowest index value (the 0% to 40% administrative units with lowest wealth index value), the middle ones (from 40% to 80%), and the top 20% (the wealthiest 80 to 100 percentiles). 
+Socio-economic groups are drawn both by considering the entire country wealth index percentiles and by considering percentiles relatively to the metropolitan area administrative units are part of.
+
+The computation is performed by loading and grouping administrative information "admin.csv" files for each country using pyspark.
+
+
+```{python eval=FALSE}
+def process_admin(country,admin_path):
+  '''
+  INPUT:  country ISO code, path to the admin files (saved as "{country}/admin.csv" files)
+  OUTPUT: three pandas dataframes
+          - "admins_by_country": all country administrative units with socio-economic group assigned based on entire country 
+          - "admins_by_metro_area": wealth groups computed relatively to the emtropolitan area of each unit
+          - total population of the metropolitan areas
+  '''
+  cols = ['geom_id', 'metro_area_name', 'pop', 'wealth_index']
+  admin = spark.read.option('header', 'true').csv(admin_path+f'{country}/admin.csv').toPandas()
+  admins = admins[[cols]]
+
+  admins = admins.rename(columns={'metro_ar_1': 'metro_area_name', 'wealth_ind': 'wealth_index'})
+
+  admins_by_country = admins[['geom_id', 'pop', 'wealth_index']].dropna(
+  ).sort_values(by=['wealth_index'], ascending=[False]).reset_index(drop=True)
+  admins_by_country['pct_wealth'] = admins_by_country['pop'].cumsum().divide(
+      admins_by_country['pop'].sum())
+
+  admins_by_metro_area = admins[['geom_id', 'metro_area_name', 'pop', 'wealth_index']].dropna(
+  ).sort_values(by=['metro_area_name', 'wealth_index'], ascending=[True, False]).reset_index(drop=True)
+  admins_by_metro_area['pct_wealth'] = admins_by_metro_area.groupby(
+      'metro_area_name')['pop'].apply(lambda x: x.cumsum()/x.sum())
+
+  pop_metro_areas = admins_by_metro_area.groupby(
+      'metro_area_name')['pop'].sum().sort_values(ascending=False)
+
+  return admins_by_country, admins_by_metro_area, pop_metro_areas
+```
+
 ## Individual's selection
 Following the preprocessing pipeline description presented in the previous sections of the book, here we introduce an additional step aiming at refinining the pool of individuals analysed. Our intent is to measure mobility patterns only for individuals whose activity level is sufficiently high to ensure a minimum level of representativeness of the data. Individuals with recods over only a small number of days cannot be considered as a complete and correct representation fairly proxying the mobility features of an individual.
 
@@ -11,10 +49,10 @@ The selection imposes two requirements on individuals: i) each individual should
 def get_active_list(durations, country, activity_level):
   '''
   For each country invoke the following function to get a list of all active individuals.
-    INPUT: dataframe with precomputed individual stops' durations, country ISO code, minimum activity level required
+    INPUT: spark dataframe with precomputed individual stops' durations; country ISO code; minimum activity level required
     OUTPUT: list of active individuals "user_id"
   '''
-
+  
   # Indonesia experiences a major dropout from the service during January 2020. For this reason, a specific pre-pandemic period was adopted
   if country == 'ID':
       durations_2 = durations.where(col('date_trunc') >= '2020-02-01')
@@ -48,12 +86,121 @@ def get_active_list(durations, country, activity_level):
                   .where(col('pre') >= activity_level*max_days_pre)
                   .where(col('tot') >= activity_level*max_days_all))
   active_days.unpersist()
-
+  
   return active_users
 ```
 
 ## Measures
+The focus on socio-economic groups require an aggregation process which is performed for each individuals based on their home-location administrative unit. Both stop-locations and duration data processed during the pipeline run are used here.
 ```{python eval=FALSE}
+
+def compute_durations_and_admins(country, data_date, stop_path, activity_level=0, hw=28, ww=28, wa=900, mph=10, mpw=7):
+  '''
+  INPUT: country ISO code, date of the data to consider, path to the stop locations data,  
+         minimum activity level for individuals to be included, **{pipeline computation specific parameters}
+  OUTPUT: spark dataframe containing "date" (with daily frequency), "user_id", "H" (time spent at home), "W" (time spent at work), 
+          "R" (1 if not leaving home), "C" (1 if commuting to work), "O" (time spent in locations which are neither home nor work)
+  '''
+  personal_nf = f"personal_stop_location_hw{hw}_ww{ww}_wa{wa}_mph{mph}_mpw{mpw}"
+  stops = spark.read.parquet(f"{stop_path}{country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{data_date}/" + personal_nf)
+
+  fname_nf = f'durations_window_hw{hw}_ww{ww}_wa{wa}_mph{mph}_mpw{mpw}'
+  durations_path_nf = f'{stop_path}{country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{data_date}/' + fname_nf
+  durations = spark.read.parquet(durations_path_nf)
+
+  # aggregate day/night
+  durations = (durations
+               .groupby('date_trunc', 'user_id')
+               .agg(F.sum('H').alias('H'),
+                    F.sum('W').alias('W'),
+                    F.sum('O').alias('O')))
+
+  active_users = get_active_list(durations, country, activity_level)
+
+  durations = durations.join(active_users.select(
+      'user_id'), on='user_id', how='inner')
+
+  # create binary column for commuters
+  durations = durations.withColumn(
+      'C', F.when(col('W').isNull(), 0).otherwise(1))
+
+  # create binary column for people who don't leave home, aka recluse
+  durations = durations.withColumn('R', F.when(
+      (col('W').isNull()) & (col('O').isNull()), 1).otherwise(0))
+
+  # compute H and W id for wealth labels
+  w = Window.partitionBy('user_id')
+  user_h_id = (stops
+               .where(col('location_type') == 'H')
+               .where(col('date_trunc') <= '2020-03-15')
+               .groupby('user_id', 'geom_id')
+               .agg(F.countDistinct('date_trunc').alias('n_days'))
+               .withColumn('max_days', F.max('n_days').over(w))
+               .where(col('n_days') == col('max_days'))
+               .groupby('user_id')
+               .agg(F.first('geom_id').alias('geom_id_home')))
+  user_w_id = (stops
+               .where(col('location_type') == 'W')
+               # .where(col('date_trunc') <= '2020-03-15')
+               .groupby('user_id', 'geom_id')
+               .agg(F.countDistinct('date_trunc').alias('n_days'))
+               .withColumn('max_days', F.max('n_days').over(w))
+               .where(col('n_days') == col('max_days'))
+               .groupby('user_id')
+               .agg(F.first('geom_id').alias('geom_id_work')))
+
+  durations_and_admins = (durations
+                          .withColumnRenamed('date_trunc', 'date')
+                          .select('date', 'user_id', 'H', 'R', 'W', 'C', 'O')
+                          .join(user_h_id, on='user_id', how='left')
+                          .join(user_w_id, on='user_id', how='left'))
+
+  return durations_and_admins
+```
+
+The aggregation process takes the output of "compute_durations_and_admins" and compute the weighted average of the different metrics of interest.
+Before focusing on the aggregated metrics produced, it is important to highlight that during this process metrics are reweighted based on the fraction of population living in administrative units in which at least one individual in our dataset is living. This step rebalance the data satial-coverage biases giving more importance to individuals living in administrative units with larger population.
+
+```{python eval=FALSE}
+def compute_durations_normalized_by_wealth_home(durations_and_admins, admins, labels_wealth, bins_wealth):
+  '''
+    INPUT:  
+    OUTPUT: 
+  '''
+  admins['wealth_label'] = pd.cut(
+      admins['pct_wealth'], bins_wealth, labels=labels_wealth)
+  admins['geom_id'] = admins['geom_id'].astype(str)
+  admins['wealth_label'] = admins['wealth_label'].astype(str)
+  # get admin info for home and work location
+  tmp1 = spark.createDataFrame(
+      admins[['geom_id', 'pop', 'pct_wealth', 'wealth_label']].rename(columns=lambda x: x+'_home'))
+  out1 = (durations_and_admins
+          .join(tmp1, on='geom_id_home', how='inner'))
+
+  geom_users = (out1
+                .groupby('geom_id_home')
+                .agg(F.countDistinct('user_id').alias('n_users')))
+
+  out = (out1
+         .join(geom_users, on='geom_id_home', how='inner')
+         .withColumn('weight', col('pop_home')/col('n_users')))
+  return out
+
+def output(out, column):
+  # compute aggregate measures
+  out = (out
+         .fillna(0, subset=column)
+         .groupby('date', 'wealth_label_home')
+         .agg((F.sum(col(column)*col('weight'))/F.sum(col('weight'))).alias('mean'),
+              F.stddev(column).alias('std'),
+              F.count(column).alias('n'),
+              F.countDistinct('user_id').alias('n_unique'))
+         .withColumn('sem', col('std')/F.sqrt(col('n')))
+         .drop('std'))
+
+  durations_normalized_by_wealth_home = out.toPandas(
+  ).set_index(['wealth_label_home', 'date'])
+  return durations_normalized_by_wealth_home
 
 ```
 
@@ -75,7 +222,7 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
   NOTE: Google uses as baseline period the 5-weeks period from Jan 3 to Feb 6
   '''
   df = df_original.copy()
-
+  
   # compute weekday baseline values
   baseline = df.loc[start_baseline:end_baseline,['mean','sem']+other_groups].copy()
   baseline['weekday'] = list(baseline.index.dayofweek.values)
@@ -84,12 +231,12 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
 
   date = df.index.copy()
   df = df.merge(baseline, on=['weekday']+other_groups, how='left', =('', '_baseline'))
-
+  
   # compute "mean" change with respect to weekday baseline values
   df['mean'] = (df['mean']- df['mean_baseline']) / np.abs(df['mean_baseline'])
   df['sem'] = np.abs(df['sem']/df['mean_baseline'])
   df.index = date
-
+  
   # return input dataframe with "mean" and "sem" column now expressing the relative change and its error
   return df.drop(['weekday','mean_baseline'],axis=1,errors='ignore')
 ```
