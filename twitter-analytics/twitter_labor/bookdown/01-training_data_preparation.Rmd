@@ -103,7 +103,96 @@ The entire code we used to create a Qualtrics survey using Python and the Qualtr
 
 ### Sharing the survey on MTurk
 
-**send tweets to labelling (code)**
+To share the Qualtrics survey on MTurk, we use the Python package `boto3`. After collecting our access and secret access keys (respectively `access_key_id` and `secret_access_key`), we initiate the client:
+
+```python
+mturk = boto3.client('mturk',
+                     aws_access_key_id=access_key_id,
+                     aws_secret_access_key=secret_access_key,
+                     region_name='us-east-1',
+                     endpoint_url='https://mturk-requester.us-east-1.amazonaws.com'
+                     )
+```
+
+To create an MTurk task, usually called a HIT, we need to provide an XML file containing all of the HIT information and content. We therefore prepare dictionaries containing specific content, such as HIT title or description, for each language. For instance, for the HIT title, we create this dictionary with `ntweets` being the number of tweets:
+
+```python
+title_dict = {
+    'US': 'Read %d English Tweets and answer a few questions' % (ntweets),
+    'MX': 'Lea %d Tweets en español mexicano y responda algunas preguntas' % (ntweets),
+    'BR': 'Leia %d tweets em português e responda algumas perguntas' % (ntweets)
+}
+```
+
+After preparing all of these dictionaries, we can then feed them to the `question_generator` function which will load a template previously created in HTML format (`template.html`), adapt it to the related survey and prepare the content of the related XML file in string format:
+
+```python
+def question_generator(country_code, survey_link, instructions_dict, survey_link_text_dict, worker_input_text_dict,
+                       submit_dict):
+    xml_wrapper_begin = """
+    <HTMLQuestion xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2011-11-11/HTMLQuestion.xsd">
+    <HTMLContent><![CDATA[
+    <!-- YOUR HTML BEGINS -->
+    <!DOCTYPE html>
+    """
+    xml_wrapper_end = """
+    <!-- YOUR HTML ENDS -->
+    ]]>
+    </HTMLContent>
+    <FrameHeight>0</FrameHeight>
+    </HTMLQuestion>
+    """
+
+    with open(
+            "template.html",
+            "r") as f:
+        content = f.read()
+
+    content = content.replace("${INSTRUCTIONS}", instructions_dict[country_code])
+    content = content.replace("${SURVEY_LINK}", survey_link)
+    content = content.replace("${SURVEY_LINK_TEXT}", survey_link_text_dict[country_code])
+    content = content.replace("${WORKER_INPUT_TEXT}", worker_input_text_dict[country_code])
+    content = content.replace("${SUBMIT}", submit_dict[country_code])
+
+    return xml_wrapper_begin + content + xml_wrapper_end
+```
+
+Afterwards, when the HIT content is ready, we need to preselect the crowdworkers to make sure they live in the same country as the authors from the tweets that they will label. That way, they speak the same language but also can better understand linguistic subtleties, such as humor or specific words from the region of origin. For instance, to make sure the crowdworkers working on our HIT are based in the U.S., we create this qualification requirements list:
+
+```python
+QualificationRequirements_list = [
+    {
+        'QualificationTypeId': '00000000000000000071',  # Worker_Locale
+        'Comparator': 'EqualTo',
+        'LocaleValues': [{
+            'Country': 'US'}],
+        'RequiredToPreview': True,
+        'ActionsGuarded': 'PreviewAndAccept'
+    }]
+```
+
+Finally, we can create the HIT. At this step, we can specify specific parameters, such as the maximum number of workers allowed to take the survey `n_workers` or the amount of money they get to complete the survey `money_for_hit`.
+
+```python
+new_hit = mturk.create_hit(
+    MaxAssignments=n_workers,
+    AutoApprovalDelayInSeconds=172800,
+    LifetimeInSeconds=259200,
+    AssignmentDurationInSeconds=10800,
+    Reward=str(money_for_hit),
+    Title=f'{title_dict[args.country_code]} v{args.version_number}',
+    Description=description_dict[args.country_code],
+    Keywords=keywords_dict[args.country_code],
+    QualificationRequirements=QualificationRequirements_list if create_hits_in_production else list(),
+    Question=question
+)
+```
+
+The HIT is now online and crowdworkers are able to take it. You can check the progress on qualtrics by looking at the number of replies to a given survey. When the number of replies reaches `n_workers`, the HIT is finished. The labelled data can then be extracted from Qualtrics.
+
+
+
+
 
 
 
