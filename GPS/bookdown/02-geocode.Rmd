@@ -26,7 +26,7 @@ reduces the computational cost and makes this problem tractable.
 
 
 
-```{r nice-fig, fig.cap='H3 indexing representation. Figure taken from the H3 website referenced above.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+```{r h3fig, fig.cap='H3 indexing representation. Figure taken from the H3 website referenced above.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
 img <- png::readPNG("figures/h3.png")
 grid::grid.raster(img)
 ```

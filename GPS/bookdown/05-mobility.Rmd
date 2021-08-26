@@ -2,7 +2,7 @@
 Individual mobility analysis represent a key ingredient to understand and timely follow changes in their behavioural patterns. In this book we relie on heavily tested and robust GPS traces preprocessing to measure and quantify individual mobility patterns.
 
 ## Socio-economic groups
-Particular attention is devoted to different socio-economig groups. Groups are assigned to individuals based on the administrative unit where their principal pre-pandemic home-location is detected. Three main socio-economic groups are analysed here: the 40% with lowest index value (the 0% to 40% administrative units with lowest wealth index value), the middle ones (from 40% to 80%), and the top 20% (the wealthiest 80 to 100 percentiles). 
+Particular attention is devoted to different socio-economig groups. Groups are assigned to individuals based on the administrative unit where their principal pre-pandemic home-location is detected. Three main socio-economic groups are analysed here: the 40% with lowest index value (the 0% to 40% administrative units with lowest wealth index value), the middle ones (from 40% to 80%), and the top 20% (the wealthiest 80 to 100 percentiles).
 Socio-economic groups are drawn both by considering the entire country wealth index percentiles and by considering percentiles relatively to the metropolitan area administrative units are part of.
 
 The computation is performed by loading and grouping administrative information "admin.csv" files for each country using pyspark.
@@ -13,7 +13,7 @@ def process_admin(country,admin_path):
   '''
   INPUT:  country ISO code, path to the admin files (saved as "{country}/admin.csv" files)
   OUTPUT: three pandas dataframes
-          - "admins_by_country": all country administrative units with socio-economic group assigned based on entire country 
+          - "admins_by_country": all country administrative units with socio-economic group assigned based on entire country
           - "admins_by_metro_area": wealth groups computed relatively to the emtropolitan area of each unit
           - total population of the metropolitan areas
   '''
@@ -52,7 +52,7 @@ def get_active_list(durations, country, activity_level):
     INPUT: spark dataframe with precomputed individual stops' durations; country ISO code; minimum activity level required
     OUTPUT: list of active individuals "user_id"
   '''
-  
+
   # Indonesia experiences a major dropout from the service during January 2020. For this reason, a specific pre-pandemic period was adopted
   if country == 'ID':
       durations_2 = durations.where(col('date_trunc') >= '2020-02-01')
@@ -86,7 +86,7 @@ def get_active_list(durations, country, activity_level):
                   .where(col('pre') >= activity_level*max_days_pre)
                   .where(col('tot') >= activity_level*max_days_all))
   active_days.unpersist()
-  
+
   return active_users
 ```
 
@@ -95,9 +95,9 @@ The focus on socio-economic groups require an aggregation process which is perfo
 ```{python eval=FALSE}
 def compute_durations_and_admins(country, data_date, stop_path, activity_level=0, hw=28, ww=28, wa=900, mph=10, mpw=7):
   '''
-  INPUT: country ISO code, date of the data to consider, path to the stop locations data,  
+  INPUT: country ISO code, date of the data to consider, path to the stop locations data,
          minimum activity level for individuals to be included, **{pipeline computation specific parameters}
-  OUTPUT: spark dataframe containing "date" (with daily frequency), "user_id", "H" (time spent at home), "W" (time spent at work), 
+  OUTPUT: spark dataframe containing "date" (with daily frequency), "user_id", "H" (time spent at home), "W" (time spent at work),
           "R" (1 if not leaving home), "C" (1 if commuting to work), "O" (time spent in locations which are neither home nor work)
   '''
   personal_nf = f"personal_stop_location_hw{hw}_ww{ww}_wa{wa}_mph{mph}_mpw{mpw}"
@@ -289,7 +289,7 @@ for country in countries:
     results[(country, 't_work_hw')] = output_hw(out2, column='W')
 
     durations_and_admins.unpersist()
-    
+
 # save all countries results in a single .csv file
 res2 = pd.DataFrame(columns=['state', 'measure',
                              'wealth_label_home', 'date', 'mean', 'sem'])
@@ -302,7 +302,7 @@ res2.to_csv(results_dir+'all_hw_weighted.csv')
 ```
 
 ### Measuring change
-It is of particular interest, due to the dramatic societal impact the pandemic had at a global scale, to study these quantities in relation to the pre-pandemic periods. A comparison bethween individuals mobility behaviour from the months preceding the explosive diffusion of the SARS-ncov virus represent an important indicator of how much each socio-economic group was affected by the local regulations and how individuals were forced to reshape their daily mobility patterns in response to the pandemic threat. To this extent, we implemented a change metric which directly compare the levels of the metrics discussed in terms of the period going from the beginning of January 2020 and March 15, 2020. Change is computed on a daily basis, comparing the level of a specific date with the day-of-the-week median value of the same metric. This accounts for weekly periodical effects, accounting, for example, for the physiological reduction in the number of commuters during weekends. 
+It is of particular interest, due to the dramatic societal impact the pandemic had at a global scale, to study these quantities in relation to the pre-pandemic periods. A comparison bethween individuals mobility behaviour from the months preceding the explosive diffusion of the SARS-ncov virus represent an important indicator of how much each socio-economic group was affected by the local regulations and how individuals were forced to reshape their daily mobility patterns in response to the pandemic threat. To this extent, we implemented a change metric which directly compare the levels of the metrics discussed in terms of the period going from the beginning of January 2020 and March 15, 2020. Change is computed on a daily basis, comparing the level of a specific date with the day-of-the-week median value of the same metric. This accounts for weekly periodical effects, accounting, for example, for the physiological reduction in the number of commuters during weekends.
 
 
 ```{python eval=FALSE}
@@ -313,7 +313,7 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
   NOTE: Google uses as baseline period the 5-weeks period from Jan 3 to Feb 6
   '''
   df = df_original.copy()
-  
+
   # compute weekday baseline values
   baseline = df.loc[start_baseline:end_baseline,['mean','sem']+other_groups].copy()
   baseline['weekday'] = list(baseline.index.dayofweek.values)
@@ -322,12 +322,12 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
 
   date = df.index.copy()
   df = df.merge(baseline, on=['weekday']+other_groups, how='left', =('', '_baseline'))
-  
+
   # compute "mean" change with respect to weekday baseline values
   df['mean'] = (df['mean']- df['mean_baseline']) / np.abs(df['mean_baseline'])
   df['sem'] = np.abs(df['sem']/df['mean_baseline'])
   df.index = date
-  
+
   # return input dataframe with "mean" and "sem" column now expressing the relative change and its error
   return df.drop(['weekday','mean_baseline'],axis=1,errors='ignore')
 ```
@@ -336,7 +336,7 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
 ### Home-isolated, commuters and low-wealth commuters
 In this section we present a summary of the results for three different metrics computed for six different countries. Countries are selected among middle-low income countries to include at least one state on three different continents: America, Asia and Africa. Similar pattern changes are found between socio-economics groups across the globe.
 
-```{r nice-fig, fig.cap='Results for six different countries (rows): Brazil, Colombia, Indonesia, Mexico, Philippines, and South Africa. Measuring (columns): relative change in the fraction of people not leaving home, relative change of the number of people commuting from home to workplace, relative change of individuals from living in low-wealth admin units. The three coloured lines distinguishes the metric changes for the three different socio-economic groups.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
-# img <- png::readPNG("figures/mobility_figure.png")
-# grid::grid.raster(img)
+```{r mobility-fig, fig.cap='Results for six different countries (rows): Brazil, Colombia, Indonesia, Mexico, Philippines, and South Africa. Measuring (columns): relative change in the fraction of people not leaving home, relative change of the number of people commuting from home to workplace, relative change of individuals from living in low-wealth admin units. The three coloured lines distinguishes the metric changes for the three different socio-economic groups.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+img <- png::readPNG("figures/mobility_patterns_book.png")
+grid::grid.raster(img)
 ```
