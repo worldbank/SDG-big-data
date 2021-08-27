@@ -1,3 +1,133 @@
 # Location labeling and parameter optimization {#optimization}
 
-One of the crucial steps allowing us to perform the analyses presented in this book is the ability to infer individual home locations and workplaces. Additional information, based on the individual pattern of visits to recurrent locations, are added to each stop location to distingush their roles and imporance. 
+One of the crucial steps allowing us to perform the analyses presented in this book is the ability to infer individual home locations and workplaces.
+Additional information, based on the individual pattern of visits to recurrent locations, are added to each stop location to distinguish their roles and importance.
+
+This process has been extensively presented in Chapter \@ref(labeling). Here, we discuss how we converged on a specific parameter configuration to be shared by all the different countries analysed in the book. 
+
+## Ground truth
+
+### Construction
+The first element needed to optimize the process is a ground truth to which each labeling output can be compared with. To this extent, we selected a sample of 100 active individuals for each country. Active individuals were randomly selected from six activity-based buckets: High, medium, and low activity during the pre-pandemic period; high, medium, and low activity after the pre-pandemic period (buckets combined the combination of the different class, e.g. high-medium or low-low activity buckets). Activity classification was performed splitting in percentile groups with similar size.
+
+```{python eval=FALSE}
+# Add bucket creation code here
+```
+
+The uniform selection of individuals acroos different activity buckets provided a balanced set of data ensuring algorithmic stability across a differentiated spectra of mobile phone usage. We stress that, even if activity groups were constructed using groups of individuals their stop locations were not aggregated in the same group, but each individual locations were separately and independently subjected to the same validation procedure.
+
+### Validation
+After the sampling step, individuals' stop locations are submitted to a validator whose task is to label locations into three different categories: home location, work location, and others. Validators were allowed to label multiple home locations per individual as well as multiple work locations. Validators were required to use all the information at their disposal (both the maps and the distribution of time spent at locations over time-of-the-day, day-of-the-week, and the day-of-the-year). The stop location of same individuals were submitted to two independent validators simultaneously. The results from the first round of manual labeling were, then, submitted to a third validator responsible of solving conflicts between the first two validators. For each step all the validators were provided with the same information presented in the same way through the dashboard presented in figure.
+
+```{r groudtruth_dashboard-fig, fig.cap='Screenshot of the dashboard used by the validators to manually assign labels to locations. Validators have two maps sourced from different providers (OpenStreetMap at the top, and GoogleMaps at the bottom) to explore. Both maps provide different point of interest information in support to the decisionmaking. The bottom map also allows the validator to switch to a satellate imagery mode. On the right side of the dashboard, validators are provided with summary information for all the locations visited by the individual. In particular, the average distribution of time-at-location during the daytime is provided at the top. Similarly, the middle panel provide interactive distribution for the weekly patters (distribution of time spent on a given weekday at a specific location), while the bottom right panel provide panel data spanning over the entire 2020 period. Data presented in this figure are synthetic in compliance to the individual privacy preserving guidelines from the data provider.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+img <- png::readPNG("figures/validation_users.png")
+grid::grid.raster(img)
+```
+
+## Parameter optimization
+The result of the validation procedure are stored as .csv files for each country containing the label by the first independent validator in the "FirstOpinion" column, the label of the second independent validator in the "SecondOpinion" column, and the final label assigned by the conflict-breaker validator in the "FinalOpinion" column. The final labels were compared with the results of the labeling running the labeling step of the pipeline described in \@ref(labeling) joining the two over the individual unique identifier.
+
+The labeling results produced by the algorithm were restructured using the following function, which returns a dataframe of containing the individual id, stop location unique (for each individual) identifier, and the label returned by the algorithm.
+
+```{python eval=FALSE}
+def get_algorithm_labels(**args):
+  """
+  To load computed labels the following are required:
+      country:                      country of interest
+      home_period_window:           size of the window for home
+      work_period_window:           size of the window for work
+      min_periods_over_window:      minimum days/win_size on which candidate should appear to be labelled as H
+      min_periods_over_window_work: minimum days/win_size on which candidate should appear to be labelled as W
+      work_activity_average:        average time spent at work in a day over the window
+      time_fraction_work:           fraction of user time in records spent at work
+      fpath:                        path to the label results (country dependent)
+  OUTPUT: dataframe of user_id,cluster_label,AlgorithmOpinion
+  """
+  country=args["country"]
+  home_period_window=args["home_period_window"]
+  work_period_window=args["work_period_window"]
+  min_periods_over_window=args["min_periods_over_window"]
+  min_periods_over_window_work=args["min_periods_over_window_work"]
+  work_activity_average=args["work_activity_average"]
+  time_fraction_work=args["time_fraction_work"]
+
+  fname = f'hpw{home_period_window}_wpw{work_period_window}_mpow{min_periods_over_window}_mpoww{min_periods_over_window_work}_waa{work_activity_average}_tfw{time_fraction_work}_v10.csv'
+  
+  df_hw = pd.read_csv(os.path.join(fpath, fname),usecols=["user_id", "location_type", "cluster_label"])
+  df_hw = df_hw[df_hw.cluster_label.notna()]
+  df_hw['location_type'] = df_hw.location_type.fillna('O')
+  df_hw = df_hw.drop_duplicates().reset_index(drop=True)
+  df_hw = df_hw[df_hw.location_type!='O'].rename(columns={'location_type':'AlgorithmOpinion'})
+  return df_hw
+```
+
+The arguments required by this functions are those over which the parameter optimization is performed. In particular, we performed a grid-search optimization for each different combination of the following parameter configurations:
+```{python eval=FALSE}
+iter_params = {
+  "home_period_window":np.arange(14,84,7),
+  "work_period_window":np.arange(14,84,7),
+  "min_periods_over_window":np.around(np.linspace(0.1, 0.4, 5), decimals=1),
+  "min_periods_over_window_work":np.around(np.linspace(0.1, 0.4, 5), decimals=1),
+  "work_activity_average":[1800*hours for hours in range(0,5)],
+  "time_fraction_work":[0.0, 0.2, 0.4, 0.6]
+}
+```
+### Performance indicators
+In the code presented below we provide multiple performance indicators. Each one of those can be used to assess different aspects. For example, the intra-validators agreement can be compared with the average agreement between one of the two "first-step" validators and the algorithm (we do this using the Choen's kappa statistic) to get a direct comparison between validators and algorithm accord. Focusing on direct performance metrics, we instead use the F1-score computed between the final validator's opinion and the algorithm result looking for all locations correctly labelled as either "home-location" or "work-location". The F1-score is computed for each one of the two labels independently and then aggregated averaging the two results.
+
+```{python eval=FALSE}
+# To speed up computations remove all locations labelled as "O" (other) from the data. 
+def filter_o(df,col1,col2): return df[(df[col1]!='O')|(df[col2]!='O')]
+
+def compute_sample_metrics(df_sample,col_true,col_eval1):
+  a1 = 'FirstOpinion'
+  a2 = 'SecondOpinion'
+  dfte = filter_o(df_sample,col_true,col_eval1)
+  df1e = filter_o(df_sample,a1,col_eval1)
+  df2e = filter_o(df_sample,a2,col_eval1)
+  df12 = filter_o(df_sample,a1,a2)
+  
+  kappa = ((skm.cohen_kappa_score(df1e[a1],df1e[col_eval1], labels=['H','W'])+
+            skm.cohen_kappa_score(df2e[a2],df2e[col_eval1], labels=['H','W']))/2)
+  accuracy = skm.accuracy_score(dfte[col_true],dfte[col_eval1])
+  f1 = skm.f1_score(dfte[col_true],dfte[col_eval1],labels=['H','W'],average='macro')
+  f1H = skm.f1_score(dfte[col_true],dfte[col_eval1],labels=['H'],average='macro')
+  f1W = skm.f1_score(dfte[col_true],dfte[col_eval1],labels=['W'],average='macro')
+  
+  # these are metrics computed one annotator against the other.
+  kappa_ann = skm.cohen_kappa_score(df12[a1],df12[a2], labels=['H','W'])
+  accuracy_ann = skm.accuracy_score(df12[a1],df12[a2])
+  f1_ann = skm.f1_score(df12[a1],df12[a2],labels=['H','W'],average='macro')
+  f1_annH = skm.f1_score(df12[a1],df12[a2],labels=['H'],average='macro')
+  f1_annW = skm.f1_score(df12[a1],df12[a2],labels=['W'],average='macro')
+
+  return {'accuracy':accuracy,'f1':f1,'kappa':kappa,
+          'accuracy_ann':accuracy_ann,'f1_ann':f1_ann,'kappa_ann':kappa_ann,
+          'f1_annH':f1_annH,'f1_annW':f1_annW,'f1_H':f1H,'f1_W':f1W}
+```
+
+
+### Performance error estimates and bootstrapping
+As an estimate for the performance variability induced by the selected sample of individuals we use a standard bootstrapping procedure, resampling with replacement for 100 different times the individuals from those present in the validation set. Resampling is performed in such a way that guarantees the balance across activity-buckets.
+
+```{python eval=FALSE}
+def sample_shuffled_fraction_by_group(df_group,fraction=1,replace=True):
+  size = int(df_group.user_id.unique().size*fraction)
+  sampled_users = np.random.choice(df_group.user_id.unique(),replace=replace,size = size)
+  df_res = df_group.set_index('user_id')
+  return df_res.loc[sampled_users].reset_index()
+
+def balanced_bootstrapping(df_man, num_sample=100, metrics=True, col_true='FinalOpinion', col_eval1='FirstOpinion'):
+  if not metrics: df_res = pd.DataFrame(columns=df_man.columns+['sample'])
+  else:           df_res = pd.DataFrame(columns=['sample','accuracy','f1','kappa'])
+  for i_sample in range(num_sample):
+    df_samp_res = df_man.groupby('act_buck',as_index=False).apply(sample_shuffled_fraction_by_group).reset_index(drop=True)
+    df_samp_res['sample'] = i_sample+1
+    if not metrics: df_res = df_res.append(df_samp_res)
+    else:           df_res = df_res.append({'sample':i_sample+1,**compute_sample_metrics(df_samp_res,col_true,col_eval1)},ignore_index=True)
+  return df_res
+```
+
+Results are computed
+
+## Parameter configuration selection
