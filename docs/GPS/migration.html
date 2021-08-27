@@ -173,7 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="mobility.html"><a href="mobility.html"><i class="fa fa-check"></i><b>6</b> Mobility Patterns</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="mobility.html"><a href="mobility.html#socio-economic-groups"><i class="fa fa-check"></i><b>6.1</b> Socio-economic groups</a></li>
-<li class="chapter" data-level="6.2" data-path="mobility.html"><a href="mobility.html#individuals-selection"><i class="fa fa-check"></i><b>6.2</b> Individual’s selection</a></li>
+<li class="chapter" data-level="6.2" data-path="mobility.html"><a href="mobility.html#selection"><i class="fa fa-check"></i><b>6.2</b> Individual’s selection</a></li>
 <li class="chapter" data-level="6.3" data-path="mobility.html"><a href="mobility.html#measures"><i class="fa fa-check"></i><b>6.3</b> Measures</a>
 <ul>
 <li class="chapter" data-level="6.3.1" data-path="mobility.html"><a href="mobility.html#measuring-mobility-patterns"><i class="fa fa-check"></i><b>6.3.1</b> Measuring mobility patterns</a></li>
@@ -181,17 +181,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3.3" data-path="mobility.html"><a href="mobility.html#home-isolated-commuters-and-low-wealth-commuters"><i class="fa fa-check"></i><b>6.3.3</b> Home-isolated, commuters and low-wealth commuters</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>7</b> Migration Patterns</a></li>
+<li class="chapter" data-level="7" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>7</b> Migration Patterns</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="migration.html"><a href="migration.html#description"><i class="fa fa-check"></i><b>7.1</b> Description</a></li>
+<li class="chapter" data-level="7.2" data-path="migration.html"><a href="migration.html#user-selection"><i class="fa fa-check"></i><b>7.2</b> User selection</a></li>
+<li class="chapter" data-level="7.3" data-path="migration.html"><a href="migration.html#code-2"><i class="fa fa-check"></i><b>7.3</b> Code</a></li>
+</ul></li>
 <li class="chapter" data-level="8" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>8</b> Parameter Optimization</a></li>
 <li class="chapter" data-level="9" data-path="windex.html"><a href="windex.html"><i class="fa fa-check"></i><b>9</b> Wealth Index</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="windex.html"><a href="windex.html#variables-to-estimate-the-social-gap-index-in-mexico"><i class="fa fa-check"></i><b>9.1</b> Variables to estimate the Social Gap Index in Mexico</a></li>
-<li class="chapter" data-level="9.2" data-path="windex.html"><a href="windex.html#a.-education"><i class="fa fa-check"></i><b>9.2</b> A. Education</a>
+<li class="chapter" data-level="9.2" data-path="windex.html"><a href="windex.html#education"><i class="fa fa-check"></i><b>9.2</b> Education</a>
 <ul>
-<li class="chapter" data-level="9.2.1" data-path="windex.html"><a href="windex.html#b.-health-services-access"><i class="fa fa-check"></i><b>9.2.1</b> B. Health Services Access</a></li>
+<li class="chapter" data-level="9.2.1" data-path="windex.html"><a href="windex.html#health-services-access"><i class="fa fa-check"></i><b>9.2.1</b> Health Services Access</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="windex.html"><a href="windex.html#c.-household-characteristics"><i class="fa fa-check"></i><b>9.3</b> C. Household characteristics</a></li>
-<li class="chapter" data-level="9.4" data-path="windex.html"><a href="windex.html#d.-assets-ownership"><i class="fa fa-check"></i><b>9.4</b> D. Assets Ownership</a></li>
+<li class="chapter" data-level="9.3" data-path="windex.html"><a href="windex.html#household-characteristics"><i class="fa fa-check"></i><b>9.3</b> Household Characteristics</a></li>
+<li class="chapter" data-level="9.4" data-path="windex.html"><a href="windex.html#assets-ownership"><i class="fa fa-check"></i><b>9.4</b> Assets Ownership</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="voronoi.html"><a href="voronoi.html"><i class="fa fa-check"></i><b>10</b> Voronoi</a></li>
 <li class="divider"></li>
@@ -216,8 +221,184 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="migration" class="section level1" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Migration Patterns</h1>
-<p>Put mobility code and results here</p>
+<div id="description" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Description</h2>
+<p>A great amount of <a href="https://www.nytimes.com/2021/05/12/opinion/New-York-San-Francisco-after-covid.html">media attention</a> has
+been focusing on how large cities are being empitied out by the pandemic.
+We are also interested in this behavior and used similar process as the described in the previous chapter <a href="mobility.html#mobility">6</a>,
+and as the home labeling process we did allowed for multiple homes in a certain time window then we could
+use a change of administrative unit in the residential location of the users. For this study we focused on the largest
+city of each country:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Country</th>
+<th align="left">Code</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Brazil</td>
+<td align="left">BR</td>
+<td align="left">São Paulo</td>
+</tr>
+<tr class="even">
+<td align="left">Colombia</td>
+<td align="left">CO</td>
+<td align="left">Bogota</td>
+</tr>
+<tr class="odd">
+<td align="left">Indonesia</td>
+<td align="left">ID</td>
+<td align="left">Jakarta</td>
+</tr>
+<tr class="even">
+<td align="left">Mexico</td>
+<td align="left">MX</td>
+<td align="left">Mexico City</td>
+</tr>
+<tr class="odd">
+<td align="left">Philippines</td>
+<td align="left">PH</td>
+<td align="left">Quezon City (Manila)</td>
+</tr>
+<tr class="even">
+<td align="left">South Africa</td>
+<td align="left">ZA</td>
+<td align="left">Johannesburg</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="user-selection" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> User selection</h2>
+<p>Here we reduce our user sample <a href="mobility.html#selection">6.2</a> to only active users who had a home location in the city at any given
+time. It’s important to note that although we use the term <em>city</em> we are using the whole extent of their metropolitan
+area.</p>
+<p>In order to determine a wealth group for them we take the administrative unit they had at the moment when their home
+location was in the city and in case they had more than one we only kept the one where the most time was spent.
+The wealth percentiles represent the cummulative population of the administrative units ordered by their wealth index.
+This means that users that fall into the <em>Low [0%-40%]</em> group are the ones with their house in the areas with the
+lowest wealth index that make up to <span class="math inline">\(40\%\)</span> of the population.</p>
+</div>
+<div id="code-2" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Code</h2>
+<p>We select the largest city and break their wealth index in 3 bins. And define a column to discern from urban and rural places.
+The bins and labels are the same as the ones from the previous chapter <a href="mobility.html#mobility">6</a>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="migration.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_admin(country):</span>
+<span id="cb18-2"><a href="migration.html#cb18-2" aria-hidden="true" tabindex="-1"></a>  admin_path <span class="op">=</span> <span class="ss">f&#39;/mnt/Geospatial/admin/</span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">/admin.csv&#39;</span></span>
+<span id="cb18-3"><a href="migration.html#cb18-3" aria-hidden="true" tabindex="-1"></a>  admin <span class="op">=</span> spark.read.option(<span class="st">&#39;header&#39;</span>, <span class="st">&#39;true&#39;</span>).csv(admin_path)</span>
+<span id="cb18-4"><a href="migration.html#cb18-4" aria-hidden="true" tabindex="-1"></a>  admin <span class="op">=</span> (admin</span>
+<span id="cb18-5"><a href="migration.html#cb18-5" aria-hidden="true" tabindex="-1"></a>           .withColumn(<span class="st">&#39;urban/rural&#39;</span>, F.when(col(<span class="st">&#39;metro_area_name&#39;</span>).isNull(), lit(<span class="st">&#39;rural&#39;</span>)).otherwise(lit(<span class="st">&#39;urban&#39;</span>)))</span>
+<span id="cb18-6"><a href="migration.html#cb18-6" aria-hidden="true" tabindex="-1"></a>           .select(<span class="st">&#39;geom_id&#39;</span>, <span class="st">&#39;urban/rural&#39;</span>))</span>
+<span id="cb18-7"><a href="migration.html#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> admin</span>
+<span id="cb18-8"><a href="migration.html#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="migration.html#cb18-9" aria-hidden="true" tabindex="-1"></a>admins, admins_by_metro_area, pops <span class="op">=</span> process_admin(country)</span>
+<span id="cb18-10"><a href="migration.html#cb18-10" aria-hidden="true" tabindex="-1"></a>admins[<span class="st">&#39;geom_id&#39;</span>] <span class="op">=</span> admins[<span class="st">&#39;geom_id&#39;</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb18-11"><a href="migration.html#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="migration.html#cb18-12" aria-hidden="true" tabindex="-1"></a>admins_by_metro_area[<span class="st">&#39;wealth_label&#39;</span>] <span class="op">=</span> pd.cut(admins_by_metro_area[<span class="st">&#39;pct_wealth&#39;</span>], bins_wealth, labels<span class="op">=</span>labels_wealth)</span>
+<span id="cb18-13"><a href="migration.html#cb18-13" aria-hidden="true" tabindex="-1"></a>admins_by_metro_area[<span class="st">&#39;geom_id&#39;</span>] <span class="op">=</span> admins_by_metro_area[<span class="st">&#39;geom_id&#39;</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb18-14"><a href="migration.html#cb18-14" aria-hidden="true" tabindex="-1"></a>admins_by_metro_area[<span class="st">&#39;wealth_label&#39;</span>] <span class="op">=</span> admins_by_metro_area[<span class="st">&#39;wealth_label&#39;</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb18-15"><a href="migration.html#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="migration.html#cb18-16" aria-hidden="true" tabindex="-1"></a>admins_by_metro_area <span class="op">=</span> admins_by_metro_area.loc[admins_by_metro_area.metro_area_name <span class="op">==</span> pops.reset_index().metro_area_name[<span class="dv">0</span>]]</span>
+<span id="cb18-17"><a href="migration.html#cb18-17" aria-hidden="true" tabindex="-1"></a>admins <span class="op">=</span> spark.createDataFrame(admins_by_metro_area).select(<span class="st">&#39;geom_id&#39;</span>, <span class="st">&#39;wealth_label&#39;</span>)</span>
+<span id="cb18-18"><a href="migration.html#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="migration.html#cb18-19" aria-hidden="true" tabindex="-1"></a>admin_rural <span class="op">=</span> read_admin(country)</span></code></pre></div>
+<p>Then we select our user sample, which are the ones with a minimum percentage of active days (<span class="math inline">\(20\%\)</span>) using the same function
+<code>get_active_list()</code> and select the users with a home in the city.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="migration.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get list of active users</span></span>
+<span id="cb19-2"><a href="migration.html#cb19-2" aria-hidden="true" tabindex="-1"></a>personal_nf <span class="op">=</span> <span class="ss">f&quot;personal_stop_location_hw</span><span class="sc">{hw}</span><span class="ss">_ww</span><span class="sc">{ww}</span><span class="ss">_wa</span><span class="sc">{wa}</span><span class="ss">_mph</span><span class="sc">{</span>mph<span class="sc">}</span><span class="ss">_mpw</span><span class="sc">{</span>mpw<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb19-3"><a href="migration.html#cb19-3" aria-hidden="true" tabindex="-1"></a>stops <span class="op">=</span> spark.read.parquet(<span class="ss">f&quot;</span><span class="sc">{</span>stop_path<span class="sc">}{</span>country<span class="sc">}</span><span class="ss">/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date</span><span class="sc">{</span>data_date<span class="sc">}</span><span class="ss">/&quot;</span> <span class="op">+</span> personal_nf)</span>
+<span id="cb19-4"><a href="migration.html#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="migration.html#cb19-5" aria-hidden="true" tabindex="-1"></a>fname_nf <span class="op">=</span> <span class="ss">f&#39;durations_window_hw</span><span class="sc">{hw}</span><span class="ss">_ww</span><span class="sc">{ww}</span><span class="ss">_wa</span><span class="sc">{wa}</span><span class="ss">_mph</span><span class="sc">{</span>mph<span class="sc">}</span><span class="ss">_mpw</span><span class="sc">{</span>mpw<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb19-6"><a href="migration.html#cb19-6" aria-hidden="true" tabindex="-1"></a>durations_path_nf <span class="op">=</span> <span class="ss">f&#39;</span><span class="sc">{</span>stop_path<span class="sc">}{</span>country<span class="sc">}</span><span class="ss">/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date</span><span class="sc">{</span>data_date<span class="sc">}</span><span class="ss">/&#39;</span> <span class="op">+</span> fname_nf</span>
+<span id="cb19-7"><a href="migration.html#cb19-7" aria-hidden="true" tabindex="-1"></a>durations <span class="op">=</span> spark.read.parquet(durations_path_nf)</span>
+<span id="cb19-8"><a href="migration.html#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="migration.html#cb19-9" aria-hidden="true" tabindex="-1"></a>active_users <span class="op">=</span> get_active_list(durations, country, activity_level)</span>
+<span id="cb19-10"><a href="migration.html#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="migration.html#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># read stops, filter actives, get most frequented daily geom id, and get rural/urban info</span></span>
+<span id="cb19-12"><a href="migration.html#cb19-12" aria-hidden="true" tabindex="-1"></a>admins_by_country, admins_by_metro_area, pop_metro_areas <span class="op">=</span> process_admin(country)</span>
+<span id="cb19-13"><a href="migration.html#cb19-13" aria-hidden="true" tabindex="-1"></a>metro <span class="op">=</span> (admins_by_metro_area</span>
+<span id="cb19-14"><a href="migration.html#cb19-14" aria-hidden="true" tabindex="-1"></a>         .loc[admins_by_metro_area.metro_area_name <span class="op">==</span> pop_metro_areas</span>
+<span id="cb19-15"><a href="migration.html#cb19-15" aria-hidden="true" tabindex="-1"></a>              .reset_index()</span>
+<span id="cb19-16"><a href="migration.html#cb19-16" aria-hidden="true" tabindex="-1"></a>              .head(<span class="dv">1</span>)</span>
+<span id="cb19-17"><a href="migration.html#cb19-17" aria-hidden="true" tabindex="-1"></a>              .metro_area_name</span>
+<span id="cb19-18"><a href="migration.html#cb19-18" aria-hidden="true" tabindex="-1"></a>              .to_list()[<span class="dv">0</span>]][<span class="st">&quot;geom_id&quot;</span>]</span>
+<span id="cb19-19"><a href="migration.html#cb19-19" aria-hidden="true" tabindex="-1"></a>         .to_list())</span>
+<span id="cb19-20"><a href="migration.html#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-21"><a href="migration.html#cb19-21" aria-hidden="true" tabindex="-1"></a>users_metro <span class="op">=</span> stops.where(col(<span class="st">&#39;location_type&#39;</span>) <span class="op">==</span> <span class="st">&#39;H&#39;</span>).<span class="bu">filter</span>(F.col(<span class="st">&quot;geom_id&quot;</span>).isin(metro)).select(<span class="st">&#39;user_id&#39;</span>).distinct()</span>
+<span id="cb19-22"><a href="migration.html#cb19-22" aria-hidden="true" tabindex="-1"></a>stops <span class="op">=</span> stops.join(users_metro, on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>).join(active_users, on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>)</span>
+<span id="cb19-23"><a href="migration.html#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="migration.html#cb19-24" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> Window.partitionBy(<span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb19-25"><a href="migration.html#cb19-25" aria-hidden="true" tabindex="-1"></a>user_geom <span class="op">=</span> (stops</span>
+<span id="cb19-26"><a href="migration.html#cb19-26" aria-hidden="true" tabindex="-1"></a>           .where(col(<span class="st">&#39;location_type&#39;</span>) <span class="op">==</span> <span class="st">&#39;H&#39;</span>)</span>
+<span id="cb19-27"><a href="migration.html#cb19-27" aria-hidden="true" tabindex="-1"></a>           .<span class="bu">filter</span>(F.col(<span class="st">&quot;geom_id&quot;</span>).isin(metro))</span>
+<span id="cb19-28"><a href="migration.html#cb19-28" aria-hidden="true" tabindex="-1"></a>           .groupby(<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;geom_id&#39;</span>)</span>
+<span id="cb19-29"><a href="migration.html#cb19-29" aria-hidden="true" tabindex="-1"></a>           .agg(F.countDistinct(<span class="st">&#39;date_trunc&#39;</span>).alias(<span class="st">&#39;n_days&#39;</span>))</span>
+<span id="cb19-30"><a href="migration.html#cb19-30" aria-hidden="true" tabindex="-1"></a>           .withColumn(<span class="st">&#39;max_days&#39;</span>, F.<span class="bu">max</span>(<span class="st">&#39;n_days&#39;</span>).over(w))</span>
+<span id="cb19-31"><a href="migration.html#cb19-31" aria-hidden="true" tabindex="-1"></a>           .where(col(<span class="st">&#39;n_days&#39;</span>) <span class="op">==</span> col(<span class="st">&#39;max_days&#39;</span>))</span>
+<span id="cb19-32"><a href="migration.html#cb19-32" aria-hidden="true" tabindex="-1"></a>           .groupby(<span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb19-33"><a href="migration.html#cb19-33" aria-hidden="true" tabindex="-1"></a>           .agg(F.first(<span class="st">&#39;geom_id&#39;</span>).alias(<span class="st">&#39;geom_id&#39;</span>))</span>
+<span id="cb19-34"><a href="migration.html#cb19-34" aria-hidden="true" tabindex="-1"></a>           .join(admins, on<span class="op">=</span><span class="st">&#39;geom_id&#39;</span>)</span>
+<span id="cb19-35"><a href="migration.html#cb19-35" aria-hidden="true" tabindex="-1"></a>           .drop(<span class="st">&#39;geom_id&#39;</span>))</span>
+<span id="cb19-36"><a href="migration.html#cb19-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-37"><a href="migration.html#cb19-37" aria-hidden="true" tabindex="-1"></a>usrs <span class="op">=</span>  (user_geom</span>
+<span id="cb19-38"><a href="migration.html#cb19-38" aria-hidden="true" tabindex="-1"></a>       .join(active_users, on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>)</span>
+<span id="cb19-39"><a href="migration.html#cb19-39" aria-hidden="true" tabindex="-1"></a>       .toPandas())</span>
+<span id="cb19-40"><a href="migration.html#cb19-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-41"><a href="migration.html#cb19-41" aria-hidden="true" tabindex="-1"></a>usrs[<span class="st">&quot;country&quot;</span>] <span class="op">=</span> country</span>
+<span id="cb19-42"><a href="migration.html#cb19-42" aria-hidden="true" tabindex="-1"></a>usr_df <span class="op">=</span> pd.concat([usr_df, usrs])</span>
+<span id="cb19-43"><a href="migration.html#cb19-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-44"><a href="migration.html#cb19-44" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> Window.partitionBy(<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>)</span>
+<span id="cb19-45"><a href="migration.html#cb19-45" aria-hidden="true" tabindex="-1"></a>h_stops <span class="op">=</span> (stops</span>
+<span id="cb19-46"><a href="migration.html#cb19-46" aria-hidden="true" tabindex="-1"></a>         .where(col(<span class="st">&#39;location_type&#39;</span>) <span class="op">==</span> <span class="st">&#39;H&#39;</span>)</span>
+<span id="cb19-47"><a href="migration.html#cb19-47" aria-hidden="true" tabindex="-1"></a>         .join(active_users, on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>)</span>
+<span id="cb19-48"><a href="migration.html#cb19-48" aria-hidden="true" tabindex="-1"></a>         .groupby(<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;geom_id&#39;</span>)</span>
+<span id="cb19-49"><a href="migration.html#cb19-49" aria-hidden="true" tabindex="-1"></a>         .agg(F.<span class="bu">sum</span>(<span class="st">&#39;duration&#39;</span>).alias(<span class="st">&#39;duration&#39;</span>))</span>
+<span id="cb19-50"><a href="migration.html#cb19-50" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;max_duration&#39;</span>, F.<span class="bu">max</span>(<span class="st">&#39;duration&#39;</span>).over(w))</span>
+<span id="cb19-51"><a href="migration.html#cb19-51" aria-hidden="true" tabindex="-1"></a>         .where(col(<span class="st">&#39;duration&#39;</span>) <span class="op">==</span> col(<span class="st">&#39;max_duration&#39;</span>))</span>
+<span id="cb19-52"><a href="migration.html#cb19-52" aria-hidden="true" tabindex="-1"></a>         .groupby(<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>)</span>
+<span id="cb19-53"><a href="migration.html#cb19-53" aria-hidden="true" tabindex="-1"></a>         .agg(F.first(<span class="st">&#39;geom_id&#39;</span>).alias(<span class="st">&#39;geom_id&#39;</span>))</span>
+<span id="cb19-54"><a href="migration.html#cb19-54" aria-hidden="true" tabindex="-1"></a>         .join(admin_rural, on<span class="op">=</span><span class="st">&#39;geom_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>)</span>
+<span id="cb19-55"><a href="migration.html#cb19-55" aria-hidden="true" tabindex="-1"></a>         .join(user_geom, on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>))</span></code></pre></div>
+<p>Now that we have defined the home locations of each user we compare the location of the homes from one day
+to the one a day before. We are interested in migrations to rural areas, so this time we’re not taking into account
+if they moved to a different urban area. Then we put a flag on each user every day to tell if they moved or not and if
+they did, knowing if they moved from an urban area to a rural one or the other way around.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="migration.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look-up previous geom id to identify migrations with direction</span></span>
+<span id="cb20-2"><a href="migration.html#cb20-2" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> Window.partitionBy(<span class="st">&#39;user_id&#39;</span>).orderBy(<span class="st">&#39;date_trunc&#39;</span>)</span>
+<span id="cb20-3"><a href="migration.html#cb20-3" aria-hidden="true" tabindex="-1"></a>h_stops <span class="op">=</span> (h_stops</span>
+<span id="cb20-4"><a href="migration.html#cb20-4" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;prev_geom_id&#39;</span>, F.lag(<span class="st">&#39;geom_id&#39;</span>, offset<span class="op">=</span><span class="dv">1</span>).over(w))</span>
+<span id="cb20-5"><a href="migration.html#cb20-5" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;prev_urban/rural&#39;</span>, F.lag(<span class="st">&#39;urban/rural&#39;</span>, offset<span class="op">=</span><span class="dv">1</span>).over(w))</span>
+<span id="cb20-6"><a href="migration.html#cb20-6" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;prev_date&#39;</span>, F.lag(<span class="st">&#39;date_trunc&#39;</span>, offset<span class="op">=</span><span class="dv">1</span>).over(w))</span>
+<span id="cb20-7"><a href="migration.html#cb20-7" aria-hidden="true" tabindex="-1"></a>         .where(col(<span class="st">&#39;prev_geom_id&#39;</span>).isNotNull())</span>
+<span id="cb20-8"><a href="migration.html#cb20-8" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;change&#39;</span>, F.when(col(<span class="st">&#39;urban/rural&#39;</span>) <span class="op">==</span> col(<span class="st">&#39;prev_urban/rural&#39;</span>), <span class="st">&#39;no change&#39;</span>)</span>
+<span id="cb20-9"><a href="migration.html#cb20-9" aria-hidden="true" tabindex="-1"></a>                                .otherwise(F.when(col(<span class="st">&#39;urban/rural&#39;</span>) <span class="op">==</span> <span class="st">&#39;urban&#39;</span>, <span class="st">&#39;rural to urban&#39;</span>)</span>
+<span id="cb20-10"><a href="migration.html#cb20-10" aria-hidden="true" tabindex="-1"></a>                                            .otherwise(F.when(col(<span class="st">&#39;urban/rural&#39;</span>) <span class="op">==</span> <span class="st">&#39;rural&#39;</span>, <span class="st">&#39;urban to rural&#39;</span>))))</span>
+<span id="cb20-11"><a href="migration.html#cb20-11" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;gap&#39;</span>, F.datediff(col(<span class="st">&#39;date_trunc&#39;</span>), col(<span class="st">&#39;prev_date&#39;</span>)))</span>
+<span id="cb20-12"><a href="migration.html#cb20-12" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;rand_gap&#39;</span>, (<span class="op">-</span><span class="dv">1</span><span class="op">*</span>F.rand()<span class="op">*</span>(col(<span class="st">&#39;gap&#39;</span>)<span class="op">-</span><span class="dv">1</span>)).astype(IntegerType()))</span>
+<span id="cb20-13"><a href="migration.html#cb20-13" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;new_date&#39;</span>, F.expr(<span class="st">&quot;date_add(date_trunc, rand_gap)&quot;</span>))</span>
+<span id="cb20-14"><a href="migration.html#cb20-14" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;date_trunc&#39;</span>, col(<span class="st">&#39;new_date&#39;</span>)))</span></code></pre></div>
+<p>Finally we only group the number of changes by date and wealth group.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="migration.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate by day and change and return as pandas df</span></span>
+<span id="cb21-2"><a href="migration.html#cb21-2" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> (h_stops</span>
+<span id="cb21-3"><a href="migration.html#cb21-3" aria-hidden="true" tabindex="-1"></a>     .groupby(<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;wealth_label&#39;</span>, <span class="st">&#39;change&#39;</span>)</span>
+<span id="cb21-4"><a href="migration.html#cb21-4" aria-hidden="true" tabindex="-1"></a>     .agg(F.countDistinct(<span class="st">&#39;user_id&#39;</span>).alias(<span class="st">&#39;n_users&#39;</span>))</span>
+<span id="cb21-5"><a href="migration.html#cb21-5" aria-hidden="true" tabindex="-1"></a>     .withColumnRenamed(<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;date&#39;</span>)</span>
+<span id="cb21-6"><a href="migration.html#cb21-6" aria-hidden="true" tabindex="-1"></a>     .toPandas())</span>
+<span id="cb21-7"><a href="migration.html#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="migration.html#cb21-8" aria-hidden="true" tabindex="-1"></a>out[<span class="st">&#39;country&#39;</span>] <span class="op">=</span> country</span></code></pre></div>
+<p>Finally we compute the cummulative percentage change of the difference between the individuals going to rural areas and
+the ones to urban areas. This way we get the net rural migration percentage.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:migration-fig"></span>
+<img src="gps-mobility_files/figure-html/migration-fig-1.png" alt="Results for six different cities São Paulo, Bogota, Jakarta, Mexico City, Quezon City (Manila), and Johannesburg. Measuring: Net rural migration in the fraction of people who lived in the city at any point in time. The three coloured lines distinguishes the metric changes for the three different socio-economic groups." width="80%" />
+<p class="caption">
+Figure 7.1: Results for six different cities São Paulo, Bogota, Jakarta, Mexico City, Quezon City (Manila), and Johannesburg. Measuring: Net rural migration in the fraction of people who lived in the city at any point in time. The three coloured lines distinguishes the metric changes for the three different socio-economic groups.
+</p>
+</div>
 
+</div>
 </div>
             </section>
 
