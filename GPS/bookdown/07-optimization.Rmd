@@ -1,3 +1,3 @@
-# Parameter Optimization {#optimization}
+# Location labeling and parameter optimization {#optimization}
 
-Explain the optimization here
+One of the crucial steps allowing us to perform the analyses presented in this book is the ability to infer individual home locations and workplaces. Additional information, based on the individual pattern of visits to recurrent locations, are added to each stop location to distingush their roles and imporance. 
