@@ -128,6 +128,147 @@ def balanced_bootstrapping(df_man, num_sample=100, metrics=True, col_true='Final
   return df_res
 ```
 
-Results are computed
+For each parameter configuration bootstrap is performed and results are structured and stored in the form of a dictionary.
+```{python eval=FALSE}
+def get_multi_config_metrics(**args):
+  # Initialize variables from passed "args" dict
+  country=args["country"]
+  manual_labels=args["manual_labels"]
+  act_buckets = args['activity_bucket']
+  df_hw = get_algorithm_labels(**args)
+  df_hw['act_buck'] = df_hw.user_id.map(act_buckets)
+  col_true = args['col_true']
+  col_eval1 = args['col_eval1']
+  col_eval2 = args['col_eval2']
+  numer_of_samples = args['numer_of_samples']
+  
+  df_compare = (pd.merge(manual_labels, df_hw, how="outer", on=["user_id", "cluster_label","act_buck"])
+                .sort_values(by=["user_id","cluster_label","FinalOpinion","AlgorithmOpinion"])
+                .drop_duplicates(subset=["user_id","cluster_label"])
+                .reset_index(drop=True)
+                .fillna({'Country':country,'FirstOpinion':'O','SecondOpinion':'O','AlgorithmOpinion':'O','FinalOpinion':'O'}))
+  df_compare = df_compare[(df_compare.FinalOpinion!='O')|(df_compare.AlgorithmOpinion!='O')]
+  
+  # Compute performance metrics
+  accuracy = skm.accuracy_score(df_compare[col_true], df_compare[col_eval1])
+  kappa = (skm.cohen_kappa_score(df_compare['FirstOpinion'], df_compare[col_eval1])+skm.cohen_kappa_score(df_compare['SecondOpinion'], df_compare[col_eval1]))/2
+  recall = skm.recall_score(df_compare[col_true], df_compare[col_eval1],labels=['H','W'], average="macro")
+  precision = skm.precision_score(df_compare[col_true], df_compare[col_eval1],labels=['H','W'], average="macro")
+  f1 = skm.f1_score(df_compare[col_true], df_compare[col_eval1],labels=['H','W'], average="macro")
+  cf = skm.confusion_matrix(df_compare[col_true], df_compare[col_eval1])
+
+  # Estimate performance errors via Bootstrapping
+  res = balanced_bootstrapping(df_compare,num_sample=numer_of_samples,col_true=col_true,col_eval1=col_eval1)
+  m = res.mean().iloc[1:]
+  m = m.sort_index()
+  m.index=['fold_acc','fold_annotators_acc','fold_f1','fold_f1H','fold_f1W','fold_annotators_f1','fold_annotators_f1H','fold_annotators_f1W','fold_kap','fold_annotators_kap']
+  s = res.std().iloc[1:]
+  s = s.sort_index()
+  s.index=['fold_acc_std','fold_annotators_acc_std','fold_f1_std','fold_f1H_std','fold_f1W_std','fold_annotators_f1_std','fold_annotators_f1H_std','fold_annotators_f1W_std','fold_kap_std','fold_annotators_kap_std']
+  
+  # Collect and structure results into a dictionary
+  the_dict = {"country":country,
+              "home_period_window":int(args['home_period_window']),
+              "work_period_window":int(args['work_period_window']),
+              "min_periods_over_window":float(args['min_periods_over_window']),
+              "min_periods_over_window_work":float(args['min_periods_over_window_work']),
+              "work_activity_average":float(args['work_activity_average']),
+              "time_fraction_work":float(args['time_fraction_work']),
+
+              "f1":f1,"accuracy":accuracy,"kappa":kappa,
+              "cf":cf,**m,**s}
+  return the_dict
+```
+
+### Parallel bootstrapping and optimization result storage
+The enormous number of combination of parameter configuration we have to explore can be speeded up by multiprocess computation of the different configurations. Here, we present a possible solution which uses the [python "joblib" library]{https://joblib.readthedocs.io/en/latest/}.
+Parameter configurations are stored as a list of dictionaries which is then passed to the "Parallel" function.
+
+```{python eval=FALSE}
+from joblib import Parallel,delayed
+
+results_save_path = "SAVING_PATH_FOR_CONFIGURATION_PERFORMANCE_EVALUTATION"
+numer_of_samples = 100
+
+c_dates = {'BR': '2021-01-01', 'CO': '2021-01-01', 'ID': '2021-01-01',
+           'ZA': '2021-01-01', 'MX': '2020-12-01', 'PH': '2021-01-01'}
+countries = ['CO','PH','MX','BR','ID']
+result_list = []
+for country in countries:
+  print(country)
+  df_man =  get_labels(country)
+  activity_bucket = df_man.drop_duplicates(['user_id','act_buck']).set_index('user_id').act_buck.dropna().to_dict()
+  init_params = {"country":[country],"c_dates":[c_dates]}
+  parameters = {**init_params, **iter_params}
+  additional_params = {"numer_of_samples":numer_of_samples,"activity_bucket":activity_bucket,"manual_labels":df_man, 
+                       'col_true':'FinalOpinion','col_eval1':'AlgorithmOpinion','col_eval2':None}
+
+  results_df = pd.DataFrame(columns=["country", "home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average", "time_fraction_work", "accuracy", "recall", "precision", "f1", "fold_f1","fold_acc","fold_kap","fold_f1_sem","fold_acc_sem","fold_kap_sem", "cf"])
+  
+  keys = list(parameters)
+  keyvals = []
+  for values in itertools.product(*map(parameters.get, keys)):
+    keyval = dict(zip(keys, values))
+    keyval = {k:str(v) for k, v in keyval.items()}
+    keyval = {**keyval,**additional_params}
+    keyvals.append(keyval)
+  
+  result_list += Parallel(n_jobs=32)(delayed(get_multi_config_metrics)(**keyval) for j,keyval in enumerate(keyvals[:]))
+results_df = pd.DataFrame.from_records(result_list)
+results_df['samples'] = numer_of_samples
+results_df.to_csv(results_save_path+f"final_statistics_with_{numer_of_samples}_folding_v10.csv", index=False)
+```
 
 ## Parameter configuration selection
+While for each country a different optimal configuration can be found, leveraging over the performance error estimates, it is possible to check for common configuartions across different countries which are compatible (i.e. the difference between the optimal configuration F1 minus its standard deviation is smaller than the shared configuration plus its standard deviation) with the country specific best configuration.
+```{python eval=FALSE}
+def get_country_compatibilities(res_country):
+  '''
+    INPUT:  pandas dataframe resulting from bootstrapped optimization
+    OUTPUT: pandas dataframe filtered to keep only configurations which are compatible with the best one
+  '''
+  arg_max = res_country.loc[res_country.fold_f1.idxmax()]
+  results_df_fold_f1_max = arg_max.fold_f1
+  results_df_fold_f1_mstd = arg_max.fold_f1_std
+  return res_country[res_country.fold_f1+res_country.fold_f1_std>=results_df_fold_f1_max-results_df_fold_f1_mstd]
+```
+
+We report here, an example to get (if any) a common best parameter configuration for five different countries, namely, Mexico, Brazil, Indonesia, Philippines, and Colombia. 
+```{python eval=FALSE}
+countries = ['MX','BR','ID','PH','CO']
+numer_of_samples = 100
+
+results_df = pd.read_csv(results_save_path+f"final_statistics_with_{numer_of_samples}_folding_v10.csv")
+res_opt = results_df.groupby('country',as_index=False).apply(get_country_compatibilities)
+res_opt = res_opt.set_index(['country',"home_period_window","work_period_window",
+                             "min_periods_over_window","min_periods_over_window_work",
+                             "work_activity_average","time_fraction_work"])
+                             
+### Find the best common optimum (optimization function is the max of the average f1 score)
+res_tmp = results_df.drop_duplicates(["country","home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"])
+res = res_tmp.groupby(["home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"]).mean()
+res['fold_f1_harmonic'] = res_tmp.groupby(["home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"]).fold_f1.apply(hmean)
+res = res.sort_values('fold_f1_harmonic',ascending=False)
+res.reset_index(inplace=True)
+i=0
+while True:
+    test_index = res.iloc[i][["home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"]].tolist()
+    testing=[]
+    j=0
+    for country in countries:
+      test = tuple([country]+test_index)
+      if test in res_opt.index.tolist(): j+=1
+    if j == len(countries):        print(f"Best common config found: {i}: {test_index}"); break
+    else: i+=1
+    if i>10000: print('Maximum iterations Exceeded. No common optimum found, increase/modify acceptance region!'); break
+```
+
+In our case, the best common configiguration found is: 
+- home_period_window: 49.0,
+- work_period_window: 49.0,
+- min_periods_over_window: 0.2,
+- min_periods_over_window_work: 0.2,
+- work_activity_average: 3600.0,
+- time_fraction_work: 0.0
+
+These values are the one used to label the locations in the analysis presented in the book.
