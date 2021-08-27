@@ -19,8 +19,7 @@ city of each country:
 
 ## User selection
 
-Here we reduce our user sample \@ref(selection) to only active users who had a home location in the city at any given
-time. It's important to note that although we use the term _city_ we are using the whole extent of their metropolitan
+Here, we restrict our sample \@ref(selection) of individuals to only active users (as defined in the previous chapter) who had a home location in the city at any given time. It's important to note that although we use the term _city_ we are using the whole extent of their metropolitan
 area.
 
 In order to determine a wealth group for them we take the administrative unit they had at the moment when their home
@@ -152,7 +151,7 @@ out = (h_stops
 out['country'] = country
 ```
 
-Finally we compute the cummulative percentage change of the difference between the individuals going to rural areas and
+Finally, we compute the cumulative percentage change of the difference between the individuals going to rural areas and
 the ones to urban areas. This way we get the net rural migration percentage.
 
 ```{r migration-fig, fig.cap='Results for six different cities São Paulo, Bogota, Jakarta, Mexico City, Quezon City (Manila), and Johannesburg. Measuring: Net rural migration in the fraction of people who lived in the city at any point in time. The three coloured lines distinguishes the metric changes for the three different socio-economic groups.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
