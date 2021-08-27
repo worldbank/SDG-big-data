@@ -220,7 +220,7 @@ results_df.to_csv(results_save_path+f"final_statistics_with_{numer_of_samples}_f
 ```
 
 ## Parameter configuration selection
-While for each country a different optimal configuration can be found, leveraging over the performance error estimates, it is possible to check for common configuartions across different countries which are compatible (i.e. the difference between the optimal configuration F1 minus its standard deviation is smaller than the shared configuration plus its standard deviation) with the country specific best configuration.
+While for each country a different optimal configuration can be found, leveraging over the performance error estimates, it is possible to check for common configuartions across different countries which are compatible (i.e. the difference between the optimal configuration F1 minus its standard deviation is smaller than the shared configuration plus its standard deviation) with the country specific best configuration. Best configuration is selected among those compatible for all states by means of the harmonic average of each country F1 score.
 ```{python eval=FALSE}
 def get_country_compatibilities(res_country):
   '''
