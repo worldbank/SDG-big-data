@@ -21,7 +21,7 @@ get-stop-locations
 clustering-recurrent-stops
 appending-pings-from-recent-dates
 stops-geocoding
-defining-home-and-work-locations
+labeling
 seasonal-patterns
 code-1
 mobility
@@ -36,6 +36,14 @@ description
 user-selection
 code-2
 optimization
+ground-truth
+construction
+validation
+parameter-optimization
+performance-indicators
+performance-error-estimates-and-bootstrapping
+parallel-bootstrapping-and-optimization-result-storage
+parameter-configuration-selection
 windex
 variables-to-estimate-the-social-gap-index-in-mexico
 education
@@ -43,7 +51,3 @@ health-services-access
 household-characteristics
 assets-ownership
 voronoi
-todo-put-an-image-or-create-one
-infostop
-data-preparation
-code-3

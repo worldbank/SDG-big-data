@@ -1,0 +1,254 @@
+# News-sentiment measures
+
+## Bag-of-words model
+
+Sentiment is measured using a simple dictionary approach based on [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771). To measure news sentiment, we use a `bag-of-words` model, allowing us to reduce complex and multi-dimensional text data into a single number. 
+
+First, we combine existing lists of positive and negative words found in financial texts by [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771) and in texts related to economic policy by [Young and Soroka (2012)](https://doi.org/10.1080/10584609.2012.671234). We then expand our lists by including the inflections of each word: for example, the word `lose` belongs to the negative list, hence we also include the words `losing`, `loser`, `lost`, `loss`, etc, leading to a final list of 7,217 negative words and 3,250 positive words. 
+
+The following table shows the most frequent tonal words inour corpus. 
+
+| Positive word | Fraction of positive words | Fraction of articles |  IDF  | Negative word | Fraction of negative words | Fraction of articles |  IDF  |
+|:-------------:|:--------------------------:|:--------------------:|:-----:|:-------------:|:--------------------------:|:--------------------:|:-----:|
+| Strong        | 0.107                      | 0.118                | 2.135 | Crisis        | 0.088                      | 0.069                | 2.675 |
+| Gains         | 0.099                      | 0.104                | 2.265 | Losses        | 0.072                      | 0.069                | 2.677 |
+| Well          | 0.082                      | 0.103                | 2.271 | Deficit       | 0.071                      | 0.044                | 3.132 |
+| Good          | 0.065                      | 0.077                | 2.561 | Weak          | 0.070                      | 0.070                | 2.656 |
+| Help          | 0.061                      | 0.074                | 2.603 | Limited       | 0.063                      | 0.062                | 2.774 |
+| Recovery      | 0.056                      | 0.058                | 2.850 | Concerns      | 0.063                      | 0.067                | 2.705 |
+| Highest       | 0.044                      | 0.053                | 2.935 | Decline       | 0.050                      | 0.052                | 2.960 |
+| Agreement     | 0.043                      | 0.042                | 3.179 | Weaker        | 0.048                      | 0.049                | 3.007 |
+| Assets        | 0.042                      | 0.042                | 3.159 | Poor          | 0.047                      | 0.049                | 3.017 |
+| Positive      | 0.041                      | 0.051                | 2.973 | Unemployment  | 0.045                      | 0.030                | 3.493 |
+| Better        | 0.041                      | 0.053                | 2.932 | Lost          | 0.045                      | 0.048                | 3.034 |
+| Gained        | 0.041                      | 0.049                | 3.007 | Fears         | 0.041                      | 0.045                | 3.109 |
+| Boost         | 0.040                      | 0.054                | 2.914 | Dropped       | 0.040                      | 0.045                | 3.095 |
+| Leading       | 0.039                      | 0.052                | 2.957 | Slow          | 0.039                      | 0.042                | 3.162 |
+| Confidence    | 0.036                      | 0.039                | 3.255 | Negative      | 0.039                      | 0.040                | 3.225 |
+| Gain          | 0.035                      | 0.042                | 3.159 | Problems      | 0.037                      | 0.039                | 3.233 |
+| Agreed        | 0.034                      | 0.042                | 3.179 | Worries       | 0.037                      | 0.040                | 3.210 |
+| Stronger      | 0.032                      | 0.042                | 3.172 | Hard          | 0.036                      | 0.039                | 3.234 |
+| Worth         | 0.032                      | 0.039                | 3.239 | Recession     | 0.035                      | 0.032                | 3.457 |
+| Opening       | 0.032                      | 0.041                | 3.199 | Loss          | 0.033                      | 0.032                | 3.441 |
+
+Table: Most frequent positive (left) and negative (right) words.
+
+*Note: This table presents the most frequent positive (negative) words in our corpus. For each panel, the first column reports the number of occurrences of each positive (negative) words relative to all occurrences of positive (negative) words, the second reports the fraction of articles in which the word appears, and the third column reports its inverse document frequency (IDF), which is defined below.*
+
+*Source:* Words lists come from [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771) and [Young and Soroka (2012)](https://doi.org/10.1080/10584609.2012.671234). News articles come from [Factiva.com](https://professional.dowjones.com/factiva/).
+
+## Country-specific news sentiment indicator
+
+Next, we define the sentiment of an article $j$ as:
+$$ s_{j} = \dfrac{\sum_{i} w_{ij} p_{ij} - \sum_{i} w_{ij} n_{ij}}{\sum_{i} w_{ij} t_{ij}} $$
+where $p_{ij}$ is the number of occurrences of positive word $i$ in article $j$, $n_{ij}$ is the number of occurrences of negative word $i$ in article $j$, $t_{ij}$ is the number of occurrences of word $i$ in article $j$, and $w_{ij}$ is the weight associated with word $i$ in article $j$. 
+
+In our baseline estimates, we take $w_{ij} = 1$, allowing each word to contribute to the sentiment measure proportionally to its frequency of occurrence. In a robustness check, we let each word contribute to the sentiment measure proportionally to its Term Frequency-Inverse Document Frequency (TF-IDF, [Manning et al. 2008](https://nlp.stanford.edu/IR-book/information-retrieval-book.html)) by taking:
+$$ w_{ij} = \log\left(\frac{N}{N_{i}}\right) $$
+where $N$ is the number of articles in the corpus and $N_{i}$ is the number of articles in which word $i$ is present. Hence, this weighting smoothes out differences in word frequency naturally occurring in the English language by giving more weight to words that appear more rarely across documents. It is well established that the distribution of words in the English language follows a power law. For a broader discussion on power laws in Economics, see [Gabaix 2016](https://www.aeaweb.org/articles?id=10.1257/jep.30.1.185). 
+
+```{python, eval=FALSE}
+def get_counts(idx,data=df['full_text'],tones=list(tone2keywords)):
+    
+    # Split into words and remove non-letter characters
+    tokens = re.sub("[^a-zA-Z]"," ", data.loc[idx].lower()).split()
+    
+    # Return Words and Their Count
+    counter = collections.Counter(tokens)
+
+    # Word Count
+    T = sum(counter.values())
+
+    values = [T]
+    index  = ['# words']
+
+    for tone in sorted(tones):
+
+        # Tonal Words In the Text
+        words = list(set(counter.keys())&set(tone2keywords[tone].keys()))
+
+        if words:
+
+            # Tonal Words Counts
+            counts = itemgetter(*words)(counter)
+
+            # Tonal Words IDFs
+            idfs = itemgetter(*words)(tone2keywords[tone])
+
+            if len(words) > 1:
+                tf = sum(counts)/T
+            else:
+                tf = counts/T
+                
+            tfidf = np.dot(counts,idfs)/T
+
+        else:
+
+            tf = 0
+            tfidf  = 0
+
+        values.append(tf)
+        index.append('% '+tone)
+
+        values.append(tfidf)
+        index.append('% '+tone+' tfidf')
+        
+    return pd.Series(values,index=index,name=idx)
+```
+
+To illustrate our sentiment measure, we show the example of an article in which tonal words are highlighted in bold, indicating that although our sentiment measure does not capture all of the nuances in the text, it provides a good indication of its overall tone. This article contains the tags `Argentina` and `Economic News`: 
+
+<div class="panel panel-info">
+
+<div class="panel-body">
+
+Title: Argentina's Peronists defend Menem's labor reforms.
+
+Timestamp: 1996-09-02
+
+Text: BUENOS AIRES, Sept 2 (Reuters)-The Argentine government Monday tried to counter **criticisms** of President Carlos Menem's proposals for more **flexible** labor laws, **arguing** that not just workers would contribute to new **unemployment** insurance. Menem **angered** trade unions, already in **disagreement** over his fiscal austerity programs, by announcing a labor reform package Friday including **suspending** collective wage deals and replacing **redundancy** payouts with **unemployment** insurance.
+
+Topics: Labor/Personnel Issues, Corporate/Industrial News, Economic/Monetary Policy, Economic News, Political/General News, Labor Issues, Domestic Politics.
+
+Locations: Argentina, Latin America, South America.
+
+</div>
+</div>
+
+Next, we compute a daily sentiment index for each country by taking the average sentiment across articles that are tagged with the country's name. Finally, we normalize each country sentiment index by computing its z-score.
+
+```{stata, eval=FALSE}
+insheet using ///
+	"..\..\replication\data\sentiments-panel-reuters-econ-fin-mkt-25-countries-1991-2019.csv" ///
+	, comma clear
+	
+ren v1 country
+
+gen sentiment_country = positive - negative
+gen n_articles_country = 1 if words!=0
+
+keep country year month day sentiment_country n_articles
+
+collapse (mean) sentiment* (sum) n_articles*, by(country year month day)
+
+compress
+
+gen date = mdy(month, day, year)
+format date %tdnn/dd/CCYY
+
+gen iso2 = "", after(country)
+replace iso2 = "AR" if country=="Argentina"
+replace iso2 = "BR" if country=="Brazil"
+replace iso2 = "CL" if country=="Chile"
+replace iso2 = "CN" if country=="China"
+replace iso2 = "FR" if country=="France"
+replace iso2 = "DE" if country=="Germany"
+replace iso2 = "GR" if country=="Greece"
+replace iso2 = "IN" if country=="India"
+replace iso2 = "ID" if country=="Indonesia"
+replace iso2 = "IE" if country=="Ireland"
+replace iso2 = "IT" if country=="Italy"
+replace iso2 = "JP" if country=="Japan"
+replace iso2 = "KR" if country=="Korea"
+replace iso2 = "MY" if country=="Malaysia"
+replace iso2 = "MX" if country=="Mexico"
+replace iso2 = "PE" if country=="Peru"
+replace iso2 = "PH" if country=="Philippines"
+replace iso2 = "PL" if country=="Poland"
+replace iso2 = "PT" if country=="Portugal"
+replace iso2 = "RU" if country=="Russia"
+replace iso2 = "ZA" if country=="South Africa"
+replace iso2 = "KR" if country=="South Korea"
+replace iso2 = "ES" if country=="Spain"
+replace iso2 = "TH" if country=="Thailand"
+replace iso2 = "TR" if country=="Turkey"
+replace iso2 = "US" if country=="United States"
+	tab iso2, m
+
+* Convert to z-scores within each country
+
+ds sentiment*
+
+foreach vv in `r(varlist)' {
+	
+	bys iso2: egen _mean = mean(`vv')
+	bys iso2: egen _sd = sd(`vv')
+	
+	replace `vv' = (`vv' - _mean) / _sd
+	
+	drop _mean _sd
+}
+
+compress
+d
+
+save "..\indicator\sentiment_country.dta", replace
+```
+
+## Stylized facts
+
+The following table reports standard statistics about the cross country (raw) sentiment indices: 
+
+| Country |  Variable |    N    |   Mean  |   SD   |   Min   |   p25   |  Median |   p75  |   Max  |
+|:-------:|:---------:|:-------:|:-------:|:------:|:-------:|:-------:|:-------:|:------:|:------:|
+| AR      | Sentiment | 6485    | -0.0064 | 0.0218 | -0.1463 | -0.0174 | -0.0042 | 0.0064 | 0.1250 |
+| BR      | Sentiment | 6950    | -0.0058 | 0.0186 | -0.1908 | -0.0154 | -0.0044 | 0.0047 | 0.0952 |
+| CL      | Sentiment | 5695    | -0.0041 | 0.0276 | -0.1405 | -0.0200 | -0.0022 | 0.0130 | 0.1250 |
+| CN      | Sentiment | 8604    | -0.0022 | 0.0150 | -0.1200 | -0.0095 | -0.0014 | 0.0055 | 0.1512 |
+| DE      | Sentiment | 8365    | -0.0056 | 0.0167 | -0.1667 | -0.0138 | -0.0046 | 0.0035 | 0.1277 |
+| ES      | Sentiment | 6415    | -0.0044 | 0.0253 | -0.1547 | -0.0179 | -0.0018 | 0.0107 | 0.1554 |
+| FR      | Sentiment | 7573    | -0.0054 | 0.0194 | -0.1429 | -0.0148 | -0.0039 | 0.0051 | 0.1549 |
+| GR      | Sentiment | 5989    | -0.0049 | 0.0266 | -0.1493 | -0.0193 | -0.0014 | 0.0112 | 0.1270 |
+| ID      | Sentiment | 7446    | -0.0033 | 0.0199 | -0.1333 | -0.0134 | -0.0030 | 0.0074 | 0.1091 |
+| IE      | Sentiment | 4411    | -0.0023 | 0.0284 | -0.1695 | -0.0181 | 0.0000  | 0.0143 | 0.1346 |
+| IN      | Sentiment | 8493    | 0.0034  | 0.0195 | -0.1713 | -0.0039 | 0.0031  | 0.0112 | 0.1493 |
+| IT      | Sentiment | 7140    | -0.0051 | 0.0232 | -0.1538 | -0.0169 | -0.0031 | 0.0085 | 0.1268 |
+| JP      | Sentiment | 8345    | -0.0039 | 0.0147 | -0.1304 | -0.0113 | -0.0035 | 0.0037 | 0.1795 |
+| KR      | Sentiment | 7776    | -0.0040 | 0.0203 | -0.1379 | -0.0140 | -0.0023 | 0.0074 | 0.1148 |
+| MX      | Sentiment | 6788    | -0.0028 | 0.0243 | -0.1591 | -0.0154 | -0.0009 | 0.0114 | 0.1034 |
+| MY      | Sentiment | 7506    | -0.0043 | 0.0153 | -0.1692 | -0.0114 | -0.0034 | 0.0037 | 0.0833 |
+| PE      | Sentiment | 4509    | -0.0016 | 0.0280 | -0.2295 | -0.0158 | 0.0000  | 0.0141 | 0.1505 |
+| PH      | Sentiment | 6747    | -0.0039 | 0.0232 | -0.2041 | -0.0164 | -0.0029 | 0.0088 | 0.1250 |
+| PL      | Sentiment | 6296    | -0.0017 | 0.0219 | -0.1442 | -0.0126 | 0.0000  | 0.0106 | 0.2000 |
+| PT      | Sentiment | 4649    | -0.0039 | 0.0271 | -0.2353 | -0.0182 | -0.0031 | 0.0121 | 0.1091 |
+| RU      | Sentiment | 7055    | -0.0043 | 0.0178 | -0.1411 | -0.0133 | -0.0026 | 0.0056 | 0.1458 |
+| TH      | Sentiment | 7464    | -0.0031 | 0.0192 | -0.1352 | -0.0123 | -0.0023 | 0.0069 | 0.1385 |
+| TR      | Sentiment | 6355    | -0.0020 | 0.0246 | -0.2857 | -0.0152 | 0.0000  | 0.0133 | 0.1290 |
+| US      | Sentiment | 8825    | -0.0030 | 0.0124 | -0.1210 | -0.0080 | -0.0016 | 0.0033 | 0.0896 |
+| ZA      | Sentiment | 6809    | -0.0067 | 0.0233 | -0.1707 | -0.0193 | -0.0055 | 0.0072 | 0.1004 |
+| AE      | Sentiment | 61,712  | -0.0043 | 0.0211 | -0.2353 | -0.0141 | -0.0028 | 0.0062 | 0.1795 |
+| EM      | Sentiment | 110,978 | -0.0032 | 0.0213 | -0.2857 | -0.0135 | -0.0018 | 0.0081 | 0.2000 |
+| Total   | Sentiment | 172,690 | -0.0036 | 0.0212 | -0.2857 | -0.0138 | -0.0022 | 0.0074 | 0.2000 |
+
+Table: Summary statistics of the sentiment index by country.
+
+*Note: This table reports summary statistics about the (raw) daily sentiment indices for each country. Sentiment denotes our baseline measure of news sentiment. The AE and EM rows report summary statistics by country groups; the Total row reports summary statistics across all countries in our sample.*
+
+Overall, we find that the the mean and the median of news indices are negative, reflecting the fact that our dictionary of tonal words contains more negative words. We also find very little difference in the properties of the indices across advanced and emerging markets, or among emerging markets. 
+
+Unsurprisingly, we also find that the news sentiment index takes values that are, on average, higher in "good" times. The latter is true whether we define good times using real variables (e.g. when GDP growth is positive) or financial (strong equity market performance). 
+
+```{r,echo=FALSE,out.width="60%",fig.cap="Behaviour of the news sentiment index in good vs. bad times.",fig.show='hold',fig.align='center'}
+
+img <- png::readPNG("./figures/figure_a10.png")
+grid::grid.raster(img)
+
+```
+*Note: This figure reports the average and median values of the (raw) sentiment index using various definitions of good and bad times. The first two columns split the sample based on periods where a country's real GDP growth has been positive (or negative). The third and fourth columns split the sample based on each country's stock market index being above or below its trend, where the trend is constructed using a two-sided HP filter with a smoothing parameter of 129,600, set using the [Ravn and Uhlig (2002)](https://doi.org/10.1162/003465302317411604) rule for monthly data. The last two categories split the sample based on whether the country's daily stock market return has been positive or negative.*
+
+To give more intuition about the index, we also report the behaviour of the news sentiment index around key economic and financial events. We first plot the daily news sentiment index around equity crisis (left) and booms (right); where we define crisis or booms as daily variations of the local equity index greater than 3 standard deviation (on either side). As expected, we find that news sentiment collapses (or improves drastically) around equity busts (booms). 
+
+```{r,echo=FALSE,out.width="49%",out.height="20%",fig.cap="Sentiment indices around equity crisis (left) and booms (left)",fig.show='hold',fig.align='center'}
+
+knitr::include_graphics(c("./figures/figure_1_clow3sd.png","./figures/figure_1_chigh3sd.png"))
+
+```
+
+We also zoom in on specific events that occurred in advanced and emerging markets. We report the behaviour of the US sentiment index around September 15, 2018 when Lehman brothers filed for Chapter 11 bankruptcy (left), and the behaviour of the China sentiment index around June 13, 2015 when the China's stock market bubble popped (right). In both cases, we also find that the news sentiment index tracks closely those events and reacts as expected.
+
+```{r,echo=FALSE,out.width="49%",out.height="20%",fig.cap="Sentiment indices around the U.S. Lehman Brothers' failure (Left) and China stock market crash (right)",fig.show='hold',fig.align='center'}
+
+knitr::include_graphics(c("./figures/figure_1_gfc_US.png","./figures/figure_1_china2015_CN.png"))
+
+```
+

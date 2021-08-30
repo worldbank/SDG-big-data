@@ -1,0 +1,337 @@
+<!Doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="HTML,CSS,JavaScript,THREE.js">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mobility line graphs</title>
+  <style>
+    body{margin:0;}
+    #form{
+      padding-left: 100px;
+      float: left;
+    }
+
+    #wealth-legend{
+      font-family: sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      float: left;
+      margin-left: 20px;
+      padding-top: 27px;
+    }
+
+    ul {
+      list-style: none;
+      padding:0;
+      margin-top:0;
+    }
+
+    li::before {
+      content: "•";
+      font-size: 20px;
+      top: 2.5px;
+      position: relative;
+      margin-right: 5px;
+    }
+
+    #low-li::before{
+      color: #ddd;
+    }
+
+    #mid-li::before{
+      color: #999;
+    }
+
+    #high-li::before{
+      color: #444;
+    }
+
+    input[type='checkbox']{
+      appearance:none;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      position: relative;
+      top: 7px;
+    }
+
+    label{
+      font-family: sans-serif;
+      font-weight: 300;
+      font-size:14px;
+    }
+
+    input[type='checkbox']:checked:after {
+    	content: '\2713';
+    	font-size: 14px;
+    	position: absolute;
+    	top: -1px;
+    	left: 2px;
+    	color: #fff;
+      font-weight: 700;
+    }
+
+    select{
+      background-color: #fff;
+      border: 2px solid #e5e5e5;
+      font-weight: 300;
+      padding: 5px 0;
+    }
+
+
+    #bogota-box{
+      background-color:#bccf61;
+      border: 2px solid #bccf61;
+    }
+
+    #jakarta-box{
+      background-color:#24a8bc;
+      border: 2px solid #24a8bc;
+    }
+
+    #manila-box{
+      background-color: #e0a100;
+      border: 2px solid #e0a100;
+    }
+
+    #mexico-box{
+      background-color:#c92d18;
+      border: 2px solid #c92d18;
+    }
+
+    #sp-box{
+      background-color: #2F0AFF;
+      border: 2px solid #2F0AFF;
+    }
+
+    input[type="checkbox"]:not(:checked) {
+      background-color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+	<button id="generate" style="position:absolute;">Save as SVG</button><br/><br/>
+
+    <div id="container"></div>
+
+    <div id="form">
+      <select name="graphs" id="graphs" onchange="drawgraphs(this.value)">
+        <option value="0">Time spent at home</option>
+        <option value="1">Share of commuters by income</option>
+        <option value="2">Share of commuters by home value</option>
+      </select><br/>
+    <input type="checkbox" id="bogota-box" class="c-box" name="bogota-box" value="CO" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <label for="bogota-box">Bogota</label><br>
+    <input type="checkbox" id="jakarta-box" class="c-box" name="jakarta-box" value="ID" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <label for="jakarta-box">Jakarta</label><br>
+    <input type="checkbox" id="manila-box" class="c-box" name="manila-box" value="PH" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <label for="manila-box">Manila</label><br>
+    <input type="checkbox" id="mexico-box" class="c-box" name="mexico-box" value="MX" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <label for="mexico-box">Mexico City</label><br>
+    <input type="checkbox" id="sp-box" class="c-box" name="sp-box" value="BR" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <label for="sp-box">S&#227o Paulo</label><br>
+    <br/>
+
+    </div>
+    <div id="wealth-legend">
+      <p style="margin-bottom:5px;">Wealth Level</p>
+      <ul>
+        <li id="low-li">Low</li>
+        <li id="mid-li">Mid</li>
+        <li id="high-li">High</li>
+      </ul>
+    </div>
+
+
+    <script type="text/javascript"  src="js/d3.min.js"></script>
+    <script type="text/javascript"  src="js/blob.js"></script>
+    <script type="text/javascript"  src="js/fileSaver.js"></script>
+    <script type="text/javascript"  src="js/config.js"></script>
+	<script>
+  var colorScheme = {
+    "PH":{"low":"#664900","med":"#e0a100","high":"#FFD15C"},
+    "ID":{"low":"#15616d","med":"#24a8bc","high":"#98e0eb"},
+    "CO":{"low":"#7C8C2B","med":"#bccf61","high":"#DEE7B1"},
+    "BR":{"low":"#15008F","med":"#2F0AFF","high":"#9785FF"},
+    "MX":{"low":"#5B140B","med":"#c92d18","high":"#ED7D6E"}
+  }
+  var margin = {top: 100, right: 80, bottom: 30, left: 100},
+          width = 672 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
+
+  var svg = d3.select("#container").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom );
+
+  var xposScale = d3.scaleLinear().range([0,width*0.66]).domain([0,2]);
+
+  let yScale = d3.scaleLinear().range([height,0]);
+  let xScale = d3.scaleTime().range([0,width]);
+  var xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%m/%Y")).ticks(d3.timeMonth.every(1));
+  var yAxis = d3.axisLeft(yScale);
+  var date = d3.timeParse("%Y-%m-%d");
+
+  var nline = d3.line()
+    .x(function(d) { return xScale(d.datef); })
+    .y(function(d) { return yScale(+d.y2); });
+
+  var dat, group, gDat;
+
+  //0:thome,1:comms,2:comms_hw
+  d3.csv("all_cities_data.csv").then( function(data) {
+    dat = data;
+    var xpos = xposScale(0) + margin.left;
+    group = svg.append("g")
+        .attr("id","graph")
+        .attr("transform","translate(" + xpos + ","+margin.top+")");
+
+    dat.forEach(function(d) {d.datef = date(d.date);});
+    gDat = d3.groups(dat,d=>d.indicator);
+
+    group.append("g")
+        .attr("transform", "translate(0,"+yScale(0)+")")
+        .attr("class","x-ax ax");
+    group.append("g")
+        .attr("class","y-ax ax");
+
+    d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+    d3.selectAll(".tick text").attr("fill", "#999");
+    drawgraphs(0);
+  });
+
+  function drawgraphs(g){
+
+    //iterate through data grouped into arrays by plot
+    // for(g=0;g<gDat.length;g++){
+      cur = gDat[g][1];
+      console.log(cur);
+
+      yScale.domain(d3.extent(cur,d=>+d.y2));
+      xScale.domain([d3.min(cur,d=>d.datef),d3.max(cur,d=>d.datef)]);
+
+      let gCur = d3.groups(cur,d=>d.metro_area_name);
+
+      //subgrouped by country
+      for(h=0;h<gCur.length;h++){
+        var hh = gCur[h][1];
+        var iCur;
+        if(g==2){
+          iCur = d3.groups(hh,d=>d.wealth_label_work);
+        }else{
+          iCur = d3.groups(hh,d=>d.wealth_label_home);
+        }
+
+        //subgrouped by wealth
+        for(j=0;j<iCur.length;j++){
+          var jj = iCur[j][1];
+          var wealth="low"
+          if(j==1){wealth="med"}else if(j==2){wealth="high"}
+
+          var lines = d3.selectAll(".plotline").nodes();
+          console.log(lines.length);
+
+          if(lines.length == 15){
+
+              //d3.select("."+jj[0].country+"."+wealth).attr("d",nline(jj));
+
+              var u = d3.select("."+jj[0].country+"."+wealth).data([jj]);
+
+              u.enter()
+              .append("path")
+              .merge(u)
+              .transition()
+              .duration(1000)
+              .attr("d", nline);
+
+
+          }else{
+            group.append("path")
+            .data([jj])
+            .attr("d", nline)
+            .attr("stroke",function(d){
+              var c = d[0].country;
+              return colorScheme[c][wealth];
+            })
+            .attr("stroke-width",1.25)
+            .attr("fill","none")
+            .attr("class",function(d){
+              return d[0].country+" "+wealth+" plotline";
+            });
+          }
+        }
+      }
+
+      d3.selectAll(".y-label").remove();
+      group.append("text")
+       .text(function(){
+         if(g==0){return "Time spent at home (% change)"}
+         else{return "Share of commuters (% change)"}
+       })
+       .style("transform","rotate(-90deg)")
+       .style("font-family","sans-serif")
+       .style("font-weight","300")
+       .style("font-size","14")
+       .attr("class","y-label")
+       .attr("x", -height/2)
+       .attr("y", -40)
+       .attr("text-anchor","middle")
+       .attr("fill","#999");
+
+       updateAxes();
+
+    //}
+  }
+
+  function updateAxes(){
+    d3.selectAll(".x-ax").transition()
+     .duration(1000)
+     .call(xAxis)
+     .attr("transform", "translate(0,"+yScale(0)+")");
+
+     d3.selectAll(".y-ax").transition()
+      .duration(1000)
+      .call(yAxis);
+
+    d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+    <!-- d3.selectAll(".tick line").attr("x2", width); -->
+    d3.selectAll(".tick text").attr("fill", "#999");
+  }
+
+  function toggleClass(cname,val){
+    if(val == false){op = 0.1}else{op = 1};
+    d3.selectAll("."+cname).attr("opacity",op);
+    if(val == true){
+      if(cname == "low" || cname == "med" || cname=="high"){
+       d3.selectAll(".c-box").property("checked",true);
+      }
+     if(cname == "BR" || cname == "PH" || cname=="MX" || cname=="CO" || cname=="ID"){
+       d3.selectAll(".w-box").property("checked",true);
+     }
+    }
+  }
+
+
+	//----------------svg export code
+
+        d3.select("#generate")
+          .on("click", writeDownloadLink);
+
+        function writeDownloadLink(){
+            try {
+                var isFileSaverSupported = !!new Blob();
+            } catch (e) {
+                alert("blob not supported");
+            }
+
+            var html = d3.select("svg")
+                .attr("title", "test2")
+                .attr("version", 1.1)
+                .attr("xmlns", "http://www.w3.org/2000/svg")
+                .node().parentNode.innerHTML;
+
+            var blob = new Blob([html], {type: "image/svg+xml"});
+            saveAs(blob, "viz.svg");
+        };
+	</script>
+</body>
+</html>
