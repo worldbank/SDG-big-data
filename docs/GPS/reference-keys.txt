@@ -51,6 +51,3 @@ health-services-access
 household-characteristics
 assets-ownership
 voronoi
-infostop
-data-preparation
-code-3
