@@ -1,0 +1,14 @@
+fig:unnamed-chunk-4
+fig:unnamed-chunk-5
+fig:unnamed-chunk-6
+news-analytics
+introduction
+news-articles
+news-sentiment-measures
+bag-of-words-model
+country-specific-news-sentiment-indicator
+stylized-facts
+global-vs.-local-news-sentiment-indicators
+local-news-sentiment-indicator
+global-news-sentiment-indicator
+labor-market-analysis-with-twitter-data
