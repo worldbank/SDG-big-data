@@ -36,7 +36,7 @@ the second one is the percentage change of daily users commuting to work also by
 shows the percentage change of work commutes in the low-income group by the wealth of the neighborhood where the work is located.
 
 ```{r echo=FALSE}
-knitr::include_url("chart.html", height = "400px")
+knitr::include_url("https://raw.githubusercontent.com/worldbank/SDG-big-data/main/docs/charts/mobility-country.html?token=ABMQVTJGFWGL6IA7D7NSCEDBGZU6Q", height = "400px")
 ```
 
 ```{r include=FALSE}
