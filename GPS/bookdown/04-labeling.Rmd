@@ -1,4 +1,4 @@
-# Defining Home and Work Locations
+# Defining Home and Work Locations {#labeling}
 
 From the census data we have socioeconomic information for every geographical region in
 each country and we used that to assign a Wealth Index value to them. A good proxy of

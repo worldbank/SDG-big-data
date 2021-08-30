@@ -1,3 +1,274 @@
-# Parameter Optimization {#optimization}
+# Location labeling and parameter optimization {#optimization}
 
-Explain the optimization here
+One of the crucial steps allowing us to perform the analyses presented in this book is the ability to infer individual home locations and workplaces.
+Additional information, based on the individual pattern of visits to recurrent locations, are added to each stop location to distinguish their roles and importance.
+
+This process has been extensively presented in Chapter \@ref(labeling). Here, we discuss how we converged on a specific parameter configuration to be shared by all the different countries analysed in the book. 
+
+## Ground truth
+
+### Construction
+The first element needed to optimize the process is a ground truth to which each labeling output can be compared with. To this extent, we selected a sample of 100 active individuals for each country. Active individuals were randomly selected from six activity-based buckets: High, medium, and low activity during the pre-pandemic period; high, medium, and low activity after the pre-pandemic period (buckets combined the combination of the different class, e.g. high-medium or low-low activity buckets). Activity classification was performed splitting in percentile groups with similar size.
+
+```{python eval=FALSE}
+# Add bucket creation code here
+```
+
+The uniform selection of individuals acroos different activity buckets provided a balanced set of data ensuring algorithmic stability across a differentiated spectra of mobile phone usage. We stress that, even if activity groups were constructed using groups of individuals their stop locations were not aggregated in the same group, but each individual locations were separately and independently subjected to the same validation procedure.
+
+### Validation
+After the sampling step, individuals' stop locations are submitted to a validator whose task is to label locations into three different categories: home location, work location, and others. Validators were allowed to label multiple home locations per individual as well as multiple work locations. Validators were required to use all the information at their disposal (both the maps and the distribution of time spent at locations over time-of-the-day, day-of-the-week, and the day-of-the-year). The stop location of same individuals were submitted to two independent validators simultaneously. The results from the first round of manual labeling were, then, submitted to a third validator responsible of solving conflicts between the first two validators. For each step all the validators were provided with the same information presented in the same way through the dashboard presented in figure.
+
+```{r groudtruth_dashboard-fig, fig.cap='Screenshot of the dashboard used by the validators to manually assign labels to locations. Validators have two maps sourced from different providers (OpenStreetMap at the top, and GoogleMaps at the bottom) to explore. Both maps provide different point of interest information in support to the decisionmaking. The bottom map also allows the validator to switch to a satellate imagery mode. On the right side of the dashboard, validators are provided with summary information for all the locations visited by the individual. In particular, the average distribution of time-at-location during the daytime is provided at the top. Similarly, the middle panel provide interactive distribution for the weekly patters (distribution of time spent on a given weekday at a specific location), while the bottom right panel provide panel data spanning over the entire 2020 period. Data presented in this figure are synthetic in compliance to the individual privacy preserving guidelines from the data provider.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+img <- png::readPNG("figures/validation_users.png")
+grid::grid.raster(img)
+```
+
+## Parameter optimization
+The result of the validation procedure are stored as .csv files for each country containing the label by the first independent validator in the "FirstOpinion" column, the label of the second independent validator in the "SecondOpinion" column, and the final label assigned by the conflict-breaker validator in the "FinalOpinion" column. The final labels were compared with the results of the labeling running the labeling step of the pipeline described in \@ref(labeling) joining the two over the individual unique identifier.
+
+The labeling results produced by the algorithm were restructured using the following function, which returns a dataframe of containing the individual id, stop location unique (for each individual) identifier, and the label returned by the algorithm.
+
+```{python eval=FALSE}
+def get_algorithm_labels(**args):
+  """
+  To load computed labels the following are required:
+      country:                      country of interest
+      home_period_window:           size of the window for home
+      work_period_window:           size of the window for work
+      min_periods_over_window:      minimum days/win_size on which candidate should appear to be labelled as H
+      min_periods_over_window_work: minimum days/win_size on which candidate should appear to be labelled as W
+      work_activity_average:        average time spent at work in a day over the window
+      time_fraction_work:           fraction of user time in records spent at work
+      fpath:                        path to the label results (country dependent)
+  OUTPUT: dataframe of user_id,cluster_label,AlgorithmOpinion
+  """
+  country=args["country"]
+  home_period_window=args["home_period_window"]
+  work_period_window=args["work_period_window"]
+  min_periods_over_window=args["min_periods_over_window"]
+  min_periods_over_window_work=args["min_periods_over_window_work"]
+  work_activity_average=args["work_activity_average"]
+  time_fraction_work=args["time_fraction_work"]
+
+  fname = f'hpw{home_period_window}_wpw{work_period_window}_mpow{min_periods_over_window}_mpoww{min_periods_over_window_work}_waa{work_activity_average}_tfw{time_fraction_work}_v10.csv'
+  
+  df_hw = pd.read_csv(os.path.join(fpath, fname),usecols=["user_id", "location_type", "cluster_label"])
+  df_hw = df_hw[df_hw.cluster_label.notna()]
+  df_hw['location_type'] = df_hw.location_type.fillna('O')
+  df_hw = df_hw.drop_duplicates().reset_index(drop=True)
+  df_hw = df_hw[df_hw.location_type!='O'].rename(columns={'location_type':'AlgorithmOpinion'})
+  return df_hw
+```
+
+The arguments required by this functions are those over which the parameter optimization is performed. In particular, we performed a grid-search optimization for each different combination of the following parameter configurations:
+```{python eval=FALSE}
+iter_params = {
+  "home_period_window":np.arange(14,84,7),
+  "work_period_window":np.arange(14,84,7),
+  "min_periods_over_window":np.around(np.linspace(0.1, 0.4, 5), decimals=1),
+  "min_periods_over_window_work":np.around(np.linspace(0.1, 0.4, 5), decimals=1),
+  "work_activity_average":[1800*hours for hours in range(0,5)],
+  "time_fraction_work":[0.0, 0.2, 0.4, 0.6]
+}
+```
+### Performance indicators
+In the code presented below we provide multiple performance indicators. Each one of those can be used to assess different aspects. For example, the intra-validators agreement can be compared with the average agreement between one of the two "first-step" validators and the algorithm (we do this using the Choen's kappa statistic) to get a direct comparison between validators and algorithm accord. Focusing on direct performance metrics, we instead use the F1-score computed between the final validator's opinion and the algorithm result looking for all locations correctly labelled as either "home-location" or "work-location". The F1-score is computed for each one of the two labels independently and then aggregated averaging the two results.
+
+```{python eval=FALSE}
+# To speed up computations remove all locations labelled as "O" (other) from the data. 
+def filter_o(df,col1,col2): return df[(df[col1]!='O')|(df[col2]!='O')]
+
+def compute_sample_metrics(df_sample,col_true,col_eval1):
+  a1 = 'FirstOpinion'
+  a2 = 'SecondOpinion'
+  dfte = filter_o(df_sample,col_true,col_eval1)
+  df1e = filter_o(df_sample,a1,col_eval1)
+  df2e = filter_o(df_sample,a2,col_eval1)
+  df12 = filter_o(df_sample,a1,a2)
+  
+  kappa = ((skm.cohen_kappa_score(df1e[a1],df1e[col_eval1], labels=['H','W'])+
+            skm.cohen_kappa_score(df2e[a2],df2e[col_eval1], labels=['H','W']))/2)
+  accuracy = skm.accuracy_score(dfte[col_true],dfte[col_eval1])
+  f1 = skm.f1_score(dfte[col_true],dfte[col_eval1],labels=['H','W'],average='macro')
+  f1H = skm.f1_score(dfte[col_true],dfte[col_eval1],labels=['H'],average='macro')
+  f1W = skm.f1_score(dfte[col_true],dfte[col_eval1],labels=['W'],average='macro')
+  
+  # these are metrics computed one annotator against the other.
+  kappa_ann = skm.cohen_kappa_score(df12[a1],df12[a2], labels=['H','W'])
+  accuracy_ann = skm.accuracy_score(df12[a1],df12[a2])
+  f1_ann = skm.f1_score(df12[a1],df12[a2],labels=['H','W'],average='macro')
+  f1_annH = skm.f1_score(df12[a1],df12[a2],labels=['H'],average='macro')
+  f1_annW = skm.f1_score(df12[a1],df12[a2],labels=['W'],average='macro')
+
+  return {'accuracy':accuracy,'f1':f1,'kappa':kappa,
+          'accuracy_ann':accuracy_ann,'f1_ann':f1_ann,'kappa_ann':kappa_ann,
+          'f1_annH':f1_annH,'f1_annW':f1_annW,'f1_H':f1H,'f1_W':f1W}
+```
+
+
+### Performance error estimates and bootstrapping
+As an estimate for the performance variability induced by the selected sample of individuals we use a standard bootstrapping procedure, resampling with replacement for 100 different times the individuals from those present in the validation set. Resampling is performed in such a way that guarantees the balance across activity-buckets.
+
+```{python eval=FALSE}
+def sample_shuffled_fraction_by_group(df_group,fraction=1,replace=True):
+  size = int(df_group.user_id.unique().size*fraction)
+  sampled_users = np.random.choice(df_group.user_id.unique(),replace=replace,size = size)
+  df_res = df_group.set_index('user_id')
+  return df_res.loc[sampled_users].reset_index()
+
+def balanced_bootstrapping(df_man, num_sample=100, metrics=True, col_true='FinalOpinion', col_eval1='FirstOpinion'):
+  if not metrics: df_res = pd.DataFrame(columns=df_man.columns+['sample'])
+  else:           df_res = pd.DataFrame(columns=['sample','accuracy','f1','kappa'])
+  for i_sample in range(num_sample):
+    df_samp_res = df_man.groupby('act_buck',as_index=False).apply(sample_shuffled_fraction_by_group).reset_index(drop=True)
+    df_samp_res['sample'] = i_sample+1
+    if not metrics: df_res = df_res.append(df_samp_res)
+    else:           df_res = df_res.append({'sample':i_sample+1,**compute_sample_metrics(df_samp_res,col_true,col_eval1)},ignore_index=True)
+  return df_res
+```
+
+For each parameter configuration bootstrap is performed and results are structured and stored in the form of a dictionary.
+```{python eval=FALSE}
+def get_multi_config_metrics(**args):
+  # Initialize variables from passed "args" dict
+  country=args["country"]
+  manual_labels=args["manual_labels"]
+  act_buckets = args['activity_bucket']
+  df_hw = get_algorithm_labels(**args)
+  df_hw['act_buck'] = df_hw.user_id.map(act_buckets)
+  col_true = args['col_true']
+  col_eval1 = args['col_eval1']
+  col_eval2 = args['col_eval2']
+  numer_of_samples = args['numer_of_samples']
+  
+  df_compare = (pd.merge(manual_labels, df_hw, how="outer", on=["user_id", "cluster_label","act_buck"])
+                .sort_values(by=["user_id","cluster_label","FinalOpinion","AlgorithmOpinion"])
+                .drop_duplicates(subset=["user_id","cluster_label"])
+                .reset_index(drop=True)
+                .fillna({'Country':country,'FirstOpinion':'O','SecondOpinion':'O','AlgorithmOpinion':'O','FinalOpinion':'O'}))
+  df_compare = df_compare[(df_compare.FinalOpinion!='O')|(df_compare.AlgorithmOpinion!='O')]
+  
+  # Compute performance metrics
+  accuracy = skm.accuracy_score(df_compare[col_true], df_compare[col_eval1])
+  kappa = (skm.cohen_kappa_score(df_compare['FirstOpinion'], df_compare[col_eval1])+skm.cohen_kappa_score(df_compare['SecondOpinion'], df_compare[col_eval1]))/2
+  recall = skm.recall_score(df_compare[col_true], df_compare[col_eval1],labels=['H','W'], average="macro")
+  precision = skm.precision_score(df_compare[col_true], df_compare[col_eval1],labels=['H','W'], average="macro")
+  f1 = skm.f1_score(df_compare[col_true], df_compare[col_eval1],labels=['H','W'], average="macro")
+  cf = skm.confusion_matrix(df_compare[col_true], df_compare[col_eval1])
+
+  # Estimate performance errors via Bootstrapping
+  res = balanced_bootstrapping(df_compare,num_sample=numer_of_samples,col_true=col_true,col_eval1=col_eval1)
+  m = res.mean().iloc[1:]
+  m = m.sort_index()
+  m.index=['fold_acc','fold_annotators_acc','fold_f1','fold_f1H','fold_f1W','fold_annotators_f1','fold_annotators_f1H','fold_annotators_f1W','fold_kap','fold_annotators_kap']
+  s = res.std().iloc[1:]
+  s = s.sort_index()
+  s.index=['fold_acc_std','fold_annotators_acc_std','fold_f1_std','fold_f1H_std','fold_f1W_std','fold_annotators_f1_std','fold_annotators_f1H_std','fold_annotators_f1W_std','fold_kap_std','fold_annotators_kap_std']
+  
+  # Collect and structure results into a dictionary
+  the_dict = {"country":country,
+              "home_period_window":int(args['home_period_window']),
+              "work_period_window":int(args['work_period_window']),
+              "min_periods_over_window":float(args['min_periods_over_window']),
+              "min_periods_over_window_work":float(args['min_periods_over_window_work']),
+              "work_activity_average":float(args['work_activity_average']),
+              "time_fraction_work":float(args['time_fraction_work']),
+
+              "f1":f1,"accuracy":accuracy,"kappa":kappa,
+              "cf":cf,**m,**s}
+  return the_dict
+```
+
+### Parallel bootstrapping and optimization result storage
+The enormous number of combination of parameter configuration we have to explore can be speeded up by multiprocess computation of the different configurations. Here, we present a possible solution which uses the [python "joblib" library]{https://joblib.readthedocs.io/en/latest/}.
+Parameter configurations are stored as a list of dictionaries which is then passed to the "Parallel" function.
+
+```{python eval=FALSE}
+from joblib import Parallel,delayed
+
+results_save_path = "SAVING_PATH_FOR_CONFIGURATION_PERFORMANCE_EVALUTATION"
+numer_of_samples = 100
+
+c_dates = {'BR': '2021-01-01', 'CO': '2021-01-01', 'ID': '2021-01-01',
+           'ZA': '2021-01-01', 'MX': '2020-12-01', 'PH': '2021-01-01'}
+countries = ['CO','PH','MX','BR','ID']
+result_list = []
+for country in countries:
+  print(country)
+  df_man =  get_labels(country)
+  activity_bucket = df_man.drop_duplicates(['user_id','act_buck']).set_index('user_id').act_buck.dropna().to_dict()
+  init_params = {"country":[country],"c_dates":[c_dates]}
+  parameters = {**init_params, **iter_params}
+  additional_params = {"numer_of_samples":numer_of_samples,"activity_bucket":activity_bucket,"manual_labels":df_man, 
+                       'col_true':'FinalOpinion','col_eval1':'AlgorithmOpinion','col_eval2':None}
+
+  results_df = pd.DataFrame(columns=["country", "home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average", "time_fraction_work", "accuracy", "recall", "precision", "f1", "fold_f1","fold_acc","fold_kap","fold_f1_sem","fold_acc_sem","fold_kap_sem", "cf"])
+  
+  keys = list(parameters)
+  keyvals = []
+  for values in itertools.product(*map(parameters.get, keys)):
+    keyval = dict(zip(keys, values))
+    keyval = {k:str(v) for k, v in keyval.items()}
+    keyval = {**keyval,**additional_params}
+    keyvals.append(keyval)
+  
+  result_list += Parallel(n_jobs=32)(delayed(get_multi_config_metrics)(**keyval) for j,keyval in enumerate(keyvals[:]))
+results_df = pd.DataFrame.from_records(result_list)
+results_df['samples'] = numer_of_samples
+results_df.to_csv(results_save_path+f"final_statistics_with_{numer_of_samples}_folding_v10.csv", index=False)
+```
+
+## Parameter configuration selection
+While for each country a different optimal configuration can be found, leveraging over the performance error estimates, it is possible to check for common configuartions across different countries which are compatible (i.e. the difference between the optimal configuration F1 minus its standard deviation is smaller than the shared configuration plus its standard deviation) with the country specific best configuration. Best configuration is selected among those compatible for all states by means of the harmonic average of each country F1 score.
+```{python eval=FALSE}
+def get_country_compatibilities(res_country):
+  '''
+    INPUT:  pandas dataframe resulting from bootstrapped optimization
+    OUTPUT: pandas dataframe filtered to keep only configurations which are compatible with the best one
+  '''
+  arg_max = res_country.loc[res_country.fold_f1.idxmax()]
+  results_df_fold_f1_max = arg_max.fold_f1
+  results_df_fold_f1_mstd = arg_max.fold_f1_std
+  return res_country[res_country.fold_f1+res_country.fold_f1_std>=results_df_fold_f1_max-results_df_fold_f1_mstd]
+```
+
+We report here, an example to get (if any) a common best parameter configuration for five different countries, namely, Mexico, Brazil, Indonesia, Philippines, and Colombia. 
+```{python eval=FALSE}
+countries = ['MX','BR','ID','PH','CO']
+numer_of_samples = 100
+
+results_df = pd.read_csv(results_save_path+f"final_statistics_with_{numer_of_samples}_folding_v10.csv")
+res_opt = results_df.groupby('country',as_index=False).apply(get_country_compatibilities)
+res_opt = res_opt.set_index(['country',"home_period_window","work_period_window",
+                             "min_periods_over_window","min_periods_over_window_work",
+                             "work_activity_average","time_fraction_work"])
+                             
+### Find the best common optimum (optimization function is the max of the average f1 score)
+res_tmp = results_df.drop_duplicates(["country","home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"])
+res = res_tmp.groupby(["home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"]).mean()
+res['fold_f1_harmonic'] = res_tmp.groupby(["home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"]).fold_f1.apply(hmean)
+res = res.sort_values('fold_f1_harmonic',ascending=False)
+res.reset_index(inplace=True)
+i=0
+while True:
+    test_index = res.iloc[i][["home_period_window", "work_period_window", "min_periods_over_window", "min_periods_over_window_work", "work_activity_average","time_fraction_work"]].tolist()
+    testing=[]
+    j=0
+    for country in countries:
+      test = tuple([country]+test_index)
+      if test in res_opt.index.tolist(): j+=1
+    if j == len(countries):        print(f"Best common config found: {i}: {test_index}"); break
+    else: i+=1
+    if i>10000: print('Maximum iterations Exceeded. No common optimum found, increase/modify acceptance region!'); break
+```
+
+In our case, the best common configiguration found is: 
+- home_period_window: 49.0,
+- work_period_window: 49.0,
+- min_periods_over_window: 0.2,
+- min_periods_over_window_work: 0.2,
+- work_activity_average: 3600.0,
+- time_fraction_work: 0.0
+
+These values are the one used to label the locations in the analysis presented in the book.
