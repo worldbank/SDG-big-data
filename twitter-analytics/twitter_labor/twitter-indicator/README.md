@@ -16,7 +16,7 @@ Each file contains the following variables (in order):
 - `n_users` is the total number of Twitter users observed each month
 - Twitter indicators named `pct_X` 
   - `X` denotes the different labels related to the Twitter users' unemployment status
-  - Labels include `is_hired_1mo`, `is_unemployed`, `job_offer`, `job_search`, and `lost_job_1mo`
+  - Labels include `is_hired_1mo, `is_unemployed`, `job_offer`, `job_search`, and `lost_job_1mo`
 - Twitter indicators for different sample splits of the Twitter users.
   - `pct_X_male` uses Twitter users whose gender is classified as male
   - `pct_X_female` uses Twitter users whose gender is classified as female
