@@ -3,10 +3,10 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">GPS Mobility Analysis</a></li>
+        <li><a href="./">News Analysis</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/worldbank/SDG-big-data/tree/GPS-analytics/%s
+    edit: https://github.com/worldbank/SDG-big-data/tree/news-analytics/%s
     download: ["pdf", "epub"]
 bookdown::pdf_book:
   includes:
