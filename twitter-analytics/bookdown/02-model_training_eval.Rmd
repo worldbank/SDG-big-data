@@ -73,10 +73,9 @@ def get_sampled_indices(n_sample=10, n_cutoff=6):
         sampled_ranks.extend(new_ranks)
     return sampled_points, sampled_ranks
 ```
+We then labelled these sampled tweets, which allowed us to get the percentage of positive tweets for given points in the rank distribution. Below is an example of an evaluation plot for the class `job_search` with the tweet rank as x-axis and the percentage of positive tweets for the class `job_search` as y-axis.
 
-We then labelled these sampled tweets, which allowed us to get an estimate of the precision of the classifiers (see figure XXX).
-
-**ADD FIGURE with ranks x-axis and percentage of positives y-axis**
+[Precision (y-axis) as a function of tweet rank based on confidence score i.e. positive label probability output by the model (x-axis).](/figures/job_search.png)
 
 ## Active learning
 
