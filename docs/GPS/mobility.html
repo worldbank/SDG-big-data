@@ -24,14 +24,14 @@
 <meta name="author" content="Chapter 6 Mobility Patterns | GPS Analytics Group" />
 
 
-<meta name="date" content="2021-08-26" />
+<meta name="date" content="2021-08-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="defining-home-and-work-locations.html"/>
+<link rel="prev" href="labeling.html"/>
 <link rel="next" href="migration.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -165,10 +165,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3" data-path="stops.html"><a href="stops.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>4.3</b> Appending pings from recent dates</a></li>
 <li class="chapter" data-level="4.4" data-path="stops.html"><a href="stops.html#stops-geocoding"><i class="fa fa-check"></i><b>4.4</b> Stops geocoding</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html"><i class="fa fa-check"></i><b>5</b> Defining Home and Work Locations</a>
+<li class="chapter" data-level="5" data-path="labeling.html"><a href="labeling.html"><i class="fa fa-check"></i><b>5</b> Defining Home and Work Locations</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html#seasonal-patterns"><i class="fa fa-check"></i><b>5.1</b> Seasonal patterns</a></li>
-<li class="chapter" data-level="5.2" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html#code-1"><i class="fa fa-check"></i><b>5.2</b> Code</a></li>
+<li class="chapter" data-level="5.1" data-path="labeling.html"><a href="labeling.html#seasonal-patterns"><i class="fa fa-check"></i><b>5.1</b> Seasonal patterns</a></li>
+<li class="chapter" data-level="5.2" data-path="labeling.html"><a href="labeling.html#code-1"><i class="fa fa-check"></i><b>5.2</b> Code</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="mobility.html"><a href="mobility.html"><i class="fa fa-check"></i><b>6</b> Mobility Patterns</a>
 <ul>
@@ -187,7 +187,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2" data-path="migration.html"><a href="migration.html#user-selection"><i class="fa fa-check"></i><b>7.2</b> User selection</a></li>
 <li class="chapter" data-level="7.3" data-path="migration.html"><a href="migration.html#code-2"><i class="fa fa-check"></i><b>7.3</b> Code</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>8</b> Parameter Optimization</a></li>
+<li class="chapter" data-level="8" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>8</b> Location labeling and parameter optimization</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="optimization.html"><a href="optimization.html#ground-truth"><i class="fa fa-check"></i><b>8.1</b> Ground truth</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="optimization.html"><a href="optimization.html#construction"><i class="fa fa-check"></i><b>8.1.1</b> Construction</a></li>
+<li class="chapter" data-level="8.1.2" data-path="optimization.html"><a href="optimization.html#validation"><i class="fa fa-check"></i><b>8.1.2</b> Validation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="optimization.html"><a href="optimization.html#parameter-optimization"><i class="fa fa-check"></i><b>8.2</b> Parameter optimization</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="optimization.html"><a href="optimization.html#performance-indicators"><i class="fa fa-check"></i><b>8.2.1</b> Performance indicators</a></li>
+<li class="chapter" data-level="8.2.2" data-path="optimization.html"><a href="optimization.html#performance-error-estimates-and-bootstrapping"><i class="fa fa-check"></i><b>8.2.2</b> Performance error estimates and bootstrapping</a></li>
+<li class="chapter" data-level="8.2.3" data-path="optimization.html"><a href="optimization.html#parallel-bootstrapping-and-optimization-result-storage"><i class="fa fa-check"></i><b>8.2.3</b> Parallel bootstrapping and optimization result storage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="optimization.html"><a href="optimization.html#parameter-configuration-selection"><i class="fa fa-check"></i><b>8.3</b> Parameter configuration selection</a></li>
+</ul></li>
 <li class="chapter" data-level="9" data-path="windex.html"><a href="windex.html"><i class="fa fa-check"></i><b>9</b> Wealth Index</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="windex.html"><a href="windex.html#variables-to-estimate-the-social-gap-index-in-mexico"><i class="fa fa-check"></i><b>9.1</b> Variables to estimate the Social Gap Index in Mexico</a></li>
@@ -552,7 +566,7 @@ Figure 6.1: Results for six different countries (rows): Brazil, Colombia, Indone
           </div>
         </div>
       </div>
-<a href="defining-home-and-work-locations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="labeling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="migration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
