@@ -75,10 +75,22 @@ def get_sampled_indices(n_sample=10, n_cutoff=6):
 ```
 We then labelled these sampled tweets, which allowed us to get the percentage of positive tweets for given points in the rank distribution. Below is an example of an evaluation plot for the class `job_search` with the tweet rank as x-axis and the percentage of positive tweets for the class `job_search` as y-axis.
 
-[Precision (y-axis) as a function of tweet rank based on confidence score i.e. positive label probability output by the model (x-axis).](/figures/job_search.png)
+![Precision (y-axis) as a function of tweet rank based on confidence score i.e. positive label probability output by the model (x-axis).](figures/job_search.png)
 
 ## Active learning
 
 While determining an initial list of n-grams to build a labelled set from is a good strategy to get a decent classification performance, it is unlikely to capture all the linguistic subtleties humans use on social media to talk about their labor market situation. In this case, we ideally need to label more tweets and need to determine which are the most informative to respect our labeling budget constraint.
 
-When faced with a classification task in which the minority class is extremely rare, active learning allows to minimize the number of labels required for a classifier to achieve good performance. At each iteration, a trained model is used to query new samples expected to lead to high improvements in validation accuracy. These samples are, in turn, labeled by humans and then used for training in the next iteration of the model. There are two main approaches to identifying the most informative samples: uncertainty sampling \cite{lewis1994sequential} and diversity sampling \cite{cohn1994improving}, which have been coined as the ``two faces of active learning''~\cite{dasgupta2011two}. While uncertainty sampling defines the most informative samples as the ones the model is the most uncertain about (e.g. in a binary context, this boundary is at 0.5), diversity sampling consists of selecting examples to label from different homogeneous clusters of the feature space.
+When faced with a classification task in which the minority class is extremely rare, active learning allows to minimize the number of labels required for a classifier to achieve good performance. At each iteration, a trained model is used to query new samples expected to lead to high improvements in validation accuracy. These samples are, in turn, labeled by humans and then used for training in the next iteration of the model. There are two main approaches to identifying the most informative samples: uncertainty sampling (Lewis and Gale, 1994) and diversity sampling (Cohn et al., 1994), which have been coined as the ``two faces of active learning''(Dasgupta, 2011). While uncertainty sampling defines the most informative samples as the ones the model is the most uncertain about (e.g. in a binary context, this boundary is at 0.5), diversity sampling consists of selecting examples to label from different homogeneous clusters of the feature space.
+
+Here, we provide an example on how to select the most informative tweets to label using uncertainty sampling on uncalibrated BERT confidence scores. In this setting, we sample tweets with BERT confidence scores around 0.5. Having the data stored in a dataframe `df` containing the confidence scores in the `score` column, we create a `modified_score` which is the confidence score minus 0.5. We then select 50 tweets with the smallest positive `modified_score` and 50 tweets with the highest negative `modified_score`.
+
+```{python eval=FALSE}
+df['modified_score'] = df['score'] - 0.5
+above_threshold_df = df.loc[df['modified_score'] > 0].nsmallest(50, 'modified_score')
+below_threshold_df = df.loc[df['modified_score'] < 0].nlargest(50, 'modified_score')
+sample_df = pd.concat([above_threshold_df, below_threshold_df]).reset_index(drop=True)
+```
+
+In the end, the `sample_df` are sent to labelling. When labelled, the new samples are added to the existing labels and a new train-test split is applied. The training and evaluation then takes place as described earlier.  
+
