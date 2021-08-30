@@ -1,13 +1,19 @@
-# Geocode
+# Geocode {#geocode}
 
-As a first step in our pipeline we want to associate to each GPS data point (ping) the smallest administrative unit available
-in our shapefiles for one country. This will allow us to join the gps data with the census
-and the stringency index are indices based on the same shapefiles, and to group by larger administrative units (such
-as city or region for more general analysis. We will refer to the process of associating a ping to a shape in the county's
-shapefile as geocoding.
-The data we are utilizing was provided by Veraset. If a user has installed one of the Veraset's
-partners' apps on his or her mobile phone, the users' position and position's accuracy is sent to the Veraset server where
-it is recorded at regular intervals.
+One of the first step in our pipeline is to associate to each point of a gps trace for a user or an user's stop location
+the smallest administrative unit available
+in our shapefiles for one country. 
+This will allow us to join the gps data with the census
+and other indices based on the same shapefiles, and to group by larger administrative units (such
+as city or region for more general analysis. We will refer to the process of associating a (latitude,longitude) tuple to a shape (corresponding usually to the smallest availabe admin division)
+as geocoding.
+
+In this example, we will show how this can be done for the single pings that compose an user's 
+GPS trace, but the procedure is exactly the same for the stop locations case described in \@ref(stops)
+
+// The data we are utilizing was provided by Veraset. If a user has installed one of the Veraset's
+// partners' apps on his or her mobile phone, the users' position and position's accuracy is sent to the Veraset server where
+// it is recorded at regular intervals. 
 
 ## Efficient spatial joining and Geospatial Indexing
 To be able to deal with billions of points, we need an efficient way to perform spatial queries. Since it is not feasible
@@ -17,7 +23,8 @@ As geo-spatial index we use the [H3](https://eng.uber.com/h3/) indexing created 
 Since the admin shapes cannot be exactly covered by hexagons that are included in the shape. The hexagon should have a size
 that is reasonable for a quick spatial join and hence be quite large: this implies we
 run the risk of mis-joining pings that end up close to the borders of the shapes.
-## TODO: put an image or create one
+
+// TODO: put an image or create one
 
 To overcome this problem we perform two joins: the first one will use a geospatial index, and will get the shapes that are close enough to
 the points we want to geocode, after buffering the shapes to be sure that any hexagon that is around the border of a shape

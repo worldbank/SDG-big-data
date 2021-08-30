@@ -1,0 +1,14 @@
+# Labor market analysis with Twitter data
+
+
+Online social networks, such as Twitter, play a key role in the diffusion of information on jobs. For instance, companies and job aggregators post job offers while users disclose their labor market situation seeking emotional support or new job opportunities through their online network. In this context, Twitter data can be seen as a complementary data source to official statistics as it provides timely information about labor market trends.
+
+In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. In practice, we intend to recognize disclosures about being unemployed, losing one's job or being hired, searching for a job as well as job offers. We focus on three countries for this study: the USA, Mexico and Brazil. The methodology is presented in this [IC2S2 2020 presentation](https://www.youtube.com/watch?v=ZxFrtUW2dYA) and detailed in Tonneau et al. (2021, in submission). Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends. **(add reference if existing)**
+
+
+In this book, we present the following:
+- building a training set allowing to recognize disclosures on personal job situation in tweets
+- finetuning and evaluating a BERT-based classifier
+- improving a classifier's performance through active learning
+
+
