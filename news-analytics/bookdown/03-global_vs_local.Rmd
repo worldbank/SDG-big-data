@@ -1,0 +1,208 @@
+# Global vs. local news sentiment indicators
+
+Two types of articles constitute our corpus: local news and multi-country news.
+
+Local news is tagged with only one country and isolates local news from country-specific news articles. A typical local article is the one discussing labor market laws in Argentina reported above. 
+
+A typical multi-country article is one reported below, entitled "Fears of Brazilian devaluation hit emerging markets". The article mentions multiple countries and their interrelations: 
+
+<div class="panel panel-info">
+
+<div class="panel-body">
+
+Title: Fears of Brazilian devaluation hit emerging markets
+
+Timestamp: 1998-09-11 
+
+Text: 
+
+LONDON, Sept 11 (Reuters)---Emerging market currencies braced for further knocks on Friday amid fears that Brazil might give in to devaluation pressure and unleash a fresh onslaught around the globe. The rouble continued to gain ground in thin trade amid hopes of an imminent end to Russia's political deadlock. But the Hungarian forint and Polish zloty slid on global bearishness after Thursday's huge stock market falls in Latin America.
+
+Most Asian currencies held steady, helped by the firmer yen as the dollar sagged on President Bill Clinton's political woes and speculation about an impending U.S. interest rate cut. The Indonesian rupiah rebounded from Thursday's sharp fall. With the market discounting the near-certainty that Russia's parliament would approve Yevgeny Primakov as prime minister later on Friday, attention focused mainly on whether Brazilian markets would see another hammering after Thursday's collapse. "It's like a tidal wave waiting offshore, and everybody's hoping it'll go in the other direction. If it hits Rio it'll hit everywhere else," said Nigel Rendell, an emerging markets strategist at Santander Investment Bank in London. A huge exodus of dollars on Thursday from Brazil's foreign exchange markets, estimated at over \$2 billion, panicked the key Sao Paulo stock market into a plunge of nearly 16 percent, its biggest one-day drop for nearly 11 years. The rout sparked similar slides across the region and fed general fears of a world economic slowdown, prompting steep market falls in Japan and Hong Kong early on Friday. Latin American currencies are little traded in London, and analysts said the market was waiting for direction from Wall Street's opening and the start of New York currency trade. As an early indication of sentiment, the region's most liquid unit, the Mexican peso, lost further ground from New York's closing levels. By 1215 GMT it was 10.65 bid to the dollar, just off Thursday's historic low of 10.685. Brazil, heavily dependent on capital inflows to support a pronounced short- term debt burden, has come under particular pressure from the flight investment capital from emerging markets. The central bank hiked its key interest rate overnight by 20 points to nearly 50 percent to try to halt the massive outflows. Analysts say it is touch and go whether Brazil will devalue the real before presidential elections on October 4, although officials have repeatedly denied devaluation is on the cards. "It does think it is likely. The only question is whether it will come before or after the election," said David Boren, an emerging market strategist at Daiwa Europe in London. Analysts say Brazil still has enough reserves---now around \$50 billion---to continue propping up the real but delaying what many see as the inevitable may leave the country financially depleted and less able to engineer an orderly devaluation in uncertain global market conditions. If Brazil devalues, it will almost certainly spark a fresh wave of pressure on emerging market currencies worldwide. Analysts said Argentina would be among the first in line, although the country had sufficient reserves in relation to its money supply to defend its currency board system. "With market focus on possible devaluations in Latam, China's currency stance may again come under market scrutiny," Standard Chartered Bank said on Friday in a note to clients. China has vowed not to devalue, and news on Thursday of a 23 percent rise in the country's trade surplus in the first eight months of the year eased selling pressure on the yuan to the extent that the central bank was spotted buying dollars. Analysts said Hong Kong's currency board would also come under more pressure if the real fell. Other potential victims included South Africa and even the stronger Central European countries such as Poland and Hungary, possibly forcing Budapest to widen its 4.5 percent wide trading band for the forint. The forint was glued with to the bottom of its target band on Friday. The zloty also swung sharply lower and was was quoted only 1.31/1.03 percent above its target basket parity at 1215 GMT, compared with Thursday's fixing of 3.97 percent above parity. The rouble firmed to around 10.5 bid to the dollar from late Thursday levels of 12.5, buoyed partly by hopes of some political stability. But volume remained very thin, and analysts said the rally was unlikely to last as the new government looked set to print money to clear wage and pension arrears. 
+
+FOREX MARKET SNAPSHOT. The following is a snapshot of emerging markets currency rates. * ASIA AFX=) * Chinese yuan CNY=) at 8.279 vs 8.2798 on Thursday * New Taiwanese dollar TWD=) 34.47 vs 34.4 * Indonesian rupiah IDR=) 11,600 vs 11,900 * Thai baht THB=TH) at 40.65 per dollar vs 40.7 * Philippine peso PHP=) 43.4 per dollar vs 43.6 * South Korean won KRW=) at 1,365 per dollar vs 1,367 * Indian rupee INR=) 42.41 per dollar vs 42.4 * EUROPE EUROPEFX= * Russian rouble RUB=) on MICEX Selt electronic trading system at 10.51/13.15 per dollar vs average rate of 12.375 on Thursday. EMTA indicative rate at 11.238. * Zloty 1.31 percent above target basket parity vs 3.97 percent at Thursday's fixing. * Mark/Czech crown DEMCZK=) at 18.03 bid vs 17.838 * Hungarian forint DEMHUF=) unchanged from Thursday at 2.25 percent below parity against a target basket * Slovak crown DEMSKK=) fixed at 5.35 percent below target basket vs 5.80 percent on Thursday * Ukrainian hryvnia UAH=) unchanged at 3.10 per dollar * Romanian leu ROL=) at 9,045 per dollar vs 9,025 * AFRICA AFRICAFX= \& MIDEAST MEFX=) * Israeli shekel ILS=) 3.8508 bid on dollar from Thursday's 3.8568 * South African rand ZAR=) 6.3 per dollar vs 6.2555 * Kenyan shilling KES=) at 59.8 per dollar vs 59.9 * LATIN AMERICA LATAMFX= * Mexican peso MXN=) at 10.65 per dollar vs 10.48 * Brazil's real BRL=) at 1.1786 per dollar vs 1.1789 * Venezuela bolivar VEB=) unchanged at 586.9 per dollar. (C)  1998.
+
+Topics: Money/Forex Markets, Foreign Exchange News, Commodity/Financial Market News
+
+Locations: Africa, Argentina, Asia, Brazil, Central America, China, Emerging Market Countries, Eastern Asia, European Union Countries, Central/Eastern Europe, Europe, Hong Kong, Hungary, Indonesia, Japan, Latin America, Mexico, North America, Poland, Russia, South Africa, South America, Southeast Asia, Southern Africa, United Kingdom, United States, Arizona, CIS Countries, Western U.S., Western Europe
+
+</div>
+</div>
+
+The presence of multi-country news mechanically increases the co-movement between our country-specific sentiment indices, suggesting that our previous estimates confound the impact of local and multi-country news. In the following sections, we distinguish the sentiment conveyed in local news from that of multi-country news. 
+
+## Local news sentiment indicator
+
+Local news sentiment isolates local news from country-specific news articles.
+
+Specifically, we recompute the sentiment index of each country after excluding any article mentioning any other country. Applying this filter allows us to capture the sentiment of purely local news.
+
+```{stata, eval=FALSE}
+insheet using "..\..\replication\data\features-1991-1996-missing-countries.csv", comma clear
+compress
+drop v1
+tempfile _tmp
+save `_tmp'
+
+insheet using "..\..\replication\data\news.csv", comma clear
+compress
+d
+append using `_tmp', gen(source)
+
+* Tags of topic-specific articles
+
+cap ren *commodity* *commdty*
+cap ren *monetary* *money*
+cap ren *external* *extrnl*
+cap ren *political* *polit*
+cap ren *general* *gen*
+cap ren *policy* *pol*
+cap ren *performance* *perform*
+cap ren *corporate* *corp*
+cap ren *derivative* *deriv*
+cap ren *market* *mkt*
+cap ren *economic* *ecn*
+cap ren *government* *govt*
+cap ren *indicators* *ind*
+cap ren *financial* *fin*
+cap ren *payments* *pay*
+cap ren *securities* *scrty*
+cap ren *industrial* *indl*
+cap ren *forex* *fx*
+cap ren *pay* **
+cap ren *mkts* *mkt*
+cap ren *bond* **
+cap ren *perform* **
+cap ren *commdty* *comm*
+cap ren *finance* *fin*
+
+* Local baseline sentiment excluding topics with no signal
+
+gen sentiment_local = positive - negative if local==1 & ///
+	!(table==1 | tables==1 | tradeextrnl==1 | ecnind==1 | debtmkt==1)
+
+gen n_articles_local = (words!=0) & local==1 & ///
+	!(table==1 | tables==1 | tradeextrnl==1 | ecnind==1 | debtmkt==1)
+
+ren date str_date
+gen date = date(str_date, "YMD", 2000), after(str_date)
+format date %tdnn/dd/CCYY
+
+keep country date sentiment* n_articles*
+
+collapse (mean) sentiment* (sum) n_articles*, by(country date)
+
+compress
+
+gen iso2 = "", after(country)
+replace iso2 = "AR" if country=="Argentina"
+replace iso2 = "BR" if country=="Brazil"
+replace iso2 = "CL" if country=="Chile"
+replace iso2 = "CN" if country=="China"
+replace iso2 = "FR" if country=="France"
+replace iso2 = "DE" if country=="Germany"
+replace iso2 = "GR" if country=="Greece"
+replace iso2 = "IN" if country=="India"
+replace iso2 = "ID" if country=="Indonesia"
+replace iso2 = "IE" if country=="Ireland"
+replace iso2 = "IT" if country=="Italy"
+replace iso2 = "JP" if country=="Japan"
+replace iso2 = "KR" if country=="Korea"
+replace iso2 = "MY" if country=="Malaysia"
+replace iso2 = "MX" if country=="Mexico"
+replace iso2 = "PE" if country=="Peru"
+replace iso2 = "PH" if country=="Philippines"
+replace iso2 = "PL" if country=="Poland"
+replace iso2 = "PT" if country=="Portugal"
+replace iso2 = "RU" if country=="Russia"
+replace iso2 = "ZA" if country=="South Africa"
+replace iso2 = "KR" if country=="South Korea"
+replace iso2 = "ES" if country=="Spain"
+replace iso2 = "TH" if country=="Thailand"
+replace iso2 = "TR" if country=="Turkey"
+replace iso2 = "US" if country=="United States"
+	tab iso2, m
+
+* Convert to z-scores within each country
+
+ds sentiment*
+
+foreach vv in `r(varlist)' {
+	
+	bys iso2: egen _mean = mean(`vv')
+	bys iso2: egen _sd = sd(`vv')
+	
+	replace `vv' = (`vv' - _mean) / _sd
+	
+	drop _mean _sd
+}
+
+compress
+d
+
+save "..\indicator\sentiment_local.dta", replace
+```
+
+## Global news sentiment indicator
+
+Global news sentiment index captures the tone of news published in the world every day. 
+
+We extract a common factor from our country-specific sentiment series using a Kalman filter. Formally, we estimate a single (latent) factor model in the spirit of [Stock and Watson (2016)](https://doi.org/10.1016/bs.hesmac.2016.04.002).
+
+\begin{align*}
+	S_{i,t} &= P_{i} F_{t} + u_{i,t} \\
+	F_{t} &= A_{1} F_{t-1} + A_{2} F_{t-2} + \dots + v_{t} \\
+	u_{i,t} &= C_{1} u_{i,t-1} + C_{2} u_{i,t-2} + \dots + e_{i,t},
+\end{align*}
+where $S_{i,t}$ refers to the news sentiment index in country $i$ on day $t$, $F_{t}$ is the (unobserved) global news sentiment factor at time $t$, and $P_{i}$ is the country-specific factor loading. We use an AR(8) for the factor structure and estimate the model using Maximum Likelihood.
+
+The data coverage for news articles does not start at the same time for all countries. In order to ensure that all countries in our sample have the longest time coverage, we impute these missing observations with zeroes when we estimate the factor model to extract the global news sentiment.
+
+```{stata, eval=FALSE}
+use "..\indicator\sentiment_country.dta", clear
+
+keep iso2 date sentiment_country
+
+reshape wide sentiment_country, i(date) j(iso2) string
+
+tsset date
+tsfill
+
+keep if year(date) > 1990 
+
+ds sentiment_country*
+
+loc vlist = "`r(varlist)'"
+
+foreach vv in `vlist' {
+	
+	di "replace `vv' = 0 if mi(`vv')"
+	replace `vv' = 0 if mi(`vv')
+	
+}
+compress
+
+dfactor ((`vlist') = , noconstant) (f = , ar(1/8))
+
+ereturn list
+
+predict sentiment_global if e(sample), factor smethod(filter)
+
+* Convert to z-scores
+
+ds sentiment*
+
+foreach vv in `r(varlist)' {
+	
+	bys iso2: egen _mean = mean(`vv')
+	bys iso2: egen _sd = sd(`vv')
+	
+	replace `vv' = (`vv' - _mean) / _sd
+	
+	drop _mean _sd
+}
+
+compress
+save "..\indicator\sentiment_global.dta", replace
+```
+
