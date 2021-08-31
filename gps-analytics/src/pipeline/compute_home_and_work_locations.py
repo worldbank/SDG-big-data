@@ -1,14 +1,7 @@
 from wbgps import *
-from pyspark import StorageLevel
 import pyspark.sql.functions as F
-from pyspark.sql.functions import pandas_udf, PandasUDFType, col, lit, lag, countDistinct, to_timestamp
 from pyspark.sql.types import StructType, StructField, LongType, StringType, IntegerType, TimestampType, DoubleType
-from pyspark.sql.window import Window
-from pyspark.sql.functions import udf
-import pandas as pd
-import numpy as np
 import os
-from datetime import datetime, timedelta
 
 #  we need to define this
 #  start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average, country, end_date, suffix
@@ -16,8 +9,10 @@ from datetime import datetime, timedelta
 results_path_spark = f"/mnt/Geospatial/results/veraset/{c.country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{c.end_date}/"
 df = spark.read.parquet(os.path.join(c.results_path_spark, 'stops_geocoded'))
 
-df = df.withColumn("t_start_hour", F.hour(F.to_timestamp("t_start"))).withColumn("t_end_hour", F.hour(F.to_timestamp("t_end"))).withColumn(
-    'weekday', F.dayofweek(F.to_timestamp("t_start"))).withColumn("date", F.to_timestamp("t_start")).withColumn("date_trunc", F.date_trunc("day", F.col("date")))
+df = df.withColumn("t_start_hour", F.hour(F.to_timestamp("t_start"))).withColumn("t_end_hour", F.hour(
+    F.to_timestamp("t_end"))).withColumn(
+    'weekday', F.dayofweek(F.to_timestamp("t_start"))).withColumn("date", F.to_timestamp("t_start")).withColumn(
+    "date_trunc", F.date_trunc("day", F.col("date")))
 
 df = df.withColumnRenamed(
     'latitude', 'lat').withColumnRenamed('longitude', 'lon')
@@ -42,7 +37,8 @@ schema_df = StructType([
     StructField('t_end_hour', IntegerType(), True),
     StructField("date_trunc", TimestampType(), True)
 ])
-res_df = df.groupBy("user_id").apply(compute_home_work_label_dynamic, args = (start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average))
+res_df = df.groupBy("user_id").apply(compute_home_work_label_dynamic, args=(
+start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average))
 
 fname = f"personal_stop_location_{c.suffix}"
 res_df.write.mode("overwrite").parquet(

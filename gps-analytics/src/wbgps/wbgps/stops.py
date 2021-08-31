@@ -1,14 +1,8 @@
 from collections import Counter
 from cpputils import get_stationary_events
 from datetime import datetime, timezone, timedelta
-from infomap import Infomap
-from infostop.utils import query_neighbors
 import numpy as np
-import pandas as pd
-import os
-import pyspark.sql.functions as F
-from pyspark.sql.functions import lag, col, countDistinct, to_timestamp, lit, from_unixtime,  pandas_udf, PandasUDFType
-from pyspark.sql.window import Window
+from pyspark.sql.functions import lag, col, countDistinct, to_timestamp, lit, from_unixtime, pandas_udf, PandasUDFType
 from pyspark.sql.types import *
 from sklearn.cluster import DBSCAN
 
@@ -45,9 +39,9 @@ def compute_intervals(centroids, labels, timestamps, accuracy, input_data):
 def data_assertions(data):
     assert np.all(data[:-1, 2] <= data[1:, 2]), "Timestamps must be ordered"
     assert (np.min(data[:, 0]) > -90 and np.max(data[:, 0]) <
-            90),         "lat (column 0) must have values between -90 and 90"
+            90), "lat (column 0) must have values between -90 and 90"
     assert (np.min(data[:, 1]) > -180 and np.max(data[:, 1]) <
-            180),    "lon (column 1) must have values between -180 and 180"
+            180), "lon (column 1) must have values between -180 and 180"
 
 
 def run_infostop(data, r1, min_staying_time, min_size, max_time_between, distance_metric):
@@ -56,8 +50,10 @@ def run_infostop(data, r1, min_staying_time, min_size, max_time_between, distanc
         data[:, :3], r1, min_size, min_staying_time, max_time_between, distance_metric)
     return compute_intervals(centroids, stat_labels, data[:, 2], data[:, 3], data)
 
+
 def to_unix_int(date):
     return int(date.replace(tzinfo=timezone.utc).timestamp())
+
 
 schema_df = StructType([
     StructField('user_id', StringType(), False),
@@ -69,9 +65,11 @@ schema_df = StructType([
     StructField('median_accuracy', DoubleType(), True),
     StructField('total_pings_stop', LongType(), True),
 ])
-@pandas_udf(schema_df, PandasUDFType.GROUPED_MAP)
-def get_stop_location(df, radius, stay_time, min_pts_per_stop_location, max_time_stop_location, max_accuracy, db_scan_radius):
 
+
+@pandas_udf(schema_df, PandasUDFType.GROUPED_MAP)
+def get_stop_location(df, radius, stay_time, min_pts_per_stop_location, max_time_stop_location, max_accuracy,
+                      db_scan_radius):
     identifier = df['user_id'].values[0]
     df.sort_values(by='epoch_time', inplace=True)  # shouldnt be necessary
 
@@ -80,7 +78,7 @@ def get_stop_location(df, radius, stay_time, min_pts_per_stop_location, max_time
                        max_time_between=max_time_stop_location, distance_metric='haversine')
 
     df = pd.DataFrame(res, columns=[
-                      "t_start",  "t_end", "lat", "lon", "median_accuracy", "total_pings_stop"])
+        "t_start", "t_end", "lat", "lon", "median_accuracy", "total_pings_stop"])
 
     # new filtering step based on median accuracy
     df = df[df['median_accuracy'] < max_accuracy]
@@ -96,6 +94,7 @@ def get_stop_location(df, radius, stay_time, min_pts_per_stop_location, max_time
         df['cluster_label'] = None
     return df
 
+
 schema_cluster_df = StructType([
     StructField('user_id', StringType(), False),
     StructField('lat', DoubleType(), False),
@@ -108,6 +107,8 @@ schema_cluster_df = StructType([
     StructField('t_end', LongType(), False),
     StructField('duration', LongType(), False),
 ])
+
+
 @pandas_udf(schema_cluster_df, PandasUDFType.GROUPED_MAP)
 def get_stop_cluster(df, db_scan_radius):
     if not df.empty:

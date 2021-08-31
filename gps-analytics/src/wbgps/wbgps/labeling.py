@@ -1,13 +1,8 @@
-from pyspark import StorageLevel
 import pyspark.sql.functions as F
 from pyspark.sql.functions import pandas_udf, PandasUDFType, col, lit, lag, countDistinct, to_timestamp
 from pyspark.sql.types import StructType, StructField, LongType, StringType, IntegerType, TimestampType, DoubleType
-from pyspark.sql.window import Window
-from pyspark.sql.functions import udf
 import pandas as pd
-import numpy as np
-import os
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 def remove_unused_cols(final_df):
@@ -21,32 +16,32 @@ def time_at_work(x, user_tmp):
     time_not_at_home = user_tmp[user_tmp.date_trunc ==
                                 x.date_trunc]['duration'].sum()
     time_at_work = user_tmp[(user_tmp['cluster_label'] == x.cluster_label) & (
-        user_tmp.date_trunc == x.date_trunc)]['duration'].sum()
-    return time_at_work/time_not_at_home
+            user_tmp.date_trunc == x.date_trunc)]['duration'].sum()
+    return time_at_work / time_not_at_home
 
 
 def days_at_work_dynamic(x, user_tmp, work_period_window):
     # 2. minimum fraction of observed days of activity -> [20%,30%,40%]
-    tmpdf = user_tmp[(user_tmp.date_trunc >= x.date_trunc-timedelta(
+    tmpdf = user_tmp[(user_tmp.date_trunc >= x.date_trunc - timedelta(
         days=work_period_window)) & (user_tmp.date_trunc <= x.date_trunc)]
     active_days = tmpdf['date_trunc'].nunique()
 
     tmpdf = tmpdf[(user_tmp.cluster_label == x.cluster_label)]
     work_days = tmpdf['date_trunc'].nunique()
 
-    return work_days/active_days
+    return work_days / active_days
 
 
 def days_at_home_dynamic(x, user_tmp, home_period_window):
     # 2. minimum fraction of observed days of activity -> [20%,30%,40%]
-    tmpdf = user_tmp[(user_tmp.date_trunc >= x.date_trunc-timedelta(
+    tmpdf = user_tmp[(user_tmp.date_trunc >= x.date_trunc - timedelta(
         days=home_period_window)) & (user_tmp.date_trunc <= x.date_trunc)]
     active_days = tmpdf['date_trunc'].nunique()
 
     tmpdf = tmpdf[(user_tmp.cluster_label == x.cluster_label)]
     home_days = tmpdf['date_trunc'].nunique()
 
-    return home_days/active_days
+    return home_days / active_days
 
 
 def home_rolling_on_date(x, home_period_window, min_periods_over_window):
@@ -54,7 +49,7 @@ def home_rolling_on_date(x, home_period_window, min_periods_over_window):
     x = x.sort_values('date_trunc')
     x = x.set_index('date_trunc')
     tmp = x[['duration', 'total_pings_stop']].rolling(f'{home_period_window}D', min_periods=int(
-        min_periods_over_window*home_period_window)).sum()
+        min_periods_over_window * home_period_window)).sum()
     tmp['days_count'] = x['duration'].rolling(
         f'{home_period_window}D').count()
 
@@ -64,7 +59,8 @@ def home_rolling_on_date(x, home_period_window, min_periods_over_window):
 def work_rolling_on_date(x, work_period_window, min_periods_over_window_work):
     # if on average over "period" centered in "date" a candidate satisfy the conditions then for "date" is selected as WORK location
     x = x.sort_values('date_trunc')
-    return x.set_index('date_trunc')[['duration']].rolling(f'{work_period_window}D', min_periods=int(min_periods_over_window_work*work_period_window)).mean()
+    return x.set_index('date_trunc')[['duration']].rolling(f'{work_period_window}D', min_periods=int(
+        min_periods_over_window_work * work_period_window)).mean()
 
 
 schema_df = StructType([
@@ -87,16 +83,19 @@ schema_df = StructType([
     StructField('t_end_hour', IntegerType(), True),
     StructField("date_trunc", TimestampType(), True)
 ])
+
+
 @pandas_udf(schema_df, PandasUDFType.GROUPED_MAP)
-def compute_home_work_label_dynamic(user_df, start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average):
+def compute_home_work_label_dynamic(user_df, start_hour_day, end_hour_day, min_pings_home_cluster_label,
+                                    work_activity_average):
     user_df['location_type'] = 'O'
     user_df['home_label'] = -1
     user_df['work_label'] = -1
-#   raise Exception('Exception: columns',user_df.columns)
+    #   raise Exception('Exception: columns',user_df.columns)
     # HOME
     # filter candidates as night-time stops
     home_tmp = user_df[(user_df['t_start_hour'] >= end_hour_day) | (
-        user_df['t_end_hour'] <= start_hour_day)].copy()  # restrictive version of daytimes
+            user_df['t_end_hour'] <= start_hour_day)].copy()  # restrictive version of daytimes
 
     if home_tmp.empty:  # if we don't have at least a home location, we return and not attemp to compute work location
         return remove_unused_cols(user_df)
@@ -107,9 +106,10 @@ def compute_home_work_label_dynamic(user_df, start_hour_day, end_hour_day, min_p
         ['cluster_label', 'date_trunc']).sum().reset_index().sort_values('date_trunc')
     # computer cumulative duration of candidates over "period" window
     home_tmp = home_tmp.merge(home_tmp[['date_trunc', 'cluster_label', 'duration', 'total_pings_stop']].groupby(
-        ['cluster_label']).apply(home_rolling_on_date).reset_index(), on=['date_trunc', 'cluster_label'], suffixes=('', '_cum'))
+        ['cluster_label']).apply(home_rolling_on_date).reset_index(), on=['date_trunc', 'cluster_label'],
+                              suffixes=('', '_cum'))
     print(home_tmp.columns)
-######
+    ######
     home_tmp = home_tmp[home_tmp.total_pings_stop_cum >
                         min_pings_home_cluster_label].drop('total_pings_stop_cum', axis=1)
 
@@ -118,7 +118,6 @@ def compute_home_work_label_dynamic(user_df, start_hour_day, end_hour_day, min_p
 
     if home_tmp.empty:  # if we don't have at least a home location, we return and not attemp to compute work location
         return remove_unused_cols(user_df)
-
 
     #####################
     date_cluster = home_tmp.drop_duplicates(['cluster_label', 'date_trunc'])[
@@ -158,9 +157,10 @@ def compute_home_work_label_dynamic(user_df, start_hour_day, end_hour_day, min_p
     work_tmp = user_df[~(user_df['cluster_label'].isin(home_list))].copy()
     if work_tmp.empty:  # if we can't compute work location we return
         return remove_unused_cols(user_df)
-#   if daytime: ######don't like it
-    work_tmp = work_tmp[((work_tmp['t_start_hour'] >= start_hour_day+4) & (work_tmp['t_end_hour']
-                                                                             <= end_hour_day-6)) & (~work_tmp['weekday'].isin([1, 7]))]  # restrictive version of daytimes
+    #   if daytime: ######don't like it
+    work_tmp = work_tmp[((work_tmp['t_start_hour'] >= start_hour_day + 4) & (work_tmp['t_end_hour']
+                                                                             <= end_hour_day - 6)) & (
+                            ~work_tmp['weekday'].isin([1, 7]))]  # restrictive version of daytimes
 
     if work_tmp.empty:  # if we can't compute work location we return
         return remove_unused_cols(user_df)
@@ -202,16 +202,16 @@ def get_durations(durations, start_hour_day, end_hour_day):
     durations = (durations
                  .withColumn('hour', F.hour('date'))
                  .withColumn('day_night', F.when((col('hour') >= start_hour_day) & (col('hour') < end_hour_day), 'day')
-                                           .when((col('hour') < start_hour_day) | (col('hour') >= end_hour_day), 'night')
-                                           .otherwise(None))  # stops that cross day/night boundaries
+                             .when((col('hour') < start_hour_day) | (col('hour') >= end_hour_day), 'night')
+                             .otherwise(None))  # stops that cross day/night boundaries
                  .select('user_id', 'date_trunc', 'day_night', 'location_type', 'duration'))
     total_durations = durations.groupby('date_trunc', 'user_id').agg(
         F.sum('duration').alias('total_duration'))
     durations = durations.groupby('date_trunc', 'day_night', 'user_id').pivot(
         'location_type').agg(F.sum('duration').alias('duration'))
     durations = durations.join(total_durations, on=['date_trunc', 'user_id'])
-    durations = durations.withColumn('absolute_H',  col('H'))
-    durations = durations.withColumn('absolute_W',  col('W'))
+    durations = durations.withColumn('absolute_H', col('H'))
+    durations = durations.withColumn('absolute_W', col('W'))
     durations = durations.withColumn('absolute_O', col('O'))
     durations = durations.withColumn('H', col('H') / col('total_duration'))
     durations = durations.withColumn('W', col('W') / col('total_duration'))
