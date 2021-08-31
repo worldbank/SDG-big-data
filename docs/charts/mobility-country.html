@@ -35,7 +35,7 @@
     }
 
     #low-li::before{
-      color: #ddd;
+      color: #444;
     }
 
     #mid-li::before{
@@ -43,7 +43,7 @@
     }
 
     #high-li::before{
-      color: #444;
+      color: #ddd;
     }
 
     input[type='checkbox']{
@@ -110,7 +110,6 @@
   </style>
 </head>
 <body>
-	<button id="generate" style="position:absolute;">Save as SVG</button><br/><br/>
 
     <div id="container"></div>
 
@@ -120,15 +119,15 @@
         <option value="1">Share of commuters by income</option>
         <option value="2">Share of commuters by home value</option>
       </select><br/>
-    <input type="checkbox" id="bogota-box" class="c-box" name="bogota-box" value="CO" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <input type="checkbox" id="bogota-box" class="c-box CO-box" name="bogota-box" value="CO" checked="true" onchange="toggleClass(this.value,this.checked)">
     <label for="bogota-box">Bogota</label><br>
-    <input type="checkbox" id="jakarta-box" class="c-box" name="jakarta-box" value="ID" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <input type="checkbox" id="jakarta-box" class="c-box ID-box" name="jakarta-box" value="ID" checked="true" onchange="toggleClass(this.value,this.checked)">
     <label for="jakarta-box">Jakarta</label><br>
-    <input type="checkbox" id="manila-box" class="c-box" name="manila-box" value="PH" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <input type="checkbox" id="manila-box" class="c-box PH-box" name="manila-box" value="PH" checked="true" onchange="toggleClass(this.value,this.checked)">
     <label for="manila-box">Manila</label><br>
-    <input type="checkbox" id="mexico-box" class="c-box" name="mexico-box" value="MX" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <input type="checkbox" id="mexico-box" class="c-box MX-box" name="mexico-box" value="MX" checked="true" onchange="toggleClass(this.value,this.checked)">
     <label for="mexico-box">Mexico City</label><br>
-    <input type="checkbox" id="sp-box" class="c-box" name="sp-box" value="BR" checked="true" onchange="toggleClass(this.value,this.checked)">
+    <input type="checkbox" id="sp-box" class="c-box BR-box" name="sp-box" value="BR" checked="true" onchange="toggleClass(this.value,this.checked)">
     <label for="sp-box">S&#227o Paulo</label><br>
     <br/>
 
@@ -136,9 +135,9 @@
     <div id="wealth-legend">
       <p style="margin-bottom:5px;">Wealth Level</p>
       <ul>
-        <li id="low-li">Low</li>
-        <li id="mid-li">Mid</li>
         <li id="high-li">High</li>
+        <li id="mid-li">Mid</li>
+        <li id="low-li">Low</li>
       </ul>
     </div>
 
@@ -197,6 +196,9 @@
     d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
     d3.selectAll(".tick text").attr("fill", "#999");
     drawgraphs(0);
+
+      d3.selectAll(".c-box").property("checked",false);
+      d3.selectAll(".CO-box").property("checked",true);
   });
 
   function drawgraphs(g){
@@ -254,6 +256,13 @@
             })
             .attr("stroke-width",1.25)
             .attr("fill","none")
+            .attr("opacity",function(d){
+              if(h==2){
+                return 1;
+              }else{
+                return 0;
+              }
+            })
             .attr("class",function(d){
               return d[0].country+" "+wealth+" plotline";
             });
@@ -298,16 +307,20 @@
   }
 
   function toggleClass(cname,val){
-    if(val == false){op = 0.1}else{op = 1};
-    d3.selectAll("."+cname).attr("opacity",op);
+    if(val == false){op = 0}else{op = 1};
+
     if(val == true){
+      d3.selectAll(".plotline").attr("opacity",0);
       if(cname == "low" || cname == "med" || cname=="high"){
        d3.selectAll(".c-box").property("checked",true);
       }
      if(cname == "BR" || cname == "PH" || cname=="MX" || cname=="CO" || cname=="ID"){
        d3.selectAll(".w-box").property("checked",true);
+       d3.selectAll(".c-box").property("checked",false);
+       d3.select("."+cname+"-box").property("checked",true);
      }
     }
+    d3.selectAll("."+cname).attr("opacity",op);
   }
 
 
