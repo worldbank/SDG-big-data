@@ -94,4 +94,4 @@ sample_df = pd.concat([above_threshold_df, below_threshold_df]).reset_index(drop
 
 In the end, the `sample_df` are sent to labelling. When labelled, the new samples are added to the existing labels and a new train-test split is applied. The training and evaluation then takes place as described earlier.
 
-In practice, there exists many different active learning strategies. In Tonneau et al. (2021), we reviewed several active learning strategies in our extremely imbalanced setting and showed that active learning does improve performance in terms of precision, expansion and diversity but that no active learning strategy was systematically better than others for our problem. 
+In practice, there exists many different active learning strategies. In Tonneau et al. (2021), we reviewed several active learning strategies in our extremely imbalanced setting and showed that active learning does improve performance in terms of precision, expansion and diversity but that no active learning strategy was systematically better than others for our problem.
