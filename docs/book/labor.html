@@ -240,21 +240,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.2" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#evaluation-on-the-random-set"><i class="fa fa-check"></i><b>13.2</b> Evaluation on the random set</a></li>
 <li class="chapter" data-level="13.3" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#active-learning"><i class="fa fa-check"></i><b>13.3</b> Active learning</a></li>
 </ul></li>
-<li class="part"><span><b>Twitter Analytics - News</b></span></li>
-<li class="chapter" data-level="14" data-path="news.html"><a href="news.html"><i class="fa fa-check"></i><b>14</b> Introduction - News Analytics</a>
+<li class="chapter" data-level="14" data-path="unemployment-indicators.html"><a href="unemployment-indicators.html"><i class="fa fa-check"></i><b>14</b> Unemployment indicators</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="news.html"><a href="news.html#news-articles"><i class="fa fa-check"></i><b>14.1</b> News articles</a></li>
+<li class="chapter" data-level="14.1" data-path="unemployment-indicators.html"><a href="unemployment-indicators.html#building-unemployment-indicators-from-individual-tweets"><i class="fa fa-check"></i><b>14.1</b> Building unemployment indicators from individual tweets</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html"><i class="fa fa-check"></i><b>15</b> News-sentiment measures</a>
+<li class="part"><span><b>Twitter Analytics - News</b></span></li>
+<li class="chapter" data-level="15" data-path="news.html"><a href="news.html"><i class="fa fa-check"></i><b>15</b> Introduction - News Analytics</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#bag-of-words-model"><i class="fa fa-check"></i><b>15.1</b> Bag-of-words model</a></li>
-<li class="chapter" data-level="15.2" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#country-specific-news-sentiment-indicator"><i class="fa fa-check"></i><b>15.2</b> Country-specific news sentiment indicator</a></li>
-<li class="chapter" data-level="15.3" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#stylized-facts"><i class="fa fa-check"></i><b>15.3</b> Stylized facts</a></li>
+<li class="chapter" data-level="15.1" data-path="news.html"><a href="news.html#news-articles"><i class="fa fa-check"></i><b>15.1</b> News articles</a></li>
 </ul></li>
 <li class="chapter" data-level="16" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html"><i class="fa fa-check"></i><b>16</b> Global vs. local news sentiment indicators</a>
 <ul>
 <li class="chapter" data-level="16.1" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#local-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.1</b> Local news sentiment indicator</a></li>
 <li class="chapter" data-level="16.2" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#global-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.2</b> Global news sentiment indicator</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html"><i class="fa fa-check"></i><b>17</b> News-sentiment measures</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#bag-of-words-model"><i class="fa fa-check"></i><b>17.1</b> Bag-of-words model</a></li>
+<li class="chapter" data-level="17.2" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#country-specific-news-sentiment-indicator"><i class="fa fa-check"></i><b>17.2</b> Country-specific news sentiment indicator</a></li>
+<li class="chapter" data-level="17.3" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#stylized-facts"><i class="fa fa-check"></i><b>17.3</b> Stylized facts</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -281,11 +285,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="labor-market-analysis-with-twitter-data-1" class="section level2" number="11.1">
 <h2><span class="header-section-number">11.1</span> Labor market analysis with Twitter data</h2>
 <p>Online social networks, such as Twitter, play a key role in the diffusion of information on jobs. For instance, companies and job aggregators post job offers while users disclose their labor market situation seeking emotional support or new job opportunities through their online network. In this context, Twitter data can be seen as a complementary data source to official statistics as it provides timely information about labor market trends.</p>
-<p>In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. In practice, we intend to recognize disclosures about being unemployed, losing one’s job or being hired, searching for a job as well as job offers. We focus on three countries for this study: the USA, Mexico and Brazil. The methodology is presented in this <a href="https://www.youtube.com/watch?v=ZxFrtUW2dYA">IC2S2 2020 presentation</a> and detailed in Tonneau et al. (2021, in submission). Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends. <strong>(add reference if existing)</strong></p>
+<p>In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. In practice, we intend to recognize disclosures about being unemployed, losing one’s job or being hired, searching for a job as well as job offers. We focus on three countries for this study: the USA, Mexico and Brazil. The methodology is presented in this <a href="https://www.youtube.com/watch?v=ZxFrtUW2dYA">IC2S2 2020 presentation</a> and detailed in Tonneau et al. (2021, in submission). Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends.</p>
 <p>In this book, we present the following:
 - building a training set allowing to recognize disclosures on personal job situation in tweets
 - finetuning and evaluating a BERT-based classifier
-- improving a classifier’s performance through active learning</p>
+- improving a classifier’s performance through active learning
+- building unemployment indicators using the classifier’s output</p>
 
 </div>
 </div>
