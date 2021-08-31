@@ -51,7 +51,3 @@ health-services-access
 household-characteristics
 assets-ownership
 voronoi
-todo-put-an-image-or-create-one
-infostop
-data-preparation
-code-3

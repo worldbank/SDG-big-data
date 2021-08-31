@@ -22,6 +22,8 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
   NOTE: Google uses as baseline period the 5-weeks period from Jan 3 to Feb 6
   '''
   df = df_original.copy()
+  
+  # compute weekday baseline values
   baseline = df.loc[start_baseline:end_baseline,['mean','sem']+other_groups].copy()
   baseline['weekday'] = list(baseline.index.dayofweek.values)
   baseline = baseline.groupby(['weekday']+other_groups,dropna=False,as_index=False).mean()
@@ -30,14 +32,20 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
   date = df.index.copy()
   df = df.merge(baseline, on=['weekday']+other_groups, how='left',
                 suffixes=('', '_baseline'))
+  
+  # compute "mean" change with respect to weekday baseline values
   df['mean'] = (df['mean']- df['mean_baseline']) / np.abs(df['mean_baseline'])
   df['sem'] = np.abs(df['sem']/df['mean_baseline'])
   df.index = date
-
+  # return input dataframe with "mean" and "sem" column now expressing the relative change and its error
   return df.drop(['weekday','mean_baseline'],axis=1,errors='ignore')
 
 
 def base_diff_metric(df_original, frac, start_baseline, end_baseline,other_groups=[]):
+  '''
+  INPUT:  dataframe with (at least) 2 columns named "mean" and "sem"
+  OUTPUT: dataframe with the values of the two columns converted to change wrt the baseline
+  '''
   df = df_original.rename(columns={frac:'mean'}).reset_index().set_index('date').copy()
   baseline = df.loc[start_baseline:end_baseline,['mean']+other_groups].copy()
   baseline['weekday'] = list(baseline.index.dayofweek.values)
@@ -53,6 +61,12 @@ def base_diff_metric(df_original, frac, start_baseline, end_baseline,other_group
 
 
 def process_admin(country,admin_path):
+  '''
+  INPUT:  country ISO code, path to the admin files (saved as "{country}/admin.csv" files)
+  OUTPUT: three pandas dataframes
+          - "admins_by_country": all country administrative units with socio-economic group assigned based on entire country 
+          - "admins_by_metro_area": 
+  '''
   cols = ['geom_id', 'metro_area_name', 'pop', 'wealth_index']
   admin = spark.read.option('header', 'true').csv(admin_path+f'{country}/admin.csv').toPandas()
   admins = admins[[cols]]
@@ -76,6 +90,12 @@ def process_admin(country,admin_path):
 
 
 def get_active_list(durations, country, activity_level):
+  '''
+  For each country invoke the following function to get a list of all active individuals.
+    INPUT: dataframe with precomputed individual stops' durations, country ISO code, minimum activity level required
+    OUTPUT: list of active individuals "user_id"
+  '''
+    # Indonesia experiences a major dropout from the service during January 2020. For this reason, a specific pre-pandemic period was adopted
   if country == 'ID':
       durations_2 = durations.where(col('date_trunc') >= '2020-02-01')
   else:
@@ -180,7 +200,6 @@ def compute_durations_normalized_by_wealth_home(durations_and_admins, admins, la
   # get admin info for home and work location
   tmp1 = spark.createDataFrame(
       admins[['geom_id', 'pop', 'pct_wealth', 'wealth_label']].rename(columns=lambda x: x+'_home'))
-  #tmp2 = spark.createDataFrame(admins[['geom_id', 'pct_wealth', 'wealth_label']].rename(columns=lambda x:x+'_work'))
   out1 = (durations_and_admins
           .join(tmp1, on='geom_id_home', how='inner'))
 
@@ -192,7 +211,6 @@ def compute_durations_normalized_by_wealth_home(durations_and_admins, admins, la
          .join(geom_users, on='geom_id_home', how='inner')
          .withColumn('weight', col('pop_home')/col('n_users')))
   return out
-
 
 def output(out, column):
   # compute aggregate measures

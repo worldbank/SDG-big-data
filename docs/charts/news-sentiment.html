@@ -1,0 +1,213 @@
+<!Doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="HTML,CSS,JavaScript,THREE.js">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>news sentiment</title>
+  <style>
+    #form{
+      padding-left: 100px;
+      float: left;
+    }
+
+    select{
+      background-color: #fff;
+      border: 2px solid #e5e5e5;
+      font-weight: 300;
+      padding: 5px 0;
+    }
+  </style>
+</head>
+<body>
+	<button id="generate" style="position:absolute;">Save as SVG</button><br/><br/>
+
+    <div id="container"></div>
+    <div id="form">
+      <select name="graphs" id="graphs" onchange="drawgraphs(this.value)">
+        <option value="local">Local Sentiment</option>
+        <option value="country">Country Sentiment</option>
+      </select>
+      <select name="countries" id="countries" onchange="toggleClass(this.value)">
+      </select>
+    </div>
+
+
+    <script type="text/javascript"  src="js/d3.min.js"></script>
+    <script type="text/javascript"  src="js/blob.js"></script>
+    <script type="text/javascript"  src="js/fileSaver.js"></script>
+    <script type="text/javascript"  src="js/config.js"></script>
+	<script>
+  var margin = {top: 100, right: 80, bottom: 30, left: 100},
+          width = 672 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
+
+  var svg = d3.select("#container").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom );
+
+  let yScale = d3.scaleLinear().range([height,0]);
+  let xScale = d3.scaleTime().range([0,width]);
+  let cScale = d3.scalePoint().range([0.3,0.8]);
+
+  var xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%m/%Y")).ticks(d3.timeYear.every(5));
+  var yAxis = d3.axisLeft(yScale);
+  var date = d3.timeParse("%m/%d/%y");
+
+  var nline = d3.line()
+    .x(function(d) { return xScale(d.datef); })
+    .y(function(d) { return yScale(+d["sentiment_"+scale]); });
+
+  var dat, group, gDat, scale="global";
+
+  d3.csv("news-sentiment.csv").then( function(data) {
+    dat = data;
+
+    group = svg.append("g")
+        .attr("id","graph")
+        .attr("transform","translate(" + margin.left + ","+margin.top+")");
+
+    dat.forEach(function(d) {d.datef = date(d.date);});
+
+    xScale.domain(d3.extent(dat,d=>d.datef));
+    cScale.domain(d3.map(dat,d=>d.country));
+
+    gDat = d3.groups(dat,d=>d.country);
+
+    group.append("g")
+        .attr("transform", "translate(0,"+yScale(0)+")")
+        .attr("class","x-ax ax");
+    group.append("g")
+        .attr("class","y-ax ax");
+
+    d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+    d3.selectAll(".tick text").attr("fill", "#999");
+    drawgraphs("local");
+  });
+
+  function drawgraphs(sscale){
+    if(sscale != scale){
+      scale = sscale;
+      yScale.domain(d3.extent(dat,d=>+d["sentiment_"+scale]));
+      for(h=0;h<gDat.length;h++){
+        cur = gDat[h][1];
+        var name = gDat[h][0];
+        var classname = name.replace(/\ /g, '-');
+
+        // var kde = kernelDensityEstimator(kernelEpanechnikov(7), xScale.ticks(20));
+        // var density = kde(cur.map(function(d){  return +d["sentiment_"+scale]; }));
+
+
+        var lines = d3.selectAll(".plotline").nodes();
+        if(lines.length == 25){
+          var u = d3.select("."+classname).data([cur]);
+          u.enter()
+          .append("path")
+          .merge(u)
+          .transition()
+          .duration(1000)
+          .attr("d", nline);
+        }else{
+          group.append("path")
+          .data([cur])
+          .attr("d", nline)
+          .attr("stroke",function(d){
+            console.log(name);
+            return d3.interpolateCubehelixDefault(cScale(name));
+          })
+          .attr("stroke-width",0.5)
+          .attr("opacity",0.01)
+          .attr("fill","none")
+          .attr("class",function(d){
+            return classname+" plotline";
+          })
+          .on("mouseover",function(d){
+            d3.select(this).attr("opacity",1);
+          })
+          .on("mouseout",function(d){
+            d3.select(this).attr("opacity",0.01);
+          });
+
+          d3.select("#countries").append("option").attr("value",classname).html(name);
+        }
+      }
+
+      d3.selectAll(".y-label").remove();
+      group.append("text")
+       .text(function(){
+         if(scale == "global"){return "Global sentiment"}
+         else if(scale == "country"){return "Country sentiment"}
+         else{return "Local sentiment"}
+       })
+       .style("transform","rotate(-90deg)")
+       .style("font-family","sans-serif")
+       .style("font-weight","300")
+       .style("font-size","14")
+       .attr("class","y-label")
+       .attr("x", -height/2)
+       .attr("y", -40)
+       .attr("text-anchor","middle")
+       .attr("fill","#999");
+
+       updateAxes();
+    }
+  }
+
+  function updateAxes(){
+    d3.selectAll(".x-ax").transition()
+     .duration(1000)
+     .call(xAxis)
+     .attr("transform", "translate(0,"+yScale(0)+")");
+
+     d3.selectAll(".y-ax").transition()
+      .duration(1000)
+      .call(yAxis);
+
+    d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+    <!-- d3.selectAll(".tick line").attr("x2", width); -->
+    d3.selectAll(".tick text").attr("fill", "#999");
+  }
+
+  function toggleClass(cname){
+    d3.selectAll(".plotline").attr("opacity",0.01);
+    d3.selectAll("."+cname).attr("opacity",1);
+  }
+
+  function kernelDensityEstimator(kernel, X) {
+    return function(V) {
+      return X.map(function(x) {
+        return [x, d3.mean(V, function(v) { return kernel(x - v); })];
+      });
+    };
+  }
+
+  function kernelEpanechnikov(k) {
+    return function(v) {
+      return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+    };
+  }
+
+
+	//----------------svg export code
+
+        d3.select("#generate")
+          .on("click", writeDownloadLink);
+
+        function writeDownloadLink(){
+            try {
+                var isFileSaverSupported = !!new Blob();
+            } catch (e) {
+                alert("blob not supported");
+            }
+
+            var html = d3.select("svg")
+                .attr("title", "test2")
+                .attr("version", 1.1)
+                .attr("xmlns", "http://www.w3.org/2000/svg")
+                .node().parentNode.innerHTML;
+
+            var blob = new Blob([html], {type: "image/svg+xml"});
+            saveAs(blob, "viz.svg");
+        };
+	</script>
+</body>
+</html>
