@@ -1,0 +1,60 @@
+---
+title: "Big Data Analytics"
+author: "Big Data Analytics Group"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "SDG Bookdown"
+---
+
+# (PART\*) Cover {-}
+# Cover
+
+These book is comprised by three main chapters in which we detail the use of big data for mobility
+analysis using individual GPS information as well as NLP tools to understand the sentiment around news and
+the current state of the labor market.
+
+## [GPS Analytics](#gps)
+
+We analyzed GPS data from 6 different countries to understand the differences in "stay at home" mandates for different socioeconomic groups.
+A summary plot of our results is displayed in the interactive chart below. The first panel represents the percentage
+change of the total time spent at home by socioeconomic group,
+the second one is the percentage change of daily users commuting to work also by socioeconomic group and the last one
+shows the percentage change of work commutes in the low-income group by the wealth of the neighborhood where the work is located.
+
+```{r echo=FALSE}
+knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/mobility-country.html", height = "750px")
+```
+
+
+## [Labor market analysis with Twitter data](#labor)
+
+Online social networks, such as Twitter, play a key role in the diffusion of information on jobs. For instance, companies and job aggregators post job offers while users disclose their labor market situation seeking emotional support or new job opportunities through their online network. In this context, Twitter data can be seen as a complementary data source to official statistics as it provides timely information about labor market trends.
+
+In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. The methodology is presented in this [IC2S2 2020 presentation](https://www.youtube.com/watch?v=ZxFrtUW2dYA) and detailed in Tonneau et al. (2021) **(add link)**. Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends. **(add reference if existing)**
+
+```{r echo=FALSE}
+knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-country.html", height = "750px")
+```
+
+
+## [News analysis with Twitter data](#news)
+
+We take news articles focusing on a specific country and compute the sentiment associated with the article. The methodology is detailed in [Fraiberger et al. (2021)](https://doi.org/10.1016/j.jinteco.2021.103526) with an application to understanding international asset prices. 
+```{r echo=FALSE}
+knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/news-sentiment.html", height = "750px")
+```
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+A more detailed explanation of these results and the procedure to obtained them is described in the following chapters.
