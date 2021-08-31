@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Defining Home and Work Locations | Big Data Analytics</title>
+  <meta name="description" content="SDG Bookdown" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Defining Home and Work Locations | Big Data Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="SDG Bookdown" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Defining Home and Work Locations | Big Data Analytics" />
+  
+  <meta name="twitter:description" content="SDG Bookdown" />
+  
+
+<meta name="author" content="Chapter 6 Defining Home and Work Locations | Big Data Analytics Group" />
+
+
+<meta name="date" content="2021-08-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="stops.html"/>
+<link rel="next" href="mobility.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Big Data Analysis</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>Cover</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Cover</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#gps-analytics"><i class="fa fa-check"></i><b>1.1</b> <span>GPS Analytics</span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#labor-market-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.2</b> <span>Labor market analysis with Twitter data</span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#news-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.3</b> <span>News analysis with Twitter data</span></a></li>
+</ul></li>
+<li class="part"><span><b>GPS Analytics</b></span></li>
+<li class="chapter" data-level="2" data-path="gps.html"><a href="gps.html"><i class="fa fa-check"></i><b>2</b> Introduction - GPS</a></li>
+<li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#gps-data"><i class="fa fa-check"></i><b>3.1</b> GPS Data</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#wealth-index-data"><i class="fa fa-check"></i><b>3.2</b> Wealth Index Data</a></li>
+<li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#administrative-boundaries-data"><i class="fa fa-check"></i><b>3.3</b> Administrative Boundaries Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="geocode.html"><a href="geocode.html"><i class="fa fa-check"></i><b>4</b> Geocode</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="geocode.html"><a href="geocode.html#efficient-spatial-joining-and-geospatial-indexing"><i class="fa fa-check"></i><b>4.1</b> Efficient spatial joining and Geospatial Indexing</a></li>
+<li class="chapter" data-level="4.2" data-path="geocode.html"><a href="geocode.html#code"><i class="fa fa-check"></i><b>4.2</b> Code</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="geocode.html"><a href="geocode.html#loading-administrative-units"><i class="fa fa-check"></i><b>4.2.1</b> Loading administrative units</a></li>
+<li class="chapter" data-level="4.2.2" data-path="geocode.html"><a href="geocode.html#loading-ping-data-and-h3-indexing"><i class="fa fa-check"></i><b>4.2.2</b> Loading ping data and h3 indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="geocode.html"><a href="geocode.html#initial-coarse-geo-spatial-join-with-shapefiles"><i class="fa fa-check"></i><b>4.3</b> Initial coarse geo-spatial join with shapefiles</a></li>
+<li class="chapter" data-level="4.4" data-path="geocode.html"><a href="geocode.html#final-exact-join-with-a-subset-of-the-shapefiles"><i class="fa fa-check"></i><b>4.4</b> Final exact join with a subset of the shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="stops.html"><a href="stops.html"><i class="fa fa-check"></i><b>5</b> Finding Stops</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="stops.html"><a href="stops.html#definition"><i class="fa fa-check"></i><b>5.1</b> Definition</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="stops.html"><a href="stops.html#get-stop-locations"><i class="fa fa-check"></i><b>5.1.1</b> Get stop locations</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="stops.html"><a href="stops.html#clustering-recurrent-stops"><i class="fa fa-check"></i><b>5.2</b> Clustering recurrent stops</a></li>
+<li class="chapter" data-level="5.3" data-path="stops.html"><a href="stops.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>5.3</b> Appending pings from recent dates</a></li>
+<li class="chapter" data-level="5.4" data-path="stops.html"><a href="stops.html#stops-geocoding"><i class="fa fa-check"></i><b>5.4</b> Stops geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="labeling.html"><a href="labeling.html"><i class="fa fa-check"></i><b>6</b> Defining Home and Work Locations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="labeling.html"><a href="labeling.html#seasonal-patterns"><i class="fa fa-check"></i><b>6.1</b> Seasonal patterns</a></li>
+<li class="chapter" data-level="6.2" data-path="labeling.html"><a href="labeling.html#code-1"><i class="fa fa-check"></i><b>6.2</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="mobility.html"><a href="mobility.html"><i class="fa fa-check"></i><b>7</b> Mobility Patterns</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="mobility.html"><a href="mobility.html#socio-economic-groups"><i class="fa fa-check"></i><b>7.1</b> Socio-economic groups</a></li>
+<li class="chapter" data-level="7.2" data-path="mobility.html"><a href="mobility.html#selection"><i class="fa fa-check"></i><b>7.2</b> Individual’s selection</a></li>
+<li class="chapter" data-level="7.3" data-path="mobility.html"><a href="mobility.html#measures"><i class="fa fa-check"></i><b>7.3</b> Measures</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="mobility.html"><a href="mobility.html#measuring-mobility-patterns"><i class="fa fa-check"></i><b>7.3.1</b> Measuring mobility patterns</a></li>
+<li class="chapter" data-level="7.3.2" data-path="mobility.html"><a href="mobility.html#measuring-change"><i class="fa fa-check"></i><b>7.3.2</b> Measuring change</a></li>
+<li class="chapter" data-level="7.3.3" data-path="mobility.html"><a href="mobility.html#home-isolated-commuters-and-low-wealth-commuters"><i class="fa fa-check"></i><b>7.3.3</b> Home-isolated, commuters and low-wealth commuters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>8</b> Migration Patterns</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="migration.html"><a href="migration.html#description"><i class="fa fa-check"></i><b>8.1</b> Description</a></li>
+<li class="chapter" data-level="8.2" data-path="migration.html"><a href="migration.html#user-selection"><i class="fa fa-check"></i><b>8.2</b> User selection</a></li>
+<li class="chapter" data-level="8.3" data-path="migration.html"><a href="migration.html#code-2"><i class="fa fa-check"></i><b>8.3</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>9</b> Location labeling and parameter optimization</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="optimization.html"><a href="optimization.html#ground-truth"><i class="fa fa-check"></i><b>9.1</b> Ground truth</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="optimization.html"><a href="optimization.html#construction"><i class="fa fa-check"></i><b>9.1.1</b> Construction</a></li>
+<li class="chapter" data-level="9.1.2" data-path="optimization.html"><a href="optimization.html#validation"><i class="fa fa-check"></i><b>9.1.2</b> Validation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="optimization.html"><a href="optimization.html#parameter-optimization"><i class="fa fa-check"></i><b>9.2</b> Parameter optimization</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="optimization.html"><a href="optimization.html#performance-indicators"><i class="fa fa-check"></i><b>9.2.1</b> Performance indicators</a></li>
+<li class="chapter" data-level="9.2.2" data-path="optimization.html"><a href="optimization.html#performance-error-estimates-and-bootstrapping"><i class="fa fa-check"></i><b>9.2.2</b> Performance error estimates and bootstrapping</a></li>
+<li class="chapter" data-level="9.2.3" data-path="optimization.html"><a href="optimization.html#parallel-bootstrapping-and-optimization-result-storage"><i class="fa fa-check"></i><b>9.2.3</b> Parallel bootstrapping and optimization result storage</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="optimization.html"><a href="optimization.html#parameter-configuration-selection"><i class="fa fa-check"></i><b>9.3</b> Parameter configuration selection</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="windex.html"><a href="windex.html"><i class="fa fa-check"></i><b>10</b> Wealth Index</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="windex.html"><a href="windex.html#variables-to-estimate-the-social-gap-index-in-mexico"><i class="fa fa-check"></i><b>10.1</b> Variables to estimate the Social Gap Index in Mexico</a></li>
+<li class="chapter" data-level="10.2" data-path="windex.html"><a href="windex.html#education"><i class="fa fa-check"></i><b>10.2</b> Education</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="windex.html"><a href="windex.html#health-services-access"><i class="fa fa-check"></i><b>10.2.1</b> Health Services Access</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="windex.html"><a href="windex.html#household-characteristics"><i class="fa fa-check"></i><b>10.3</b> Household Characteristics</a></li>
+<li class="chapter" data-level="10.4" data-path="windex.html"><a href="windex.html#assets-ownership"><i class="fa fa-check"></i><b>10.4</b> Assets Ownership</a></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - Labor Market</b></span></li>
+<li class="chapter" data-level="11" data-path="labor.html"><a href="labor.html"><i class="fa fa-check"></i><b>11</b> Introduction - Labor Market</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="labor.html"><a href="labor.html#labor-market-analysis-with-twitter-data-1"><i class="fa fa-check"></i><b>11.1</b> Labor market analysis with Twitter data</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="training-data-preparation.html"><a href="training-data-preparation.html"><i class="fa fa-check"></i><b>12</b> Training data preparation</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="training-data-preparation.html"><a href="training-data-preparation.html#sampling"><i class="fa fa-check"></i><b>12.1</b> Sampling</a></li>
+<li class="chapter" data-level="12.2" data-path="training-data-preparation.html"><a href="training-data-preparation.html#labelling"><i class="fa fa-check"></i><b>12.2</b> Labelling</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="training-data-preparation.html"><a href="training-data-preparation.html#creating-a-qualtrics-survey"><i class="fa fa-check"></i><b>12.2.1</b> Creating a Qualtrics survey</a></li>
+<li class="chapter" data-level="12.2.2" data-path="training-data-preparation.html"><a href="training-data-preparation.html#sharing-the-survey-on-mturk"><i class="fa fa-check"></i><b>12.2.2</b> Sharing the survey on MTurk</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html"><i class="fa fa-check"></i><b>13</b> Finetuning BERT-based models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#training-the-model"><i class="fa fa-check"></i><b>13.1</b> Training the model</a></li>
+<li class="chapter" data-level="13.2" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#evaluation-on-the-random-set"><i class="fa fa-check"></i><b>13.2</b> Evaluation on the random set</a></li>
+<li class="chapter" data-level="13.3" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#active-learning"><i class="fa fa-check"></i><b>13.3</b> Active learning</a></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - News</b></span></li>
+<li class="chapter" data-level="14" data-path="news.html"><a href="news.html"><i class="fa fa-check"></i><b>14</b> Introduction - News Analytics</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="news.html"><a href="news.html#news-articles"><i class="fa fa-check"></i><b>14.1</b> News articles</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html"><i class="fa fa-check"></i><b>15</b> News-sentiment measures</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#bag-of-words-model"><i class="fa fa-check"></i><b>15.1</b> Bag-of-words model</a></li>
+<li class="chapter" data-level="15.2" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#country-specific-news-sentiment-indicator"><i class="fa fa-check"></i><b>15.2</b> Country-specific news sentiment indicator</a></li>
+<li class="chapter" data-level="15.3" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#stylized-facts"><i class="fa fa-check"></i><b>15.3</b> Stylized facts</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html"><i class="fa fa-check"></i><b>16</b> Global vs. local news sentiment indicators</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#local-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.1</b> Local news sentiment indicator</a></li>
+<li class="chapter" data-level="16.2" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#global-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.2</b> Global news sentiment indicator</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Big Data Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="labeling" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Defining Home and Work Locations</h1>
+<p>From the census data we have socioeconomic information for every geographical region in
+each country and we used that to assign a Wealth Index value to them. A good proxy of
+the demographic of the users can be obtained by the location of their home which we
+can infeer from the recurrent stop locations we did in the previous chapter <a href="stops.html#stops">5</a>
+given some regularity patterns and use the administrative information of the geometry where
+it falls into. Moreover we can do this for every stops’ cluster. Our focus lies on the
+home and the work locations as they’re likely to be the places where indiviuals spend more time
+and define the largest bulk of their mobility patterns.</p>
+<div id="seasonal-patterns" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Seasonal patterns</h2>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:home-patterns"></span>
+<img src="big-daa_files/figure-html/home-patterns-1.png" alt="Number of stops by weekday and start hour at home location" width="100%" />
+<p class="caption">
+Figure 6.1: Number of stops by weekday and start hour at home location
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:work-patterns"></span>
+<img src="big-daa_files/figure-html/work-patterns-1.png" alt="Number of stops by weekday and start hour at work location" width="100%" />
+<p class="caption">
+Figure 6.2: Number of stops by weekday and start hour at work location
+</p>
+</div>
+<p>As we can see from <a href="labeling.html#fig:home-patterns">6.1</a> and <a href="labeling.html#fig:work-patterns">6.2</a> usually a person’s mobility patterns have seasonal
+structure so we label each stop with it’s corresponding day of the week. For this reason we need to label each stop with the
+weekday value when it was created.</p>
+</div>
+<div id="code-1" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Code</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="labeling.html#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.withColumn(<span class="st">&quot;t_start_hour&quot;</span>, F.hour( F.to_timestamp(<span class="st">&quot;t_start&quot;</span>)))</span>
+<span id="cb10-2"><a href="labeling.html#cb10-2" aria-hidden="true" tabindex="-1"></a>        .withColumn(<span class="st">&quot;t_end_hour&quot;</span>, F.hour( F.to_timestamp(<span class="st">&quot;t_end&quot;</span>)))</span>
+<span id="cb10-3"><a href="labeling.html#cb10-3" aria-hidden="true" tabindex="-1"></a>        .withColumn(<span class="st">&#39;weekday&#39;</span>, F.dayofweek( F.to_timestamp(<span class="st">&quot;t_start&quot;</span>)))</span>
+<span id="cb10-4"><a href="labeling.html#cb10-4" aria-hidden="true" tabindex="-1"></a>        .withColumn(<span class="st">&quot;date&quot;</span>, F.to_timestamp(<span class="st">&quot;t_start&quot;</span>))</span>
+<span id="cb10-5"><a href="labeling.html#cb10-5" aria-hidden="true" tabindex="-1"></a>        .withColumn(<span class="st">&quot;date_trunc&quot;</span>, F.date_trunc(<span class="st">&quot;day&quot;</span>, F.col(<span class="st">&quot;date&quot;</span>)))</span></code></pre></div>
+<p>Then we use the following function to label the home and work candidates. Notice that as this is a user defined
+function, the schema at the top contains the output variables.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="labeling.html#cb11-1" aria-hidden="true" tabindex="-1"></a>schema_df <span class="op">=</span> StructType([</span>
+<span id="cb11-2"><a href="labeling.html#cb11-2" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;user_id&#39;</span>, StringType(), <span class="va">False</span>),</span>
+<span id="cb11-3"><a href="labeling.html#cb11-3" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;t_start&#39;</span>, LongType(), <span class="va">False</span>),</span>
+<span id="cb11-4"><a href="labeling.html#cb11-4" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;t_end&#39;</span>, LongType(), <span class="va">False</span>),</span>
+<span id="cb11-5"><a href="labeling.html#cb11-5" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;duration&#39;</span>, LongType(), <span class="va">False</span>),</span>
+<span id="cb11-6"><a href="labeling.html#cb11-6" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;lat&#39;</span>, DoubleType(), <span class="va">False</span>),</span>
+<span id="cb11-7"><a href="labeling.html#cb11-7" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;lon&#39;</span>, DoubleType(), <span class="va">False</span>),</span>
+<span id="cb11-8"><a href="labeling.html#cb11-8" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;total_duration_stop_location&#39;</span>, LongType(), <span class="va">False</span>),</span>
+<span id="cb11-9"><a href="labeling.html#cb11-9" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;total_pings_stop&#39;</span>, LongType(), <span class="va">False</span>),</span>
+<span id="cb11-10"><a href="labeling.html#cb11-10" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;cluster_label&#39;</span>, LongType(), <span class="va">False</span>),</span>
+<span id="cb11-11"><a href="labeling.html#cb11-11" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;median_accuracy&#39;</span>, DoubleType(), <span class="va">False</span>),</span>
+<span id="cb11-12"><a href="labeling.html#cb11-12" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;location_type&#39;</span>, StringType(), <span class="va">True</span>),</span>
+<span id="cb11-13"><a href="labeling.html#cb11-13" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;home_label&#39;</span>, LongType(), <span class="va">True</span>),</span>
+<span id="cb11-14"><a href="labeling.html#cb11-14" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;work_label&#39;</span>, LongType(), <span class="va">True</span>),</span>
+<span id="cb11-15"><a href="labeling.html#cb11-15" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;geom_id&#39;</span>, StringType(), <span class="va">False</span>),</span>
+<span id="cb11-16"><a href="labeling.html#cb11-16" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;date&#39;</span>, TimestampType(), <span class="va">True</span>),</span>
+<span id="cb11-17"><a href="labeling.html#cb11-17" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;t_start_hour&#39;</span>, IntegerType(), <span class="va">True</span>),</span>
+<span id="cb11-18"><a href="labeling.html#cb11-18" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&#39;t_end_hour&#39;</span>, IntegerType(), <span class="va">True</span>),</span>
+<span id="cb11-19"><a href="labeling.html#cb11-19" aria-hidden="true" tabindex="-1"></a>    StructField(<span class="st">&quot;date_trunc&quot;</span>, TimestampType(), <span class="va">True</span>)</span>
+<span id="cb11-20"><a href="labeling.html#cb11-20" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb11-21"><a href="labeling.html#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="at">@pandas_udf</span>(schema_df, PandasUDFType.GROUPED_MAP)</span>
+<span id="cb11-22"><a href="labeling.html#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_home_work_label_dynamic(user_df, start_hour_day, end_hour_day, min_pings_home_cluster_label, work_activity_average):</span>
+<span id="cb11-23"><a href="labeling.html#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We start by assuming every cluster falls into the &quot;Other&quot; category.</span></span>
+<span id="cb11-24"><a href="labeling.html#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Meaning they&#39;re not home nor work.</span></span>
+<span id="cb11-25"><a href="labeling.html#cb11-25" aria-hidden="true" tabindex="-1"></a>    user_df[<span class="st">&#39;location_type&#39;</span>] <span class="op">=</span> <span class="st">&#39;O&#39;</span></span>
+<span id="cb11-26"><a href="labeling.html#cb11-26" aria-hidden="true" tabindex="-1"></a>    user_df[<span class="st">&#39;home_label&#39;</span>] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb11-27"><a href="labeling.html#cb11-27" aria-hidden="true" tabindex="-1"></a>    user_df[<span class="st">&#39;work_label&#39;</span>] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb11-28"><a href="labeling.html#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="labeling.html#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># HOME</span></span>
+<span id="cb11-30"><a href="labeling.html#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filter candidates as night-time stops</span></span>
+<span id="cb11-31"><a href="labeling.html#cb11-31" aria-hidden="true" tabindex="-1"></a>    home_tmp <span class="op">=</span> user_df[(user_df[<span class="st">&#39;t_start_hour&#39;</span>] <span class="op">&gt;=</span> end_hour_day) <span class="op">|</span> (</span>
+<span id="cb11-32"><a href="labeling.html#cb11-32" aria-hidden="true" tabindex="-1"></a>        user_df[<span class="st">&#39;t_end_hour&#39;</span>] <span class="op">&lt;=</span> start_hour_day)].copy()  <span class="co"># restrictive version of daytimes</span></span>
+<span id="cb11-33"><a href="labeling.html#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="labeling.html#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> home_tmp.empty:  <span class="co"># if we don&#39;t have at least a home location, we return and not attemp to compute work location</span></span>
+<span id="cb11-35"><a href="labeling.html#cb11-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> remove_unused_cols(user_df)</span>
+<span id="cb11-36"><a href="labeling.html#cb11-36" aria-hidden="true" tabindex="-1"></a>    first_day <span class="op">=</span> home_tmp[<span class="st">&#39;date_trunc&#39;</span>].<span class="bu">min</span>()</span>
+<span id="cb11-37"><a href="labeling.html#cb11-37" aria-hidden="true" tabindex="-1"></a>    last_day <span class="op">=</span> home_tmp[<span class="st">&#39;date_trunc&#39;</span>].<span class="bu">max</span>()</span>
+<span id="cb11-38"><a href="labeling.html#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="labeling.html#cb11-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># work on clusters with &quot;duration&quot; attribute per day (&quot;date_trunc&quot;)</span></span>
+<span id="cb11-40"><a href="labeling.html#cb11-40" aria-hidden="true" tabindex="-1"></a>    home_tmp <span class="op">=</span> home_tmp[[<span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;duration&#39;</span>, <span class="st">&#39;total_pings_stop&#39;</span>]].groupby(</span>
+<span id="cb11-41"><a href="labeling.html#cb11-41" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>]).<span class="bu">sum</span>().reset_index().sort_values(<span class="st">&#39;date_trunc&#39;</span>)</span>
+<span id="cb11-42"><a href="labeling.html#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># computer cumulative duration of candidates over &quot;period&quot; window</span></span>
+<span id="cb11-43"><a href="labeling.html#cb11-43" aria-hidden="true" tabindex="-1"></a>    home_tmp <span class="op">=</span> home_tmp.merge(home_tmp[[<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;duration&#39;</span>, <span class="st">&#39;total_pings_stop&#39;</span>]].groupby(</span>
+<span id="cb11-44"><a href="labeling.html#cb11-44" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&#39;cluster_label&#39;</span>]).<span class="bu">apply</span>(home_rolling_on_date).reset_index(), on<span class="op">=</span>[<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;cluster_label&#39;</span>], suffixes<span class="op">=</span>(<span class="st">&#39;&#39;</span>, <span class="st">&#39;_cum&#39;</span>))</span>
+<span id="cb11-45"><a href="labeling.html#cb11-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(home_tmp.columns)</span>
+<span id="cb11-46"><a href="labeling.html#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co">######</span></span>
+<span id="cb11-47"><a href="labeling.html#cb11-47" aria-hidden="true" tabindex="-1"></a>    home_tmp <span class="op">=</span> home_tmp[home_tmp.total_pings_stop_cum <span class="op">&gt;</span></span>
+<span id="cb11-48"><a href="labeling.html#cb11-48" aria-hidden="true" tabindex="-1"></a>                        min_pings_home_cluster_label].drop(<span class="st">&#39;total_pings_stop_cum&#39;</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-49"><a href="labeling.html#cb11-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-50"><a href="labeling.html#cb11-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filter out nan rows, equivalent to filter on min_days</span></span>
+<span id="cb11-51"><a href="labeling.html#cb11-51" aria-hidden="true" tabindex="-1"></a>    home_tmp <span class="op">=</span> home_tmp.dropna(subset<span class="op">=</span>[<span class="st">&#39;duration_cum&#39;</span>])</span>
+<span id="cb11-52"><a href="labeling.html#cb11-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-53"><a href="labeling.html#cb11-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> home_tmp.empty:  <span class="co"># if we don&#39;t have at least a home location, we return and not attemp to compute work location</span></span>
+<span id="cb11-54"><a href="labeling.html#cb11-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> remove_unused_cols(user_df)</span>
+<span id="cb11-55"><a href="labeling.html#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-56"><a href="labeling.html#cb11-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">#####################</span></span>
+<span id="cb11-57"><a href="labeling.html#cb11-57" aria-hidden="true" tabindex="-1"></a>    date_cluster <span class="op">=</span> home_tmp.drop_duplicates([<span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>])[</span>
+<span id="cb11-58"><a href="labeling.html#cb11-58" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;cluster_label&#39;</span>]].copy()</span>
+<span id="cb11-59"><a href="labeling.html#cb11-59" aria-hidden="true" tabindex="-1"></a>    date_cluster <span class="op">=</span> date_cluster.drop_duplicates([<span class="st">&#39;date_trunc&#39;</span>])</span>
+<span id="cb11-60"><a href="labeling.html#cb11-60" aria-hidden="true" tabindex="-1"></a>    home_label <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(date_cluster.cluster_label, date_cluster.date_trunc))</span>
+<span id="cb11-61"><a href="labeling.html#cb11-61" aria-hidden="true" tabindex="-1"></a>    <span class="co"># creating a multinidex over which locating tuples of &quot;date_trunc&quot; and &quot;home_label&quot;</span></span>
+<span id="cb11-62"><a href="labeling.html#cb11-62" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> pd.MultiIndex.from_frame(user_df[[<span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>]])</span>
+<span id="cb11-63"><a href="labeling.html#cb11-63" aria-hidden="true" tabindex="-1"></a>    user_df.loc[idx.isin(home_label), <span class="st">&#39;home_label&#39;</span>] <span class="op">=</span> user_df.loc[idx.isin(</span>
+<span id="cb11-64"><a href="labeling.html#cb11-64" aria-hidden="true" tabindex="-1"></a>        home_label), <span class="st">&#39;cluster_label&#39;</span>]</span>
+<span id="cb11-65"><a href="labeling.html#cb11-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">#####################</span></span>
+<span id="cb11-66"><a href="labeling.html#cb11-66" aria-hidden="true" tabindex="-1"></a>    base_dates <span class="op">=</span> pd.date_range(start<span class="op">=</span>first_day, end<span class="op">=</span>last_day)</span>
+<span id="cb11-67"><a href="labeling.html#cb11-67" aria-hidden="true" tabindex="-1"></a>    date_cluster <span class="op">=</span> date_cluster.sort_values(</span>
+<span id="cb11-68"><a href="labeling.html#cb11-68" aria-hidden="true" tabindex="-1"></a>        by<span class="op">=</span><span class="st">&#39;date_trunc&#39;</span>).set_index(<span class="st">&#39;date_trunc&#39;</span>)</span>
+<span id="cb11-69"><a href="labeling.html#cb11-69" aria-hidden="true" tabindex="-1"></a>    date_cluster <span class="op">=</span> date_cluster.reindex(base_dates)</span>
+<span id="cb11-70"><a href="labeling.html#cb11-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> pd.notna(date_cluster[<span class="st">&#39;cluster_label&#39;</span>]).<span class="bu">sum</span>() <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb11-71"><a href="labeling.html#cb11-71" aria-hidden="true" tabindex="-1"></a>        date_cluster <span class="op">=</span> date_cluster.interpolate(</span>
+<span id="cb11-72"><a href="labeling.html#cb11-72" aria-hidden="true" tabindex="-1"></a>            method<span class="op">=</span><span class="st">&#39;nearest&#39;</span>).ffill().bfill()</span>
+<span id="cb11-73"><a href="labeling.html#cb11-73" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb11-74"><a href="labeling.html#cb11-74" aria-hidden="true" tabindex="-1"></a>        date_cluster <span class="op">=</span> date_cluster.ffill().bfill()</span>
+<span id="cb11-75"><a href="labeling.html#cb11-75" aria-hidden="true" tabindex="-1"></a>    date_cluster.index.name <span class="op">=</span> <span class="st">&#39;date_trunc&#39;</span></span>
+<span id="cb11-76"><a href="labeling.html#cb11-76" aria-hidden="true" tabindex="-1"></a>    date_cluster <span class="op">=</span> date_cluster.reset_index()</span>
+<span id="cb11-77"><a href="labeling.html#cb11-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-78"><a href="labeling.html#cb11-78" aria-hidden="true" tabindex="-1"></a>    home_label <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(date_cluster.cluster_label, date_cluster.date_trunc))</span>
+<span id="cb11-79"><a href="labeling.html#cb11-79" aria-hidden="true" tabindex="-1"></a>    <span class="co"># creating a multindex over which locating tuples of &quot;date_trunc&quot; and &quot;home_label&quot;</span></span>
+<span id="cb11-80"><a href="labeling.html#cb11-80" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> pd.MultiIndex.from_frame(user_df[[<span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>]])</span>
+<span id="cb11-81"><a href="labeling.html#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="labeling.html#cb11-82" aria-hidden="true" tabindex="-1"></a>    user_df.loc[idx.isin(home_label), <span class="st">&#39;location_type&#39;</span>] <span class="op">=</span> <span class="st">&#39;H&#39;</span></span>
+<span id="cb11-83"><a href="labeling.html#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-84"><a href="labeling.html#cb11-84" aria-hidden="true" tabindex="-1"></a>    home_list <span class="op">=</span> home_tmp.cluster_label.unique()</span>
+<span id="cb11-85"><a href="labeling.html#cb11-85" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> home_list.size <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb11-86"><a href="labeling.html#cb11-86" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> remove_unused_cols(user_df)</span>
+<span id="cb11-87"><a href="labeling.html#cb11-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-88"><a href="labeling.html#cb11-88" aria-hidden="true" tabindex="-1"></a>    <span class="co">########</span></span>
+<span id="cb11-89"><a href="labeling.html#cb11-89" aria-hidden="true" tabindex="-1"></a>    <span class="co"># WORK #</span></span>
+<span id="cb11-90"><a href="labeling.html#cb11-90" aria-hidden="true" tabindex="-1"></a>    <span class="co">########</span></span>
+<span id="cb11-91"><a href="labeling.html#cb11-91" aria-hidden="true" tabindex="-1"></a>    work_tmp <span class="op">=</span> user_df[<span class="op">~</span>(user_df[<span class="st">&#39;cluster_label&#39;</span>].isin(home_list))].copy()</span>
+<span id="cb11-92"><a href="labeling.html#cb11-92" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> work_tmp.empty:  <span class="co"># if we can&#39;t compute work location we return</span></span>
+<span id="cb11-93"><a href="labeling.html#cb11-93" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> remove_unused_cols(user_df)</span>
+<span id="cb11-94"><a href="labeling.html#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="co">#   if daytime: ######don&#39;t like it</span></span>
+<span id="cb11-95"><a href="labeling.html#cb11-95" aria-hidden="true" tabindex="-1"></a>    work_tmp <span class="op">=</span> work_tmp[((work_tmp[<span class="st">&#39;t_start_hour&#39;</span>] <span class="op">&gt;=</span> start_hour_day<span class="op">+</span><span class="dv">4</span>) <span class="op">&amp;</span> (work_tmp[<span class="st">&#39;t_end_hour&#39;</span>]</span>
+<span id="cb11-96"><a href="labeling.html#cb11-96" aria-hidden="true" tabindex="-1"></a>                                                                             <span class="op">&lt;=</span> end_hour_day<span class="op">-</span><span class="dv">6</span>)) <span class="op">&amp;</span> (<span class="op">~</span>work_tmp[<span class="st">&#39;weekday&#39;</span>].isin([<span class="dv">1</span>, <span class="dv">7</span>]))]  <span class="co"># restrictive version of daytimes</span></span>
+<span id="cb11-97"><a href="labeling.html#cb11-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-98"><a href="labeling.html#cb11-98" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> work_tmp.empty:  <span class="co"># if we can&#39;t compute work location we return</span></span>
+<span id="cb11-99"><a href="labeling.html#cb11-99" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> remove_unused_cols(user_df)</span>
+<span id="cb11-100"><a href="labeling.html#cb11-100" aria-hidden="true" tabindex="-1"></a>    first_day <span class="op">=</span> work_tmp[<span class="st">&#39;date_trunc&#39;</span>].<span class="bu">min</span>()</span>
+<span id="cb11-101"><a href="labeling.html#cb11-101" aria-hidden="true" tabindex="-1"></a>    <span class="co"># drop duplicates, smooth over &quot;period&quot; time window</span></span>
+<span id="cb11-102"><a href="labeling.html#cb11-102" aria-hidden="true" tabindex="-1"></a>    work_tmp <span class="op">=</span> work_tmp[[<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;duration&#39;</span>]].groupby(</span>
+<span id="cb11-103"><a href="labeling.html#cb11-103" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>]).<span class="bu">sum</span>().reset_index()</span>
+<span id="cb11-104"><a href="labeling.html#cb11-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-105"><a href="labeling.html#cb11-105" aria-hidden="true" tabindex="-1"></a>    work_tmp <span class="op">=</span> work_tmp.merge(work_tmp[[<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;duration&#39;</span>]]</span>
+<span id="cb11-106"><a href="labeling.html#cb11-106" aria-hidden="true" tabindex="-1"></a>                              .groupby([<span class="st">&#39;cluster_label&#39;</span>])</span>
+<span id="cb11-107"><a href="labeling.html#cb11-107" aria-hidden="true" tabindex="-1"></a>                              .<span class="bu">apply</span>(work_rolling_on_date)</span>
+<span id="cb11-108"><a href="labeling.html#cb11-108" aria-hidden="true" tabindex="-1"></a>                              .reset_index(), on<span class="op">=</span>[<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;cluster_label&#39;</span>], suffixes<span class="op">=</span>(<span class="st">&#39;&#39;</span>, <span class="st">&#39;_average&#39;</span>))</span>
+<span id="cb11-109"><a href="labeling.html#cb11-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-110"><a href="labeling.html#cb11-110" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filter out candidates which on average on the period do not pass the constraint</span></span>
+<span id="cb11-111"><a href="labeling.html#cb11-111" aria-hidden="true" tabindex="-1"></a>    work_tmp <span class="op">=</span> work_tmp[(work_tmp.duration_average <span class="op">&gt;=</span> work_activity_average)]</span>
+<span id="cb11-112"><a href="labeling.html#cb11-112" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Select work clusters candidate: the clusters that passed the previous criteria are selected as work for the day</span></span>
+<span id="cb11-113"><a href="labeling.html#cb11-113" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> work_tmp.empty:  <span class="co"># if we can&#39;t compute work location we return</span></span>
+<span id="cb11-114"><a href="labeling.html#cb11-114" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> remove_unused_cols(user_df)</span>
+<span id="cb11-115"><a href="labeling.html#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="labeling.html#cb11-116" aria-hidden="true" tabindex="-1"></a>    <span class="co">#####################</span></span>
+<span id="cb11-117"><a href="labeling.html#cb11-117" aria-hidden="true" tabindex="-1"></a>    work_label <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(work_tmp.cluster_label, work_tmp.date_trunc))</span>
+<span id="cb11-118"><a href="labeling.html#cb11-118" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> pd.MultiIndex.from_frame(user_df[[<span class="st">&#39;cluster_label&#39;</span>, <span class="st">&#39;date_trunc&#39;</span>]])</span>
+<span id="cb11-119"><a href="labeling.html#cb11-119" aria-hidden="true" tabindex="-1"></a>    work_list <span class="op">=</span> work_tmp.cluster_label.unique()</span>
+<span id="cb11-120"><a href="labeling.html#cb11-120" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> work_list.size <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb11-121"><a href="labeling.html#cb11-121" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> remove_unused_cols(user_df)</span>
+<span id="cb11-122"><a href="labeling.html#cb11-122" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add cluster label to work_label on the day on which it is found to be work_location only</span></span>
+<span id="cb11-123"><a href="labeling.html#cb11-123" aria-hidden="true" tabindex="-1"></a>    user_df.loc[idx.isin(work_label), <span class="st">&#39;work_label&#39;</span>] <span class="op">=</span> user_df.loc[idx.isin(</span>
+<span id="cb11-124"><a href="labeling.html#cb11-124" aria-hidden="true" tabindex="-1"></a>        work_label), <span class="st">&#39;cluster_label&#39;</span>]</span>
+<span id="cb11-125"><a href="labeling.html#cb11-125" aria-hidden="true" tabindex="-1"></a>    <span class="co">#####################</span></span>
+<span id="cb11-126"><a href="labeling.html#cb11-126" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add work labels to all user dataset</span></span>
+<span id="cb11-127"><a href="labeling.html#cb11-127" aria-hidden="true" tabindex="-1"></a>    work_label <span class="op">=</span> work_tmp[<span class="st">&#39;cluster_label&#39;</span>].unique()</span>
+<span id="cb11-128"><a href="labeling.html#cb11-128" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> pd.Index(user_df[<span class="st">&#39;cluster_label&#39;</span>])</span>
+<span id="cb11-129"><a href="labeling.html#cb11-129" aria-hidden="true" tabindex="-1"></a>    user_df.loc[idx.isin(work_label), <span class="st">&#39;location_type&#39;</span>] <span class="op">=</span> <span class="st">&#39;W&#39;</span></span>
+<span id="cb11-130"><a href="labeling.html#cb11-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-131"><a href="labeling.html#cb11-131" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> remove_unused_cols(user_df)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="stops.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mobility.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/worldbank/SDG-big-data/05-labeling.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["big-daa.pdf", "big-daa.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
