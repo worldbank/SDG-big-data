@@ -508,10 +508,7 @@ def get_migration_results(results, users, state, frac='net_rural_fraction', chan
     return res
 
 ### Analysis plots: Mobility
-% matplotlib
-inline
-% config
-InlineBackend.figure_format = 'retina'
+
 
 
 def get_single_metric_results(results, metric, state, other_groups=[]):

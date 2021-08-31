@@ -1,10 +1,11 @@
 from collections import Counter
 from cpputils import get_stationary_events
-from datetime import datetime, timezone, timedelta
+from datetime import timezone
 import numpy as np
 from pyspark.sql.functions import lag, col, countDistinct, to_timestamp, lit, from_unixtime, pandas_udf, PandasUDFType
-from pyspark.sql.types import *
 from sklearn.cluster import DBSCAN
+
+from pyspark.sql.types import StructType, StructField, LongType, StringType, IntegerType, TimestampType, DoubleType
 
 
 def get_most_frequent_label(a):
@@ -71,7 +72,7 @@ schema_df = StructType([
 def get_stop_location(df, radius, stay_time, min_pts_per_stop_location, max_time_stop_location, max_accuracy,
                       db_scan_radius):
     identifier = df['user_id'].values[0]
-    df.sort_values(by='epoch_time', inplace=True)  # shouldnt be necessary
+    df.sort_values(by='epoch_time', inplace=True)  # shouldn't be necessary
 
     data = df[["lat", "lon", 'epoch_time', "accuracy"]].values
     res = run_infostop(data, r1=radius, min_staying_time=stay_time, min_size=min_pts_per_stop_location,

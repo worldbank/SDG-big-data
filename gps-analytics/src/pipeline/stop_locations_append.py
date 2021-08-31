@@ -1,18 +1,10 @@
 from wbgps import *
-from collections import Counter
-from cpputils import get_stationary_events
-from datetime import datetime, timezone, timedelta
-from infomap import Infomap
-from infostop.utils import query_neighbors
-import time
-import numpy as np
+from datetime import datetime
 import pandas as pd
 import os
 import pyspark.sql.functions as F
-from pyspark.sql.functions import lag, col, countDistinct, to_timestamp, lit, from_unixtime,  pandas_udf, PandasUDFType
-from pyspark.sql.window import Window
+from pyspark.sql.functions import col
 from pyspark.sql.types import *
-from sklearn.cluster import DBSCAN
 
 dates_computed = os.listdir('/dbfs'+c.stop_locations_dir[:-15])
 dates_f = [datetime.strptime(date[4:], '%Y-%m-%d') for date in dates_computed]

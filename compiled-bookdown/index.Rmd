@@ -49,7 +49,7 @@ knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-coun
 ```
 
 ```{r echo=FALSE}
-knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-city", height = "750px")
+knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-city.html", height = "750px")
 ```
 
 ## [News analysis with Twitter data](#news)
