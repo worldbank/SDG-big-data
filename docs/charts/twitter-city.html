@@ -1,0 +1,380 @@
+<!Doctype html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="keywords" content="HTML,CSS,JavaScript,THREE.js">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>twitter employment</title>
+  <style>
+   body{
+     font-family:sans-serif;
+     font-size: 14px;
+     font-weight: 300;
+   }
+    #form{
+      padding-left: 100px;
+      float: left;
+    }
+
+    select{
+      background-color: #fff;
+      border: 2px solid #e5e5e5;
+      font-weight: 300;
+      padding: 5px 0;
+    }
+    #form4{
+      clear:both;
+      padding-left: 70px;
+    }
+    #form2,#form3, #form4,#form5{
+      float: left;
+      margin-left: 30px;
+    }
+    input[type='checkbox']{
+      appearance:none;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      position: relative;
+      top: 7px;
+    }
+    input[type='checkbox']:checked:after {
+      content: ' ';
+      font-size: 14px;
+      position: absolute;
+      top: -1px;
+      left: 2px;
+      color: #fff;
+      font-weight: 700;
+    }
+    #Brazil-box{
+      background-color: #9785FF;
+      border: 2px solid #9785FF;
+    }
+    #Mexico-box{
+      background-color:#ED7D6E;
+      border: 2px solid #ED7D6E;
+    }
+    #United-States-box{
+      background-color:#78d9ad;
+      border: 2px solid #78d9ad;
+    }
+    #all-box{
+      background-color: #999;
+      border: 2px solid #999;
+    }
+    #female-box{
+      background-color:#ddd;
+      border: 2px solid #ddd;
+    }
+    #male-box{
+      background-color:#444;
+      border: 2px solid #444;
+    }
+    /* input[type="checkbox"]:not(:checked) {
+      background-color: #fff !important;
+    } */
+  </style>
+</head>
+<body>
+
+    <div id="container"></div>
+    <div id="form">
+      <p>Indicator</p>
+      <select name="topic-menu" id="topic-menu" onchange="topicGraph(this.value)">
+      </select>
+    </div>
+    <div id="form2">
+      <p>City A</p>
+      <select name="country-menu" id="country-menu" onchange="selectedCity=this.value;toggleCity(this.value)">
+      </select>
+    </div>
+    <div id="form3">
+      <p>City B</p>
+      <select name="country-menu2" id="country-menu2" onchange="selectedCityB=this.value;toggleCity(this.value)">
+      </select>
+    </div>
+    <div id="form4">
+      <p>Country</p>
+      <input type="checkbox" id="Brazil-box" class="c-box" name="Brazil-box" value="Brazil" checked="true" >
+      <!-- onchange="toggleClass(this.value,this.checked)"> -->
+      <label for="Brazil-box">Brazil</label><br>
+      <input type="checkbox" id="Mexico-box" class="c-box" name="Mexico-box" value="Mexico" checked="true" >
+      <!-- onchange="toggleClass(this.value,this.checked)"> -->
+      <label for="Mexico-box">Mexico</label><br>
+      <input type="checkbox" id="United-States-box" class="c-box" name="United-States-box" value="United-States" checked="true">
+       <!-- onchange="toggleClass(this.value,this.checked)"> -->
+      <label for="United-States-box">United States</label><br>
+    </div>
+    <div id="form5">
+      <p>Gender</p>
+      <input type="checkbox" id="all-box" class="g-box" name="all-box" value="tline" checked="true" >
+      <!-- onchange="toggleClass(this.value,this.checked)"> -->
+      <label for="all-box">All</label><br>
+      <input type="checkbox" id="female-box" class="g-box" name="female-box" value="fline" checked="false" >
+      <!-- onchange="toggleClass(this.value,this.checked)"> -->
+      <label for="female-box">Female</label><br>
+      <input type="checkbox" id="male-box" class="g-box" name="male-box" value="mline" checked="false">
+       <!-- onchange="toggleClass(this.value,this.checked)"> -->
+      <label for="male-box">Male</label><br>
+   </form>
+
+
+
+    <script type="text/javascript"  src="js/d3.min.js"></script>
+    <script type="text/javascript"  src="js/blob.js"></script>
+    <script type="text/javascript"  src="js/fileSaver.js"></script>
+    <script type="text/javascript"  src="js/config.js"></script>
+	<script>
+  var margin = {top: 100, right: 80, bottom: 30, left: 100},
+          width = 672 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
+
+  var w2 = width + margin.left + margin.right;
+
+  var svg = d3.select("#container").append("svg")
+      .attr("width", (width + margin.left + margin.right)*2)
+      .attr("height", height + margin.top + margin.bottom );
+
+  let yScale = d3.scaleLinear().range([height,0]);
+  let xScale = d3.scaleTime().range([0,width]);
+  let yScale2 = d3.scaleLinear().range([height,0]);
+
+  var xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%m/%Y")).ticks(d3.timeYear.every(3));
+  var yAxis = d3.axisLeft(yScale);
+  var date = d3.timeParse("%Y_%m");
+
+  var tline = d3.line()
+    .x(function(d) { return xScale(d.datef); })
+    .y(function(d) { return yScale(+d[selectedTopic]); });
+
+    var mline = d3.line()
+      .x(function(d) { return xScale(d.datef); })
+      .y(function(d) { return yScale(+d[selectedTopic+"_male"]); });
+
+      var fline = d3.line()
+        .x(function(d) { return xScale(d.datef); })
+        .y(function(d) { return yScale(+d[selectedTopic+"_female"]); });
+
+  var dat, gDat, tGroup, cGroup, selectedTopic = " ", selectedCity ="Belo-Horizonte", selectedCityB="CDMX";
+
+  var colorScheme = {"Mexico":"#ED7D6E","Brazil":"#9785FF","United States":"#78d9ad"}
+
+  var colorScheme = {
+    "Mexico":{"all":"#c92d18","male":"#5B140B","female":"#ED7D6E"},
+    "Brazil":{"all":"#2F0AFF","male":"#15008F","female":"#9785FF"},
+    "United States":{"all":"#2D9F6E","male":"#1B5F42","female":"#78d9ad"}}
+
+  var menuText = {
+    "pct_lost_job_1mo":"Lost jobs in the last month",
+    "pct_is_unemployed":"Unemployed",
+    "pct_job_search": "Looking for a job",
+    "pct_job_offer": "Received a job offer",
+    "pct_is_hired_1mo":"Found jobs in the last month"
+  }
+
+  d3.csv("twitter_city.csv").then( function(data) {
+    dat = data;
+    tGroup = svg.append("g")
+        .attr("id","topic-graph")
+        .attr("transform","translate(" + margin.left + ","+margin.top+")");
+
+    dat.forEach(function(d) {d.datef = date(d.year_month);});
+
+    xScale.domain(d3.extent(dat,d=>d.datef));
+
+    tGroup.append("g")
+        .attr("transform", "translate(0,"+height+")")
+        .attr("class","x-ax ax");
+    tGroup.append("g")
+        .attr("class","y-ax ax");
+
+    d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+    d3.selectAll(".tick text").attr("fill", "#999");
+
+    gDat = d3.groups(dat,d=>d.city);
+
+    for(c=0;c<dat.columns.length;c++){
+      if(c>5 && c<11){
+        d3.select("#topic-menu").append("option").attr("value",dat.columns[c]).html(menuText[dat.columns[c]]);
+      }
+    }
+    for(c=0;c<gDat.length;c++){
+      var name = gDat[c][0];
+      var classname = name.replace(/\ /g, '-');
+      d3.select("#country-menu").append("option").attr("value",classname).html(name);
+      d3.select("#country-menu2").append("option").attr("value",classname).html(name);
+    }
+    d3.select("#country-menu2").property("value",gDat[3][0]);
+    topicGraph(dat.columns[6]);
+  });
+
+  function topicGraph(top){
+      if(top != selectedTopic){
+        selectedTopic = top;
+        var max = d3.max(dat,d=>+d[top]);
+        if(d3.max(dat,d=>+d[top+"_male"])>max){
+          max = d3.max(dat,d=>+d[top+"_male"]);
+        }else if(d3.max(dat,d=>+d[top+"_female"])>max){
+          max = d3.max(dat,d=>+d[top+"_female"]);
+        }
+        yScale.domain([0,max]);
+
+        for(h=0;h<gDat.length;h++){
+          cur = gDat[h][1];
+          var name = gDat[h][0];
+          var classname = name.replace(/\ /g, '-');
+
+          var lines = d3.selectAll(".tline").nodes();
+          if(lines.length == gDat.length){
+            var u = tGroup.select(".tline."+classname).data([cur]);
+            u.enter()
+            .append("path")
+            .merge(u)
+            .transition()
+            .duration(1000)
+            .attr("d", tline);
+
+            var u = tGroup.select(".mline."+classname).data([cur]);
+            u.enter()
+            .append("path")
+            .merge(u)
+            .transition()
+            .duration(1000)
+            .attr("d", mline);
+
+            var u = tGroup.select(".fline."+classname).data([cur]);
+            u.enter()
+            .append("path")
+            .merge(u)
+            .transition()
+            .duration(1000)
+            .attr("d", fline);
+          }else{
+            tGroup.append("path")
+            .data([cur])
+            .attr("d", tline)
+            .attr("stroke",function(d){
+              console.log(cur[0].country);
+              return colorScheme[cur[0].country]["all"];
+            })
+            .attr("stroke-width",1)
+            .attr("opacity",function(d){
+              if(classname == selectedCity || classname == selectedCityB){
+                return 1;
+              }else{
+                return 0.01;
+              }
+            })
+            .attr("fill","none")
+            .attr("class",function(d){
+              return classname+" plotline tline";
+            });
+
+            tGroup.append("path")
+            .data([cur])
+            .attr("d", mline)
+            .attr("stroke",function(d){
+              return colorScheme[cur[0].country]["male"];
+            })
+            .attr("stroke-width",1.25)
+            .attr("opacity",function(d){
+              if(classname == selectedCity || classname == selectedCityB){
+                return 1;
+              }else{
+                return 0.01;
+              }
+            })
+            .attr("fill","none")
+            .attr("class",function(d){
+              return classname+" plotline mline";
+            });
+
+            tGroup.append("path")
+            .data([cur])
+            .attr("d", fline)
+            .attr("stroke",function(d){
+              return colorScheme[cur[0].country]["female"];
+            })
+            .attr("stroke-width",1.25)
+            .attr("opacity",function(d){
+              if(classname == selectedCity || classname == selectedCityB){
+                return 1;
+              }else{
+                return 0.01;
+              }
+            })
+            .attr("fill","none")
+            .attr("class",function(d){
+              return classname+" plotline fline";
+            });
+          }
+        }
+
+        tGroup.selectAll(".y-label").remove();
+        tGroup.append("text")
+         .text(menuText[top]+" (%)")
+         .style("transform","rotate(-90deg)")
+         .style("font-family","sans-serif")
+         .style("font-weight","300")
+         .style("font-size","14")
+         .attr("class","y-label")
+         .attr("x", -height/2)
+         .attr("y", -40)
+         .attr("text-anchor","middle")
+         .attr("fill","#999");
+
+         tGroup.selectAll(".x-ax").transition()
+          .duration(1000)
+          .call(xAxis);
+
+          tGroup.selectAll(".y-ax").transition()
+           .duration(1000)
+           .call(yAxis);
+
+         tGroup.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+         <!-- d3.selectAll(".tick line").attr("x2", width); -->
+         tGroup.selectAll(".tick text").attr("fill", "#999");
+     }
+  }
+
+
+  function toggleCity(cname){
+    d3.selectAll(".plotline").attr("opacity",0.01);
+    d3.selectAll("."+selectedCity).attr("opacity",1);
+    d3.selectAll("."+selectedCityB).attr("opacity",1);
+  }
+
+  function toggleClass(cname,val){
+    if(val == false){op = 0.1}else{
+      op = 1;
+      // if(cname == "All"){
+      //
+      // }
+    }
+    d3.selectAll("."+cname).attr("opacity",op);
+  }
+
+	//----------------svg export code
+
+        d3.select("#generate")
+          .on("click", writeDownloadLink);
+
+        function writeDownloadLink(){
+            try {
+                var isFileSaverSupported = !!new Blob();
+            } catch (e) {
+                alert("blob not supported");
+            }
+
+            var html = d3.select("svg")
+                .attr("title", "test2")
+                .attr("version", 1.1)
+                .attr("xmlns", "http://www.w3.org/2000/svg")
+                .node().parentNode.innerHTML;
+
+            var blob = new Blob([html], {type: "image/svg+xml"});
+            saveAs(blob, "viz.svg");
+        };
+	</script>
+</body>
+</html>
