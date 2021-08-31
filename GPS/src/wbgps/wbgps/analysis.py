@@ -546,13 +546,14 @@ def set_plot_style(ax, state, xlim=None, ylim=None, title=None, xlabel=None, yla
 import matplotlib as mpl
 mpl.rcParams['axes.linewidth'] = 0.5
 def plot_metrics(results,states, metrics = ['rec', 'comms', 'comms_hw'], # ['t_home', 't_work', 't_other', 'rec', 'comms', 'comms_hw']
-                 color_n = [1,2,6], cols=3, fs = 6, lw = 1.1, other_groups = []):
+                 color_n = [1,2,6], cols=3, fs = 6, lw = 1.1, other_groups = [], titles=None):
   alph = list(string.ascii_lowercase)
   xlims = (pd.to_datetime(start_date),pd.to_datetime(end_date))
   lm = len(metrics)
   ls = len(states)
+  if titles is None: titles = {m:m for m in metrics}
   fig, axes = plt.subplots((lm*ls)//cols, cols, figsize=(8,2*(lm*ls)//cols))
-
+  res = pd.DataFrame()
   for sc,state in enumerate(states):
     for nm,metric in enumerate(metrics):
       i = (sc)
@@ -570,7 +571,15 @@ def plot_metrics(results,states, metrics = ['rec', 'comms', 'comms_hw'], # ['t_h
       rm = rm[(rm.index>=xlims[0])&(rm.index<=xlims[1])]
       re = re.rolling(ma,center=True).mean()
       re = re[(re.index>=xlims[0])&(re.index<=xlims[1])]
-
+      
+      r_tmp = rm.merge(re,on='date',suffixes=('','_StdErr')).reset_index()
+      r_tmp['metric'] = metric
+      r_tmp['state'] = state
+      if res.empty: 
+        res = r_tmp.copy()
+      else:
+        res = res.append(r_tmp,ignore_index=True)
+      
       for k,col in enumerate(rm.columns):
         if (lm*ls)>3:
           axes[i,j].plot(rm[col].index,rm[col],color=my_palette[color_n[k]],label=col.replace('_',' '))
@@ -581,14 +590,14 @@ def plot_metrics(results,states, metrics = ['rec', 'comms', 'comms_hw'], # ['t_h
       if (lm*ls)>3:
         set_plot_style(axes[i,j], state, ylim=ylims, xlabel=' ', ylabel='Change {} (%)'.format(ylabels[metric]), byweekday=5,fs=fs, weeks_interval=8)
         axes[i,j].legend(frameon=False,fontsize=fs-2)
-        axes[i,j].text(x=-.05,y=1.05,s=alph[cols*sc+nm]+')  {} - {}'.format(state,metric),transform=axes[i,j].transAxes,fontweight='semibold',fontsize=fs)        
+        axes[i,j].text(x=-.05,y=1.05,s=alph[cols*sc+nm]+')  {} - {}'.format(state,titles[metric]),transform=axes[i,j].transAxes,fontweight='semibold',fontsize=fs)        
       else:
         set_plot_style(axes[j], state, ylim=ylims, xlabel=' ', ylabel='Change {} (%)'.format(ylabels[metric]), byweekday=5,fs=fs, weeks_interval=8)
         axes[j].legend(frameon=False,fontsize=fs-2)
-        axes[j].text(x=-.05,y=1.05,s=alph[(cols)*sc+nm]+')  {} - {}'.format(state,metric),transform=axes[j].transAxes,fontweight='semibold',fontsize=fs)
+        axes[j].text(x=-.05,y=1.05,s=alph[(cols)*sc+nm]+')  {} - {}'.format(state,titles[metric]),transform=axes[j].transAxes,fontweight='semibold',fontsize=fs)
 
   plt.subplots_adjust(hspace=0.5,wspace=0.4)
-  return fig
+  return fig, res
 
 
 ### Analysis plots: Migration
@@ -601,7 +610,7 @@ def plot_migration(results,states, color_n = [1,2,6], cols=3, fs = 6, lw = 1.1):
   ylims = results[(results.index>=start_date)&(results.index<=end_date)].sort_index().groupby('state').rolling(mw,center=True,min_periods=1).mean()
 #   ylims = [ylims.min().min()-0.01,ylims.max().max()+0.01]
   ylims = None
-
+  res = pd.DataFrame()
   for nm,state in enumerate(states):
     i = nm//cols
     j = nm%cols
@@ -613,15 +622,23 @@ def plot_migration(results,states, color_n = [1,2,6], cols=3, fs = 6, lw = 1.1):
     rm = rm[(rm.index>=xlims[0])&(rm.index<=xlims[1])]
     re = re[(re.index>=xlims[0])&(re.index<=xlims[1])]
 
+         
+    r_tmp = rm.merge(re,on='date',suffixes=('','_StdErr')).reset_index()
+    r_tmp['state'] = state
+    if res.empty: 
+      res = r_tmp.copy()
+    else:
+      res = res.append(r_tmp,ignore_index=True)
+
     for k,col in enumerate(rm.columns):
       if lm>cols:
         axes[i,j].plot(rm[col].index,rm[col],color=my_palette[color_n[k]],label=col.replace('_',' '))
         axes[i,j].fill_between(rm[col].index,rm[col]+2*re[col],rm[col]-2*re[col],color=my_palette[color_n[k]],alpha=0.1,linewidth=lw)
-        axes[i,j].text(x=-.05,y=1.05,s=alph[nm*k]+')  {}'.format(state),transform=axes[i,j].transAxes,fontweight='semibold',fontsize=fs)
+        if k==len(rm.columns)-1: axes[i,j].text(x=-.05,y=1.05,s=alph[nm*k]+')  {}'.format(state),transform=axes[i,j].transAxes,fontweight='semibold',fontsize=fs)
       elif lm>1:
         axes[j].plot(rm[col].index,rm[col],color=my_palette[color_n[k]],label=col.replace('_',' '))
         axes[j].fill_between(rm[col].index,rm[col]+2*re[col],rm[col]-2*re[col],color=my_palette[color_n[k]],alpha=0.1,linewidth=lw)
-        axes[i].text(x=-.05,y=1.05,s=alph[nm]+')  {}'.format(state),transform=axes[i].transAxes,fontweight='semibold',fontsize=fs)
+        if k==len(rm.columns)-1: axes[i].text(x=-.05,y=1.05,s=alph[nm]+')  {}'.format(state),transform=axes[i].transAxes,fontweight='semibold',fontsize=fs)
       else:
         axes.plot(rm[col].index,rm[col],color=my_palette[color_n[k]],label=col.replace('_',' '))
         axes.fill_between(rm[col].index,rm[col]+2*re[col],rm[col]-2*re[col],color=my_palette[color_n[k]],alpha=0.1,linewidth=lw)
@@ -638,6 +655,6 @@ def plot_migration(results,states, color_n = [1,2,6], cols=3, fs = 6, lw = 1.1):
       axes.legend(frameon=False,fontsize=fs-2)
 
   plt.subplots_adjust(hspace=0.5,wspace=0.4)
-  return fig
+  return fig, res
 
 my_palette = sns.color_palette(['#ce343c','#EC8A61', '#89d4b4','#0081A7', '#72C9C8', '#547474', '#8a567a', '#743D55','#b25a97', '#efb953'])
