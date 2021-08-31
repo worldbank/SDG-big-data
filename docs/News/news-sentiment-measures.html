@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 News-sentiment measures | News Analytics</title>
+  <meta name="description" content="Guided step by step analysis of news using NLP on Twitter data." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 News-sentiment measures | News Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guided step by step analysis of news using NLP on Twitter data." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 News-sentiment measures | News Analytics" />
+  
+  <meta name="twitter:description" content="Guided step by step analysis of news using NLP on Twitter data." />
+  
+
+<meta name="author" content="Chapter 3 News-sentiment measures | News Analytics Group" />
+
+
+<meta name="date" content="2021-08-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="global-vs.-local-news-sentiment-indicators.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">News Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> News Analytics</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#news-articles"><i class="fa fa-check"></i><b>2.1</b> News articles</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html"><i class="fa fa-check"></i><b>3</b> News-sentiment measures</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#bag-of-words-model"><i class="fa fa-check"></i><b>3.1</b> Bag-of-words model</a></li>
+<li class="chapter" data-level="3.2" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#country-specific-news-sentiment-indicator"><i class="fa fa-check"></i><b>3.2</b> Country-specific news sentiment indicator</a></li>
+<li class="chapter" data-level="3.3" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#stylized-facts"><i class="fa fa-check"></i><b>3.3</b> Stylized facts</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html"><i class="fa fa-check"></i><b>4</b> Global vs. local news sentiment indicators</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#local-news-sentiment-indicator"><i class="fa fa-check"></i><b>4.1</b> Local news sentiment indicator</a></li>
+<li class="chapter" data-level="4.2" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#global-news-sentiment-indicator"><i class="fa fa-check"></i><b>4.2</b> Global news sentiment indicator</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">News Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="news-sentiment-measures" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> News-sentiment measures</h1>
+<div id="bag-of-words-model" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Bag-of-words model</h2>
+<p>Sentiment is measured using a simple dictionary approach based on <a href="https://www.jstor.org/stable/29789771">Loughran and Mcdonald (2011)</a>. To measure news sentiment, we use a <code>bag-of-words</code> model, allowing us to reduce complex and multi-dimensional text data into a single number.</p>
+<p>First, we combine existing lists of positive and negative words found in financial texts by <a href="https://www.jstor.org/stable/29789771">Loughran and Mcdonald (2011)</a> and in texts related to economic policy by <a href="https://doi.org/10.1080/10584609.2012.671234">Young and Soroka (2012)</a>. We then expand our lists by including the inflections of each word: for example, the word <code>lose</code> belongs to the negative list, hence we also include the words <code>losing</code>, <code>loser</code>, <code>lost</code>, <code>loss</code>, etc, leading to a final list of 7,217 negative words and 3,250 positive words.</p>
+<p>The following table shows the most frequent tonal words inour corpus.</p>
+<table>
+<caption>Most frequent positive (left) and negative (right) words.</caption>
+<colgroup>
+<col width="10%" />
+<col width="19%" />
+<col width="15%" />
+<col width="4%" />
+<col width="10%" />
+<col width="19%" />
+<col width="15%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Positive word</th>
+<th align="center">Fraction of positive words</th>
+<th align="center">Fraction of articles</th>
+<th align="center">IDF</th>
+<th align="center">Negative word</th>
+<th align="center">Fraction of negative words</th>
+<th align="center">Fraction of articles</th>
+<th align="center">IDF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Strong</td>
+<td align="center">0.107</td>
+<td align="center">0.118</td>
+<td align="center">2.135</td>
+<td align="center">Crisis</td>
+<td align="center">0.088</td>
+<td align="center">0.069</td>
+<td align="center">2.675</td>
+</tr>
+<tr class="even">
+<td align="center">Gains</td>
+<td align="center">0.099</td>
+<td align="center">0.104</td>
+<td align="center">2.265</td>
+<td align="center">Losses</td>
+<td align="center">0.072</td>
+<td align="center">0.069</td>
+<td align="center">2.677</td>
+</tr>
+<tr class="odd">
+<td align="center">Well</td>
+<td align="center">0.082</td>
+<td align="center">0.103</td>
+<td align="center">2.271</td>
+<td align="center">Deficit</td>
+<td align="center">0.071</td>
+<td align="center">0.044</td>
+<td align="center">3.132</td>
+</tr>
+<tr class="even">
+<td align="center">Good</td>
+<td align="center">0.065</td>
+<td align="center">0.077</td>
+<td align="center">2.561</td>
+<td align="center">Weak</td>
+<td align="center">0.070</td>
+<td align="center">0.070</td>
+<td align="center">2.656</td>
+</tr>
+<tr class="odd">
+<td align="center">Help</td>
+<td align="center">0.061</td>
+<td align="center">0.074</td>
+<td align="center">2.603</td>
+<td align="center">Limited</td>
+<td align="center">0.063</td>
+<td align="center">0.062</td>
+<td align="center">2.774</td>
+</tr>
+<tr class="even">
+<td align="center">Recovery</td>
+<td align="center">0.056</td>
+<td align="center">0.058</td>
+<td align="center">2.850</td>
+<td align="center">Concerns</td>
+<td align="center">0.063</td>
+<td align="center">0.067</td>
+<td align="center">2.705</td>
+</tr>
+<tr class="odd">
+<td align="center">Highest</td>
+<td align="center">0.044</td>
+<td align="center">0.053</td>
+<td align="center">2.935</td>
+<td align="center">Decline</td>
+<td align="center">0.050</td>
+<td align="center">0.052</td>
+<td align="center">2.960</td>
+</tr>
+<tr class="even">
+<td align="center">Agreement</td>
+<td align="center">0.043</td>
+<td align="center">0.042</td>
+<td align="center">3.179</td>
+<td align="center">Weaker</td>
+<td align="center">0.048</td>
+<td align="center">0.049</td>
+<td align="center">3.007</td>
+</tr>
+<tr class="odd">
+<td align="center">Assets</td>
+<td align="center">0.042</td>
+<td align="center">0.042</td>
+<td align="center">3.159</td>
+<td align="center">Poor</td>
+<td align="center">0.047</td>
+<td align="center">0.049</td>
+<td align="center">3.017</td>
+</tr>
+<tr class="even">
+<td align="center">Positive</td>
+<td align="center">0.041</td>
+<td align="center">0.051</td>
+<td align="center">2.973</td>
+<td align="center">Unemployment</td>
+<td align="center">0.045</td>
+<td align="center">0.030</td>
+<td align="center">3.493</td>
+</tr>
+<tr class="odd">
+<td align="center">Better</td>
+<td align="center">0.041</td>
+<td align="center">0.053</td>
+<td align="center">2.932</td>
+<td align="center">Lost</td>
+<td align="center">0.045</td>
+<td align="center">0.048</td>
+<td align="center">3.034</td>
+</tr>
+<tr class="even">
+<td align="center">Gained</td>
+<td align="center">0.041</td>
+<td align="center">0.049</td>
+<td align="center">3.007</td>
+<td align="center">Fears</td>
+<td align="center">0.041</td>
+<td align="center">0.045</td>
+<td align="center">3.109</td>
+</tr>
+<tr class="odd">
+<td align="center">Boost</td>
+<td align="center">0.040</td>
+<td align="center">0.054</td>
+<td align="center">2.914</td>
+<td align="center">Dropped</td>
+<td align="center">0.040</td>
+<td align="center">0.045</td>
+<td align="center">3.095</td>
+</tr>
+<tr class="even">
+<td align="center">Leading</td>
+<td align="center">0.039</td>
+<td align="center">0.052</td>
+<td align="center">2.957</td>
+<td align="center">Slow</td>
+<td align="center">0.039</td>
+<td align="center">0.042</td>
+<td align="center">3.162</td>
+</tr>
+<tr class="odd">
+<td align="center">Confidence</td>
+<td align="center">0.036</td>
+<td align="center">0.039</td>
+<td align="center">3.255</td>
+<td align="center">Negative</td>
+<td align="center">0.039</td>
+<td align="center">0.040</td>
+<td align="center">3.225</td>
+</tr>
+<tr class="even">
+<td align="center">Gain</td>
+<td align="center">0.035</td>
+<td align="center">0.042</td>
+<td align="center">3.159</td>
+<td align="center">Problems</td>
+<td align="center">0.037</td>
+<td align="center">0.039</td>
+<td align="center">3.233</td>
+</tr>
+<tr class="odd">
+<td align="center">Agreed</td>
+<td align="center">0.034</td>
+<td align="center">0.042</td>
+<td align="center">3.179</td>
+<td align="center">Worries</td>
+<td align="center">0.037</td>
+<td align="center">0.040</td>
+<td align="center">3.210</td>
+</tr>
+<tr class="even">
+<td align="center">Stronger</td>
+<td align="center">0.032</td>
+<td align="center">0.042</td>
+<td align="center">3.172</td>
+<td align="center">Hard</td>
+<td align="center">0.036</td>
+<td align="center">0.039</td>
+<td align="center">3.234</td>
+</tr>
+<tr class="odd">
+<td align="center">Worth</td>
+<td align="center">0.032</td>
+<td align="center">0.039</td>
+<td align="center">3.239</td>
+<td align="center">Recession</td>
+<td align="center">0.035</td>
+<td align="center">0.032</td>
+<td align="center">3.457</td>
+</tr>
+<tr class="even">
+<td align="center">Opening</td>
+<td align="center">0.032</td>
+<td align="center">0.041</td>
+<td align="center">3.199</td>
+<td align="center">Loss</td>
+<td align="center">0.033</td>
+<td align="center">0.032</td>
+<td align="center">3.441</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: This table presents the most frequent positive (negative) words in our corpus. For each panel, the first column reports the number of occurrences of each positive (negative) words relative to all occurrences of positive (negative) words, the second reports the fraction of articles in which the word appears, and the third column reports its inverse document frequency (IDF), which is defined below.</em></p>
+<p><em>Source:</em> Words lists come from <a href="https://www.jstor.org/stable/29789771">Loughran and Mcdonald (2011)</a> and <a href="https://doi.org/10.1080/10584609.2012.671234">Young and Soroka (2012)</a>. News articles come from <a href="https://professional.dowjones.com/factiva/">Factiva.com</a>.</p>
+</div>
+<div id="country-specific-news-sentiment-indicator" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Country-specific news sentiment indicator</h2>
+<p>Next, we define the sentiment of an article <span class="math inline">\(j\)</span> as:
+<span class="math display">\[ s_{j} = \dfrac{\sum_{i} w_{ij} p_{ij} - \sum_{i} w_{ij} n_{ij}}{\sum_{i} w_{ij} t_{ij}} \]</span>
+where <span class="math inline">\(p_{ij}\)</span> is the number of occurrences of positive word <span class="math inline">\(i\)</span> in article <span class="math inline">\(j\)</span>, <span class="math inline">\(n_{ij}\)</span> is the number of occurrences of negative word <span class="math inline">\(i\)</span> in article <span class="math inline">\(j\)</span>, <span class="math inline">\(t_{ij}\)</span> is the number of occurrences of word <span class="math inline">\(i\)</span> in article <span class="math inline">\(j\)</span>, and <span class="math inline">\(w_{ij}\)</span> is the weight associated with word <span class="math inline">\(i\)</span> in article <span class="math inline">\(j\)</span>.</p>
+<p>In our baseline estimates, we take <span class="math inline">\(w_{ij} = 1\)</span>, allowing each word to contribute to the sentiment measure proportionally to its frequency of occurrence. In a robustness check, we let each word contribute to the sentiment measure proportionally to its Term Frequency-Inverse Document Frequency (TF-IDF, <a href="https://nlp.stanford.edu/IR-book/information-retrieval-book.html">Manning et al. 2008</a>) by taking:
+<span class="math display">\[ w_{ij} = \log\left(\frac{N}{N_{i}}\right) \]</span>
+where <span class="math inline">\(N\)</span> is the number of articles in the corpus and <span class="math inline">\(N_{i}\)</span> is the number of articles in which word <span class="math inline">\(i\)</span> is present. Hence, this weighting smoothes out differences in word frequency naturally occurring in the English language by giving more weight to words that appear more rarely across documents. It is well established that the distribution of words in the English language follows a power law. For a broader discussion on power laws in Economics, see <a href="https://www.aeaweb.org/articles?id=10.1257/jep.30.1.185">Gabaix 2016</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="news-sentiment-measures.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_counts(idx,data<span class="op">=</span>df[<span class="st">&#39;full_text&#39;</span>],tones<span class="op">=</span><span class="bu">list</span>(tone2keywords)):</span>
+<span id="cb1-2"><a href="news-sentiment-measures.html#cb1-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-3"><a href="news-sentiment-measures.html#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split into words and remove non-letter characters</span></span>
+<span id="cb1-4"><a href="news-sentiment-measures.html#cb1-4" aria-hidden="true" tabindex="-1"></a>    tokens <span class="op">=</span> re.sub(<span class="st">&quot;[^a-zA-Z]&quot;</span>,<span class="st">&quot; &quot;</span>, data.loc[idx].lower()).split()</span>
+<span id="cb1-5"><a href="news-sentiment-measures.html#cb1-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-6"><a href="news-sentiment-measures.html#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return Words and Their Count</span></span>
+<span id="cb1-7"><a href="news-sentiment-measures.html#cb1-7" aria-hidden="true" tabindex="-1"></a>    counter <span class="op">=</span> collections.Counter(tokens)</span>
+<span id="cb1-8"><a href="news-sentiment-measures.html#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="news-sentiment-measures.html#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Word Count</span></span>
+<span id="cb1-10"><a href="news-sentiment-measures.html#cb1-10" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> <span class="bu">sum</span>(counter.values())</span>
+<span id="cb1-11"><a href="news-sentiment-measures.html#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="news-sentiment-measures.html#cb1-12" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> [T]</span>
+<span id="cb1-13"><a href="news-sentiment-measures.html#cb1-13" aria-hidden="true" tabindex="-1"></a>    index  <span class="op">=</span> [<span class="st">&#39;# words&#39;</span>]</span>
+<span id="cb1-14"><a href="news-sentiment-measures.html#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="news-sentiment-measures.html#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tone <span class="kw">in</span> <span class="bu">sorted</span>(tones):</span>
+<span id="cb1-16"><a href="news-sentiment-measures.html#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="news-sentiment-measures.html#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Tonal Words In the Text</span></span>
+<span id="cb1-18"><a href="news-sentiment-measures.html#cb1-18" aria-hidden="true" tabindex="-1"></a>        words <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(counter.keys())<span class="op">&amp;</span><span class="bu">set</span>(tone2keywords[tone].keys()))</span>
+<span id="cb1-19"><a href="news-sentiment-measures.html#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="news-sentiment-measures.html#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> words:</span>
+<span id="cb1-21"><a href="news-sentiment-measures.html#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="news-sentiment-measures.html#cb1-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Tonal Words Counts</span></span>
+<span id="cb1-23"><a href="news-sentiment-measures.html#cb1-23" aria-hidden="true" tabindex="-1"></a>            counts <span class="op">=</span> itemgetter(<span class="op">*</span>words)(counter)</span>
+<span id="cb1-24"><a href="news-sentiment-measures.html#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="news-sentiment-measures.html#cb1-25" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Tonal Words IDFs</span></span>
+<span id="cb1-26"><a href="news-sentiment-measures.html#cb1-26" aria-hidden="true" tabindex="-1"></a>            idfs <span class="op">=</span> itemgetter(<span class="op">*</span>words)(tone2keywords[tone])</span>
+<span id="cb1-27"><a href="news-sentiment-measures.html#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="news-sentiment-measures.html#cb1-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(words) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb1-29"><a href="news-sentiment-measures.html#cb1-29" aria-hidden="true" tabindex="-1"></a>                tf <span class="op">=</span> <span class="bu">sum</span>(counts)<span class="op">/</span>T</span>
+<span id="cb1-30"><a href="news-sentiment-measures.html#cb1-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb1-31"><a href="news-sentiment-measures.html#cb1-31" aria-hidden="true" tabindex="-1"></a>                tf <span class="op">=</span> counts<span class="op">/</span>T</span>
+<span id="cb1-32"><a href="news-sentiment-measures.html#cb1-32" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb1-33"><a href="news-sentiment-measures.html#cb1-33" aria-hidden="true" tabindex="-1"></a>            tfidf <span class="op">=</span> np.dot(counts,idfs)<span class="op">/</span>T</span>
+<span id="cb1-34"><a href="news-sentiment-measures.html#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="news-sentiment-measures.html#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-36"><a href="news-sentiment-measures.html#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="news-sentiment-measures.html#cb1-37" aria-hidden="true" tabindex="-1"></a>            tf <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-38"><a href="news-sentiment-measures.html#cb1-38" aria-hidden="true" tabindex="-1"></a>            tfidf  <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-39"><a href="news-sentiment-measures.html#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="news-sentiment-measures.html#cb1-40" aria-hidden="true" tabindex="-1"></a>        values.append(tf)</span>
+<span id="cb1-41"><a href="news-sentiment-measures.html#cb1-41" aria-hidden="true" tabindex="-1"></a>        index.append(<span class="st">&#39;% &#39;</span><span class="op">+</span>tone)</span>
+<span id="cb1-42"><a href="news-sentiment-measures.html#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="news-sentiment-measures.html#cb1-43" aria-hidden="true" tabindex="-1"></a>        values.append(tfidf)</span>
+<span id="cb1-44"><a href="news-sentiment-measures.html#cb1-44" aria-hidden="true" tabindex="-1"></a>        index.append(<span class="st">&#39;% &#39;</span><span class="op">+</span>tone<span class="op">+</span><span class="st">&#39; tfidf&#39;</span>)</span>
+<span id="cb1-45"><a href="news-sentiment-measures.html#cb1-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-46"><a href="news-sentiment-measures.html#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series(values,index<span class="op">=</span>index,name<span class="op">=</span>idx)</span></code></pre></div>
+<p>To illustrate our sentiment measure, we show the example of an article in which tonal words are highlighted in bold, indicating that although our sentiment measure does not capture all of the nuances in the text, it provides a good indication of its overall tone. This article contains the tags <code>Argentina</code> and <code>Economic News</code>:</p>
+<div class="panel panel-info">
+<div class="panel-body">
+<p>Title: Argentina’s Peronists defend Menem’s labor reforms.</p>
+<p>Timestamp: 1996-09-02</p>
+<p>Text: BUENOS AIRES, Sept 2 (Reuters)-The Argentine government Monday tried to counter <strong>criticisms</strong> of President Carlos Menem’s proposals for more <strong>flexible</strong> labor laws, <strong>arguing</strong> that not just workers would contribute to new <strong>unemployment</strong> insurance. Menem <strong>angered</strong> trade unions, already in <strong>disagreement</strong> over his fiscal austerity programs, by announcing a labor reform package Friday including <strong>suspending</strong> collective wage deals and replacing <strong>redundancy</strong> payouts with <strong>unemployment</strong> insurance.</p>
+<p>Topics: Labor/Personnel Issues, Corporate/Industrial News, Economic/Monetary Policy, Economic News, Political/General News, Labor Issues, Domestic Politics.</p>
+<p>Locations: Argentina, Latin America, South America.</p>
+</div>
+</div>
+<p>Next, we compute a daily sentiment index for each country by taking the average sentiment across articles that are tagged with the country’s name. Finally, we normalize each country sentiment index by computing its z-score.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode stata"><code class="sourceCode stata"><span id="cb2-1"><a href="news-sentiment-measures.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insheet</span> <span class="kw">using</span> <span class="co">///</span></span>
+<span id="cb2-2"><a href="news-sentiment-measures.html#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;..\..</span><span class="ch">\r</span><span class="st">eplication\data\sentiments-panel-reuters-econ-fin-mkt-25-countries-1991-2019.csv&quot;</span> <span class="co">///</span></span>
+<span id="cb2-3"><a href="news-sentiment-measures.html#cb2-3" aria-hidden="true" tabindex="-1"></a>    , <span class="kw">comma</span> <span class="kw">clear</span></span>
+<span id="cb2-4"><a href="news-sentiment-measures.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-5"><a href="news-sentiment-measures.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ren</span> v1 country</span>
+<span id="cb2-6"><a href="news-sentiment-measures.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="news-sentiment-measures.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> sentiment_country = positive - negative</span>
+<span id="cb2-8"><a href="news-sentiment-measures.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> n_articles_country = 1 <span class="kw">if</span> words!=0</span>
+<span id="cb2-9"><a href="news-sentiment-measures.html#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="news-sentiment-measures.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> country <span class="fu">year</span> <span class="fu">month</span> <span class="fu">day</span> sentiment_country n_articles</span>
+<span id="cb2-11"><a href="news-sentiment-measures.html#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="news-sentiment-measures.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">collapse</span> (<span class="kw">mean</span>) sentiment* (<span class="kw">sum</span>) n_articles*, <span class="kw">by</span>(country <span class="fu">year</span> <span class="fu">month</span> <span class="fu">day</span>)</span>
+<span id="cb2-13"><a href="news-sentiment-measures.html#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="news-sentiment-measures.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb2-15"><a href="news-sentiment-measures.html#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="news-sentiment-measures.html#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> <span class="fu">date</span> = <span class="fu">mdy</span>(<span class="fu">month</span>, <span class="fu">day</span>, <span class="fu">year</span>)</span>
+<span id="cb2-17"><a href="news-sentiment-measures.html#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">format</span> <span class="fu">date</span> %tdnn/dd/CCYY</span>
+<span id="cb2-18"><a href="news-sentiment-measures.html#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="news-sentiment-measures.html#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> iso2 = <span class="st">&quot;&quot;</span>, after(country)</span>
+<span id="cb2-20"><a href="news-sentiment-measures.html#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;AR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Argentina&quot;</span></span>
+<span id="cb2-21"><a href="news-sentiment-measures.html#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;BR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Brazil&quot;</span></span>
+<span id="cb2-22"><a href="news-sentiment-measures.html#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;CL&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Chile&quot;</span></span>
+<span id="cb2-23"><a href="news-sentiment-measures.html#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;CN&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;China&quot;</span></span>
+<span id="cb2-24"><a href="news-sentiment-measures.html#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;FR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;France&quot;</span></span>
+<span id="cb2-25"><a href="news-sentiment-measures.html#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;DE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Germany&quot;</span></span>
+<span id="cb2-26"><a href="news-sentiment-measures.html#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;GR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Greece&quot;</span></span>
+<span id="cb2-27"><a href="news-sentiment-measures.html#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IN&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;India&quot;</span></span>
+<span id="cb2-28"><a href="news-sentiment-measures.html#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ID&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Indonesia&quot;</span></span>
+<span id="cb2-29"><a href="news-sentiment-measures.html#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Ireland&quot;</span></span>
+<span id="cb2-30"><a href="news-sentiment-measures.html#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IT&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Italy&quot;</span></span>
+<span id="cb2-31"><a href="news-sentiment-measures.html#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;JP&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Japan&quot;</span></span>
+<span id="cb2-32"><a href="news-sentiment-measures.html#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;KR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Korea&quot;</span></span>
+<span id="cb2-33"><a href="news-sentiment-measures.html#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;MY&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Malaysia&quot;</span></span>
+<span id="cb2-34"><a href="news-sentiment-measures.html#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;MX&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Mexico&quot;</span></span>
+<span id="cb2-35"><a href="news-sentiment-measures.html#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Peru&quot;</span></span>
+<span id="cb2-36"><a href="news-sentiment-measures.html#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PH&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Philippines&quot;</span></span>
+<span id="cb2-37"><a href="news-sentiment-measures.html#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PL&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Poland&quot;</span></span>
+<span id="cb2-38"><a href="news-sentiment-measures.html#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PT&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Portugal&quot;</span></span>
+<span id="cb2-39"><a href="news-sentiment-measures.html#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;RU&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Russia&quot;</span></span>
+<span id="cb2-40"><a href="news-sentiment-measures.html#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ZA&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;South Africa&quot;</span></span>
+<span id="cb2-41"><a href="news-sentiment-measures.html#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;KR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;South Korea&quot;</span></span>
+<span id="cb2-42"><a href="news-sentiment-measures.html#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ES&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Spain&quot;</span></span>
+<span id="cb2-43"><a href="news-sentiment-measures.html#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;TH&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Thailand&quot;</span></span>
+<span id="cb2-44"><a href="news-sentiment-measures.html#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;TR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Turkey&quot;</span></span>
+<span id="cb2-45"><a href="news-sentiment-measures.html#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;US&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;United States&quot;</span></span>
+<span id="cb2-46"><a href="news-sentiment-measures.html#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">tab</span> iso2, <span class="fu">m</span></span>
+<span id="cb2-47"><a href="news-sentiment-measures.html#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="news-sentiment-measures.html#cb2-48" aria-hidden="true" tabindex="-1"></a>* Convert to z-scores within each country</span>
+<span id="cb2-49"><a href="news-sentiment-measures.html#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="news-sentiment-measures.html#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> sentiment*</span>
+<span id="cb2-51"><a href="news-sentiment-measures.html#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="news-sentiment-measures.html#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> vv <span class="kw">in</span> <span class="ot">`r(varlist)&#39;</span> {</span>
+<span id="cb2-53"><a href="news-sentiment-measures.html#cb2-53" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-54"><a href="news-sentiment-measures.html#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _mean = <span class="kw">mean</span>(<span class="ot">`vv&#39;</span>)</span>
+<span id="cb2-55"><a href="news-sentiment-measures.html#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _sd = <span class="fu">sd</span>(<span class="ot">`vv&#39;</span>)</span>
+<span id="cb2-56"><a href="news-sentiment-measures.html#cb2-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-57"><a href="news-sentiment-measures.html#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`vv&#39;</span> = (<span class="ot">`vv&#39;</span> - _mean) / _sd</span>
+<span id="cb2-58"><a href="news-sentiment-measures.html#cb2-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-59"><a href="news-sentiment-measures.html#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> _mean _sd</span>
+<span id="cb2-60"><a href="news-sentiment-measures.html#cb2-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-61"><a href="news-sentiment-measures.html#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="news-sentiment-measures.html#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb2-63"><a href="news-sentiment-measures.html#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="kw">d</span></span>
+<span id="cb2-64"><a href="news-sentiment-measures.html#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="news-sentiment-measures.html#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">&quot;..\indicator\sentiment_country.dta&quot;</span>, <span class="kw">replace</span></span></code></pre></div>
+</div>
+<div id="stylized-facts" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Stylized facts</h2>
+<p>The following table reports standard statistics about the cross country (raw) sentiment indices:</p>
+<table>
+<caption>Summary statistics of the sentiment index by country.</caption>
+<thead>
+<tr class="header">
+<th align="center">Country</th>
+<th align="center">Variable</th>
+<th align="center">N</th>
+<th align="center">Mean</th>
+<th align="center">SD</th>
+<th align="center">Min</th>
+<th align="center">p25</th>
+<th align="center">Median</th>
+<th align="center">p75</th>
+<th align="center">Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">AR</td>
+<td align="center">Sentiment</td>
+<td align="center">6485</td>
+<td align="center">-0.0064</td>
+<td align="center">0.0218</td>
+<td align="center">-0.1463</td>
+<td align="center">-0.0174</td>
+<td align="center">-0.0042</td>
+<td align="center">0.0064</td>
+<td align="center">0.1250</td>
+</tr>
+<tr class="even">
+<td align="center">BR</td>
+<td align="center">Sentiment</td>
+<td align="center">6950</td>
+<td align="center">-0.0058</td>
+<td align="center">0.0186</td>
+<td align="center">-0.1908</td>
+<td align="center">-0.0154</td>
+<td align="center">-0.0044</td>
+<td align="center">0.0047</td>
+<td align="center">0.0952</td>
+</tr>
+<tr class="odd">
+<td align="center">CL</td>
+<td align="center">Sentiment</td>
+<td align="center">5695</td>
+<td align="center">-0.0041</td>
+<td align="center">0.0276</td>
+<td align="center">-0.1405</td>
+<td align="center">-0.0200</td>
+<td align="center">-0.0022</td>
+<td align="center">0.0130</td>
+<td align="center">0.1250</td>
+</tr>
+<tr class="even">
+<td align="center">CN</td>
+<td align="center">Sentiment</td>
+<td align="center">8604</td>
+<td align="center">-0.0022</td>
+<td align="center">0.0150</td>
+<td align="center">-0.1200</td>
+<td align="center">-0.0095</td>
+<td align="center">-0.0014</td>
+<td align="center">0.0055</td>
+<td align="center">0.1512</td>
+</tr>
+<tr class="odd">
+<td align="center">DE</td>
+<td align="center">Sentiment</td>
+<td align="center">8365</td>
+<td align="center">-0.0056</td>
+<td align="center">0.0167</td>
+<td align="center">-0.1667</td>
+<td align="center">-0.0138</td>
+<td align="center">-0.0046</td>
+<td align="center">0.0035</td>
+<td align="center">0.1277</td>
+</tr>
+<tr class="even">
+<td align="center">ES</td>
+<td align="center">Sentiment</td>
+<td align="center">6415</td>
+<td align="center">-0.0044</td>
+<td align="center">0.0253</td>
+<td align="center">-0.1547</td>
+<td align="center">-0.0179</td>
+<td align="center">-0.0018</td>
+<td align="center">0.0107</td>
+<td align="center">0.1554</td>
+</tr>
+<tr class="odd">
+<td align="center">FR</td>
+<td align="center">Sentiment</td>
+<td align="center">7573</td>
+<td align="center">-0.0054</td>
+<td align="center">0.0194</td>
+<td align="center">-0.1429</td>
+<td align="center">-0.0148</td>
+<td align="center">-0.0039</td>
+<td align="center">0.0051</td>
+<td align="center">0.1549</td>
+</tr>
+<tr class="even">
+<td align="center">GR</td>
+<td align="center">Sentiment</td>
+<td align="center">5989</td>
+<td align="center">-0.0049</td>
+<td align="center">0.0266</td>
+<td align="center">-0.1493</td>
+<td align="center">-0.0193</td>
+<td align="center">-0.0014</td>
+<td align="center">0.0112</td>
+<td align="center">0.1270</td>
+</tr>
+<tr class="odd">
+<td align="center">ID</td>
+<td align="center">Sentiment</td>
+<td align="center">7446</td>
+<td align="center">-0.0033</td>
+<td align="center">0.0199</td>
+<td align="center">-0.1333</td>
+<td align="center">-0.0134</td>
+<td align="center">-0.0030</td>
+<td align="center">0.0074</td>
+<td align="center">0.1091</td>
+</tr>
+<tr class="even">
+<td align="center">IE</td>
+<td align="center">Sentiment</td>
+<td align="center">4411</td>
+<td align="center">-0.0023</td>
+<td align="center">0.0284</td>
+<td align="center">-0.1695</td>
+<td align="center">-0.0181</td>
+<td align="center">0.0000</td>
+<td align="center">0.0143</td>
+<td align="center">0.1346</td>
+</tr>
+<tr class="odd">
+<td align="center">IN</td>
+<td align="center">Sentiment</td>
+<td align="center">8493</td>
+<td align="center">0.0034</td>
+<td align="center">0.0195</td>
+<td align="center">-0.1713</td>
+<td align="center">-0.0039</td>
+<td align="center">0.0031</td>
+<td align="center">0.0112</td>
+<td align="center">0.1493</td>
+</tr>
+<tr class="even">
+<td align="center">IT</td>
+<td align="center">Sentiment</td>
+<td align="center">7140</td>
+<td align="center">-0.0051</td>
+<td align="center">0.0232</td>
+<td align="center">-0.1538</td>
+<td align="center">-0.0169</td>
+<td align="center">-0.0031</td>
+<td align="center">0.0085</td>
+<td align="center">0.1268</td>
+</tr>
+<tr class="odd">
+<td align="center">JP</td>
+<td align="center">Sentiment</td>
+<td align="center">8345</td>
+<td align="center">-0.0039</td>
+<td align="center">0.0147</td>
+<td align="center">-0.1304</td>
+<td align="center">-0.0113</td>
+<td align="center">-0.0035</td>
+<td align="center">0.0037</td>
+<td align="center">0.1795</td>
+</tr>
+<tr class="even">
+<td align="center">KR</td>
+<td align="center">Sentiment</td>
+<td align="center">7776</td>
+<td align="center">-0.0040</td>
+<td align="center">0.0203</td>
+<td align="center">-0.1379</td>
+<td align="center">-0.0140</td>
+<td align="center">-0.0023</td>
+<td align="center">0.0074</td>
+<td align="center">0.1148</td>
+</tr>
+<tr class="odd">
+<td align="center">MX</td>
+<td align="center">Sentiment</td>
+<td align="center">6788</td>
+<td align="center">-0.0028</td>
+<td align="center">0.0243</td>
+<td align="center">-0.1591</td>
+<td align="center">-0.0154</td>
+<td align="center">-0.0009</td>
+<td align="center">0.0114</td>
+<td align="center">0.1034</td>
+</tr>
+<tr class="even">
+<td align="center">MY</td>
+<td align="center">Sentiment</td>
+<td align="center">7506</td>
+<td align="center">-0.0043</td>
+<td align="center">0.0153</td>
+<td align="center">-0.1692</td>
+<td align="center">-0.0114</td>
+<td align="center">-0.0034</td>
+<td align="center">0.0037</td>
+<td align="center">0.0833</td>
+</tr>
+<tr class="odd">
+<td align="center">PE</td>
+<td align="center">Sentiment</td>
+<td align="center">4509</td>
+<td align="center">-0.0016</td>
+<td align="center">0.0280</td>
+<td align="center">-0.2295</td>
+<td align="center">-0.0158</td>
+<td align="center">0.0000</td>
+<td align="center">0.0141</td>
+<td align="center">0.1505</td>
+</tr>
+<tr class="even">
+<td align="center">PH</td>
+<td align="center">Sentiment</td>
+<td align="center">6747</td>
+<td align="center">-0.0039</td>
+<td align="center">0.0232</td>
+<td align="center">-0.2041</td>
+<td align="center">-0.0164</td>
+<td align="center">-0.0029</td>
+<td align="center">0.0088</td>
+<td align="center">0.1250</td>
+</tr>
+<tr class="odd">
+<td align="center">PL</td>
+<td align="center">Sentiment</td>
+<td align="center">6296</td>
+<td align="center">-0.0017</td>
+<td align="center">0.0219</td>
+<td align="center">-0.1442</td>
+<td align="center">-0.0126</td>
+<td align="center">0.0000</td>
+<td align="center">0.0106</td>
+<td align="center">0.2000</td>
+</tr>
+<tr class="even">
+<td align="center">PT</td>
+<td align="center">Sentiment</td>
+<td align="center">4649</td>
+<td align="center">-0.0039</td>
+<td align="center">0.0271</td>
+<td align="center">-0.2353</td>
+<td align="center">-0.0182</td>
+<td align="center">-0.0031</td>
+<td align="center">0.0121</td>
+<td align="center">0.1091</td>
+</tr>
+<tr class="odd">
+<td align="center">RU</td>
+<td align="center">Sentiment</td>
+<td align="center">7055</td>
+<td align="center">-0.0043</td>
+<td align="center">0.0178</td>
+<td align="center">-0.1411</td>
+<td align="center">-0.0133</td>
+<td align="center">-0.0026</td>
+<td align="center">0.0056</td>
+<td align="center">0.1458</td>
+</tr>
+<tr class="even">
+<td align="center">TH</td>
+<td align="center">Sentiment</td>
+<td align="center">7464</td>
+<td align="center">-0.0031</td>
+<td align="center">0.0192</td>
+<td align="center">-0.1352</td>
+<td align="center">-0.0123</td>
+<td align="center">-0.0023</td>
+<td align="center">0.0069</td>
+<td align="center">0.1385</td>
+</tr>
+<tr class="odd">
+<td align="center">TR</td>
+<td align="center">Sentiment</td>
+<td align="center">6355</td>
+<td align="center">-0.0020</td>
+<td align="center">0.0246</td>
+<td align="center">-0.2857</td>
+<td align="center">-0.0152</td>
+<td align="center">0.0000</td>
+<td align="center">0.0133</td>
+<td align="center">0.1290</td>
+</tr>
+<tr class="even">
+<td align="center">US</td>
+<td align="center">Sentiment</td>
+<td align="center">8825</td>
+<td align="center">-0.0030</td>
+<td align="center">0.0124</td>
+<td align="center">-0.1210</td>
+<td align="center">-0.0080</td>
+<td align="center">-0.0016</td>
+<td align="center">0.0033</td>
+<td align="center">0.0896</td>
+</tr>
+<tr class="odd">
+<td align="center">ZA</td>
+<td align="center">Sentiment</td>
+<td align="center">6809</td>
+<td align="center">-0.0067</td>
+<td align="center">0.0233</td>
+<td align="center">-0.1707</td>
+<td align="center">-0.0193</td>
+<td align="center">-0.0055</td>
+<td align="center">0.0072</td>
+<td align="center">0.1004</td>
+</tr>
+<tr class="even">
+<td align="center">AE</td>
+<td align="center">Sentiment</td>
+<td align="center">61,712</td>
+<td align="center">-0.0043</td>
+<td align="center">0.0211</td>
+<td align="center">-0.2353</td>
+<td align="center">-0.0141</td>
+<td align="center">-0.0028</td>
+<td align="center">0.0062</td>
+<td align="center">0.1795</td>
+</tr>
+<tr class="odd">
+<td align="center">EM</td>
+<td align="center">Sentiment</td>
+<td align="center">110,978</td>
+<td align="center">-0.0032</td>
+<td align="center">0.0213</td>
+<td align="center">-0.2857</td>
+<td align="center">-0.0135</td>
+<td align="center">-0.0018</td>
+<td align="center">0.0081</td>
+<td align="center">0.2000</td>
+</tr>
+<tr class="even">
+<td align="center">Total</td>
+<td align="center">Sentiment</td>
+<td align="center">172,690</td>
+<td align="center">-0.0036</td>
+<td align="center">0.0212</td>
+<td align="center">-0.2857</td>
+<td align="center">-0.0138</td>
+<td align="center">-0.0022</td>
+<td align="center">0.0074</td>
+<td align="center">0.2000</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: This table reports summary statistics about the (raw) daily sentiment indices for each country. Sentiment denotes our baseline measure of news sentiment. The AE and EM rows report summary statistics by country groups; the Total row reports summary statistics across all countries in our sample.</em></p>
+<p>Overall, we find that the the mean and the median of news indices are negative, reflecting the fact that our dictionary of tonal words contains more negative words. We also find very little difference in the properties of the indices across advanced and emerging markets, or among emerging markets.</p>
+<p>Unsurprisingly, we also find that the news sentiment index takes values that are, on average, higher in “good” times. The latter is true whether we define good times using real variables (e.g. when GDP growth is positive) or financial (strong equity market performance).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<img src="news-analytics_files/figure-html/unnamed-chunk-4-1.png" alt="Behaviour of the news sentiment index in good vs. bad times." width="60%" />
+<p class="caption">
+Figure 3.1: Behaviour of the news sentiment index in good vs. bad times.
+</p>
+</div>
+<p><em>Note: This figure reports the average and median values of the (raw) sentiment index using various definitions of good and bad times. The first two columns split the sample based on periods where a country’s real GDP growth has been positive (or negative). The third and fourth columns split the sample based on each country’s stock market index being above or below its trend, where the trend is constructed using a two-sided HP filter with a smoothing parameter of 129,600, set using the <a href="https://doi.org/10.1162/003465302317411604">Ravn and Uhlig (2002)</a> rule for monthly data. The last two categories split the sample based on whether the country’s daily stock market return has been positive or negative.</em></p>
+<p>To give more intuition about the index, we also report the behaviour of the news sentiment index around key economic and financial events. We first plot the daily news sentiment index around equity crisis (left) and booms (right); where we define crisis or booms as daily variations of the local equity index greater than 3 standard deviation (on either side). As expected, we find that news sentiment collapses (or improves drastically) around equity busts (booms).</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="figures/figure_1_clow3sd.PNG" alt="Sentiment indices around equity crisis (left) and booms (left)" width="49%" height="20%" /><img src="figures/figure_1_chigh3sd.PNG" alt="Sentiment indices around equity crisis (left) and booms (left)" width="49%" height="20%" />
+<p class="caption">
+Figure 3.2: Sentiment indices around equity crisis (left) and booms (left)
+</p>
+</div>
+<p>We also zoom in on specific events that occurred in advanced and emerging markets. We report the behaviour of the US sentiment index around September 15, 2018 when Lehman brothers filed for Chapter 11 bankruptcy (left), and the behaviour of the China sentiment index around June 13, 2015 when the China’s stock market bubble popped (right). In both cases, we also find that the news sentiment index tracks closely those events and reacts as expected.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
+<img src="figures/figure_1_gfc_US.PNG" alt="Sentiment indices around the U.S. Lehman Brothers' failure (Left) and China stock market crash (right)" width="49%" height="20%" /><img src="figures/figure_1_china2015_CN.PNG" alt="Sentiment indices around the U.S. Lehman Brothers' failure (Left) and China stock market crash (right)" width="49%" height="20%" />
+<p class="caption">
+Figure 3.3: Sentiment indices around the U.S. Lehman Brothers’ failure (Left) and China stock market crash (right)
+</p>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="global-vs.-local-news-sentiment-indicators.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/worldbank/SDG-big-data/tree/news-analytics/02-news_sentiment.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["news-analytics.pdf", "news-analytics.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
