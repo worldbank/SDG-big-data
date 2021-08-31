@@ -4,7 +4,7 @@ log using ".\log\2_sentiment_local_`logdate'.txt", text append
 version 14
 set linesize 225
 
-cap mkdir "..\indicator"
+cap mkdir "..\indicators"
 
 ********************************************************************************
 *** LOCAL NEWS SENTIMENT INDICATOR ***
@@ -35,7 +35,7 @@ cap ren *derivative* *deriv*
 cap ren *market* *mkt*
 cap ren *economic* *ecn*
 cap ren *government* *govt*
-cap ren *indicators* *ind*
+cap ren *indicatorss* *ind*
 cap ren *financial* *fin*
 cap ren *payments* *pay*
 cap ren *securities* *scrty*
@@ -98,6 +98,6 @@ replace iso2 = "US" if country=="United States"
 compress
 d
 
-save "..\indicator\sentiment_local.dta", replace
+save "..\indicators\sentiment_local.dta", replace
 
 cap log close
