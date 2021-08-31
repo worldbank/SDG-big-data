@@ -8,7 +8,7 @@ set linesize 225
 *** GLOBAL NEWS SENTIMENT INDICATOR ESTIMATED FROM DYNAMIC FACTOR MODEL ***
 ********************************************************************************
 
-use "..\indicator\sentiment_country.dta", clear
+use "..\indicators\sentiment_country.dta", clear
 
 keep iso2 date sentiment_country
 
@@ -38,6 +38,6 @@ ereturn list
 predict sentiment_global if e(sample), factor smethod(filter)
 
 compress
-save "..\indicator\sentiment_global.dta", replace
+save "..\indicators\sentiment_global.dta", replace
 
 cap log close
