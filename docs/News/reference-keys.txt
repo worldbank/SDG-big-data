@@ -11,4 +11,3 @@ stylized-facts
 global-vs.-local-news-sentiment-indicators
 local-news-sentiment-indicator
 global-news-sentiment-indicator
-labor-market-analysis-with-twitter-data
