@@ -8,12 +8,12 @@ set linesize 225
 *** COLLECT SENTIMENT INDICATORS INTO A SINGLE FILE ***
 ********************************************************************************
 
-use "..\indicator\sentiment_country.dta", clear
+use "..\indicators\sentiment_country.dta", clear
 
 keep iso2 date sentiment_country
 
 merge 1:1 iso2 date using ///
-	"..\indicator\sentiment_local.dta" ///
+	"..\indicators\sentiment_local.dta" ///
 	, nogen keep(1 2 3) keepusing(sentiment_local)
 	
 encode iso2, gen(num_iso2)
@@ -26,7 +26,7 @@ decode num_iso2, gen(iso2)
 drop num_iso2
 
 merge m:1 date using ///
-	"..\indicator\sentiment_global.dta" ///
+	"..\indicators\sentiment_global.dta" ///
 	, nogen keep(1 2 3) keepusing(sentiment_global)
 
 * Convert to z-scores within each country
@@ -50,14 +50,15 @@ kountry iso2, from(iso2c) to(iso3c) marker
 drop MARKER _ISO3C_
 ren NAMES_STD country
 	
-order country iso2 date sentiment*
-sort iso2 date
+keep country date sentiment* // iso2 
+order country date sentiment* // iso2 
+sort country date // iso2 
 
 compress
-outsheet using "..\indicator\sentiment.csv", comma replace
+outsheet using "..\indicators\sentiment.csv", comma replace
 
 clear
-cd "..\indicator\"
+cd "..\indicators\"
 
 !del sentiment_*
 

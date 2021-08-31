@@ -1,0 +1,160 @@
+# Migration Patterns {#migration}
+
+## Description
+A great amount of [media attention](https://www.nytimes.com/2021/05/12/opinion/New-York-San-Francisco-after-covid.html) has
+been focusing on how large cities are being empitied out by the pandemic.
+We are also interested in this behavior and used similar process as the described in the previous chapter \@ref(mobility),
+and as the home labeling process we did allowed for multiple homes in a certain time window then we could
+use a change of administrative unit in the residential location of the users. For this study we focused on the largest
+city of each country:
+
+| Country | Code | City |
+|:--------|:-----|:-----|
+|Brazil|BR|São Paulo|
+|Colombia|CO|Bogota|
+|Indonesia|ID|Jakarta|
+|Mexico|MX|Mexico City|
+|Philippines|PH|Quezon City (Manila)|
+|South Africa|ZA|Johannesburg|
+
+## User selection
+
+Here, we restrict our sample \@ref(selection) of individuals to only active users (as defined in the previous chapter) who had a home location in the city at any given time. It's important to note that although we use the term _city_ we are using the whole extent of their metropolitan
+area.
+
+In order to determine a wealth group for them we take the administrative unit they had at the moment when their home
+location was in the city and in case they had more than one we only kept the one where the most time was spent.
+The wealth percentiles represent the cummulative population of the administrative units ordered by their wealth index.
+This means that users that fall into the *Low \[0\%-40\%\]* group are the ones with their house in the areas with the
+lowest wealth index that make up to $40\%$ of the population.
+
+## Code
+
+We select the largest city and break their wealth index in 3 bins. And define a column to discern from urban and rural places.
+The bins and labels are the same as the ones from the previous chapter \@ref(mobility).
+
+```{python eval=FALSE}
+def read_admin(country):
+  admin_path = f'/mnt/Geospatial/admin/{country}/admin.csv'
+  admin = spark.read.option('header', 'true').csv(admin_path)
+  admin = (admin
+           .withColumn('urban/rural', F.when(col('metro_area_name').isNull(), lit('rural')).otherwise(lit('urban')))
+           .select('geom_id', 'urban/rural'))
+  return admin
+
+admins, admins_by_metro_area, pops = process_admin(country)
+admins['geom_id'] = admins['geom_id'].astype(str)
+
+admins_by_metro_area['wealth_label'] = pd.cut(admins_by_metro_area['pct_wealth'], bins_wealth, labels=labels_wealth)
+admins_by_metro_area['geom_id'] = admins_by_metro_area['geom_id'].astype(str)
+admins_by_metro_area['wealth_label'] = admins_by_metro_area['wealth_label'].astype(str)
+
+admins_by_metro_area = admins_by_metro_area.loc[admins_by_metro_area.metro_area_name == pops.reset_index().metro_area_name[0]]
+admins = spark.createDataFrame(admins_by_metro_area).select('geom_id', 'wealth_label')
+
+admin_rural = read_admin(country)
+```
+
+Then we select our user sample, which are the ones with a minimum percentage of active days ($20\%$) using the same function
+```get_active_list()``` and select the users with a home in the city.
+
+```{python eval=FALSE}
+# get list of active users
+personal_nf = f"personal_stop_location_hw{hw}_ww{ww}_wa{wa}_mph{mph}_mpw{mpw}"
+stops = spark.read.parquet(f"{stop_path}{country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{data_date}/" + personal_nf)
+
+fname_nf = f'durations_window_hw{hw}_ww{ww}_wa{wa}_mph{mph}_mpw{mpw}'
+durations_path_nf = f'{stop_path}{country}/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date{data_date}/' + fname_nf
+durations = spark.read.parquet(durations_path_nf)
+
+active_users = get_active_list(durations, country, activity_level)
+
+# read stops, filter actives, get most frequented daily geom id, and get rural/urban info
+admins_by_country, admins_by_metro_area, pop_metro_areas = process_admin(country)
+metro = (admins_by_metro_area
+         .loc[admins_by_metro_area.metro_area_name == pop_metro_areas
+              .reset_index()
+              .head(1)
+              .metro_area_name
+              .to_list()[0]]["geom_id"]
+         .to_list())
+
+users_metro = stops.where(col('location_type') == 'H').filter(F.col("geom_id").isin(metro)).select('user_id').distinct()
+stops = stops.join(users_metro, on='user_id', how='inner').join(active_users, on='user_id', how='inner')
+
+w = Window.partitionBy('user_id')
+user_geom = (stops
+           .where(col('location_type') == 'H')
+           .filter(F.col("geom_id").isin(metro))
+           .groupby('user_id', 'geom_id')
+           .agg(F.countDistinct('date_trunc').alias('n_days'))
+           .withColumn('max_days', F.max('n_days').over(w))
+           .where(col('n_days') == col('max_days'))
+           .groupby('user_id')
+           .agg(F.first('geom_id').alias('geom_id'))
+           .join(admins, on='geom_id')
+           .drop('geom_id'))
+
+usrs =  (user_geom
+       .join(active_users, on='user_id', how='inner')
+       .toPandas())
+
+usrs["country"] = country
+usr_df = pd.concat([usr_df, usrs])
+
+w = Window.partitionBy('user_id', 'date_trunc')
+h_stops = (stops
+         .where(col('location_type') == 'H')
+         .join(active_users, on='user_id', how='inner')
+         .groupby('user_id', 'date_trunc', 'geom_id')
+         .agg(F.sum('duration').alias('duration'))
+         .withColumn('max_duration', F.max('duration').over(w))
+         .where(col('duration') == col('max_duration'))
+         .groupby('user_id', 'date_trunc')
+         .agg(F.first('geom_id').alias('geom_id'))
+         .join(admin_rural, on='geom_id', how='inner')
+         .join(user_geom, on='user_id', how='inner'))
+```
+
+Now that we have defined the home locations of each user we compare the location of the homes from one day
+to the one a day before. We are interested in migrations to rural areas, so this time we're not taking into account
+if they moved to a different urban area. Then we put a flag on each user every day to tell if they moved or not and if
+they did, knowing if they moved from an urban area to a rural one or the other way around.
+
+```{python eval=FALSE}
+# look-up previous geom id to identify migrations with direction
+w = Window.partitionBy('user_id').orderBy('date_trunc')
+h_stops = (h_stops
+         .withColumn('prev_geom_id', F.lag('geom_id', offset=1).over(w))
+         .withColumn('prev_urban/rural', F.lag('urban/rural', offset=1).over(w))
+         .withColumn('prev_date', F.lag('date_trunc', offset=1).over(w))
+         .where(col('prev_geom_id').isNotNull())
+         .withColumn('change', F.when(col('urban/rural') == col('prev_urban/rural'), 'no change')
+                                .otherwise(F.when(col('urban/rural') == 'urban', 'rural to urban')
+                                            .otherwise(F.when(col('urban/rural') == 'rural', 'urban to rural'))))
+         .withColumn('gap', F.datediff(col('date_trunc'), col('prev_date')))
+         .withColumn('rand_gap', (-1*F.rand()*(col('gap')-1)).astype(IntegerType()))
+         .withColumn('new_date', F.expr("date_add(date_trunc, rand_gap)"))
+         .withColumn('date_trunc', col('new_date')))
+```
+
+Finally we only group the number of changes by date and wealth group.
+
+```{python eval=FALSE}
+# aggregate by day and change and return as pandas df
+out = (h_stops
+     .groupby('date_trunc', 'wealth_label', 'change')
+     .agg(F.countDistinct('user_id').alias('n_users'))
+     .withColumnRenamed('date_trunc', 'date')
+     .toPandas())
+
+out['country'] = country
+```
+
+Finally, we compute the cumulative percentage change of the difference between the individuals going to rural areas and
+the ones to urban areas. This way we get the net rural migration percentage.
+
+```{r migration-fig, fig.cap='Results for six different cities São Paulo, Bogota, Jakarta, Mexico City, Quezon City (Manila), and Johannesburg. Measuring: Net rural migration in the fraction of people who lived in the city at any point in time. The three coloured lines distinguishes the metric changes for the three different socio-economic groups.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
+img <- png::readPNG("figures/migration_patterns_book.png")
+grid::grid.raster(img)
+```

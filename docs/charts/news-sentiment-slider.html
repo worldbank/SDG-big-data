@@ -1,0 +1,254 @@
+<!Doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="HTML,CSS,JavaScript,THREE.js">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>news sentiment</title>
+  <style>
+    body{
+      font-family:sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+    }
+    #form{
+      padding-left: 100px;
+      float: left;
+    }
+
+    select{
+      background-color: #fff;
+      border: 2px solid #e5e5e5;
+      font-weight: 300;
+      padding: 5px 0;
+    }
+    .leg{
+      float:left;
+      font-size: 20px;
+      position: relative;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+	<button id="generate" style="position:absolute;">Save as SVG</button><br/><br/>
+
+    <div id="container"></div>
+
+    <div id="form">
+      <p style="padding-right:10px; float: left; margin-top: 8px;"><span class="leg" style="color: #999;">•</span> Global</p>
+      <p class="leg variable-leg" style="margin-top:5px;">•</p>
+      <select name="countries" id="countries" onchange="toggleClass(this.value)"></select>
+
+      <div class="slidecontainer" >
+        <p id="curYear" style="float:left; clear:both;">1991</p>
+        <input style="padding-top: 15px; margin-left: 10px; width:430px;" type="range" min="0" max="29" value="0" class="slider" id="myRange" onchange="timeSlider(this.value)">
+      </div>
+    </div>
+
+
+    <script type="text/javascript"  src="js/d3.min.js"></script>
+    <script type="text/javascript"  src="js/blob.js"></script>
+    <script type="text/javascript"  src="js/fileSaver.js"></script>
+    <script type="text/javascript"  src="js/config.js"></script>
+	<script>
+  var margin = {top: 100, right: 80, bottom: 30, left: 100},
+          width = 672 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
+
+  var svg = d3.select("#container").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom );
+
+  let yScale = d3.scaleLinear().range([height,0]);
+  let xScale = d3.scaleTime().range([0,width*40]);
+  let cScale = d3.scalePoint().range([0.3,0.8]);
+
+  var xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%m/%Y")).ticks(d3.timeMonth.every(2));
+  var yAxis = d3.axisLeft(yScale);
+  var date = d3.timeParse("%m/%d/%y");
+
+  var nline = d3.line()
+    .x(function(d) { return xScale(d.datef); })
+    .y(function(d) { return yScale(+d["sentiment_"+scale]); });
+
+  var dat, group, gDat, scale="country", YaxisGroup, clip, clipGroup;
+
+  d3.csv("news-sentiment.csv").then( function(data) {
+    dat = data;
+    YaxisGroup = svg.append("g")
+        .attr("id","Ygraph")
+        .attr("transform","translate(" + margin.left + ","+margin.top+")");
+    clipGroup = svg.append("g");
+
+    group = clipGroup.append("g")
+        .attr("id","graph")
+        .attr("transform","translate(" + margin.left + ","+margin.top+")");
+    dat.forEach(function(d) {d.datef = date(d.date);});
+    xScale.domain(d3.extent(dat,d=>d.datef));
+
+    cScale.domain(d3.map(dat,d=>d.country));
+    gDat = d3.groups(dat,d=>d.country);
+    for(h=1;h<gDat.length;h++){
+      var name = gDat[h][0];
+      var classname = name.replace(/\ /g, '-');
+      d3.select("#countries").append("option").attr("value",h).html(name);
+    }
+    group.append("g")
+        .attr("transform", "translate(0,"+yScale(0)+")")
+        .attr("class","x-ax ax");
+        group.append("g")
+            .attr("transform", "translate(0,"+height+")")
+            .attr("class","x-ax2 ax");
+    YaxisGroup.append("g")
+        .attr("transform", "translate(0,"+400+")")
+        .attr("class","x-ax2 ax");
+    YaxisGroup.append("g")
+        .attr("class","y-ax ax");
+    d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+    d3.selectAll(".tick text").attr("fill", "#999");
+
+    clip = svg.append("defs").append("svg:clipPath")
+       .attr("id", "clip")
+       .append("svg:rect")
+       .attr("id", "clip-rect")
+       .attr("x", margin.left)
+       .attr("y", margin.top)
+       .attr("width", width)
+       .attr("height", height+margin.top);
+
+    clipGroup.attr("clip-path", "url(#clip)");
+
+    drawgraphs(0);
+    drawgraphs(1);
+  });
+
+  function drawgraphs(m){
+
+        cur = gDat[m][1];
+        yScale.domain(d3.extent(cur,d=>+d["sentiment_country"]));
+        var name = gDat[m][0];
+        var classname = name.replace(/\ /g, '-');
+
+        var lines = d3.selectAll(".plotline").nodes();
+        console.log(lines.length);
+        if(lines.length == 1){
+          var u = d3.select(".cline").data([cur]);
+          u.enter()
+          .append("path")
+          .merge(u)
+          .transition()
+          .duration(1000)
+          .attr("d", nline)
+          .attr("stroke",function(d){
+
+              return d3.interpolateRainbow(cScale(gDat[m][0]));
+            });
+
+          var v = d3.select(".constant").data([gDat[0][1]]);
+          v.enter()
+          .append("path")
+          .merge(v)
+          .transition()
+          .duration(1000)
+          .attr("d", nline);
+
+          d3.select(".variable-leg").style("color",d3.interpolateRainbow(cScale(gDat[m][0])));
+
+        }else{
+          group.append("path")
+          .data([cur])
+          .attr("d", nline)
+          .attr("stroke",function(d){
+            if(m==0){
+              return "#999";
+            }else{
+              return d3.interpolateRainbow(cScale(gDat[m][0]));
+            }
+
+          })
+          .attr("stroke-width",1)
+          .attr("opacity",1)
+          .attr("fill","none")
+          .attr("class",function(d){
+            if(m==0){
+              return "constant";
+            }else{
+              return classname+" plotline cline";
+            }
+          })
+
+          d3.select(".variable-leg").style("color",d3.interpolateRainbow(cScale(gDat[m][0])));
+        }
+      // }
+
+      d3.selectAll(".y-label").remove();
+      YaxisGroup.append("text")
+       .text("Sentiment")
+       .style("transform","rotate(-90deg)")
+       .style("font-family","sans-serif")
+       .style("font-weight","300")
+       .style("font-size","14")
+       .attr("class","y-label")
+       .attr("x", -height/2)
+       .attr("y", -40)
+       .attr("text-anchor","middle")
+       .attr("fill","#999");
+
+       updateAxes();
+  }
+
+  function updateAxes(){
+    d3.selectAll(".x-ax").transition()
+     .duration(1000)
+     .call(xAxis)
+     .attr("transform", "translate(0,"+yScale(0)+")");
+     d3.selectAll(".x-ax2").transition()
+      .duration(1000)
+      .call(xAxis);
+
+     d3.selectAll(".y-ax").transition()
+      .duration(1000)
+      .call(yAxis);
+
+    d3.selectAll(".tick line, .domain").attr("stroke", "#999").attr("stroke-width",0.5);
+    <!-- d3.selectAll(".tick line").attr("x2", width); -->
+    d3.selectAll(".tick text").attr("fill", "#999");
+  }
+
+  function toggleClass(cname){
+    // d3.selectAll(".plotline").attr("opacity",0.01);
+    // d3.selectAll("."+cname).attr("opacity",1);
+    drawgraphs(cname);
+  }
+
+  function timeSlider(val){
+    d3.select("#graph").attr("transform","translate("+-width*val*(39/29)+",100)");
+    d3.select("#curYear").html(Math.round(parseFloat(val,10)-1)+1991);
+  }
+
+
+
+	//----------------svg export code
+
+        d3.select("#generate")
+          .on("click", writeDownloadLink);
+
+        function writeDownloadLink(){
+            try {
+                var isFileSaverSupported = !!new Blob();
+            } catch (e) {
+                alert("blob not supported");
+            }
+
+            var html = d3.select("svg")
+                .attr("title", "test2")
+                .attr("version", 1.1)
+                .attr("xmlns", "http://www.w3.org/2000/svg")
+                .node().parentNode.innerHTML;
+
+            var blob = new Blob([html], {type: "image/svg+xml"});
+            saveAs(blob, "viz.svg");
+        };
+	</script>
+</body>
+</html>

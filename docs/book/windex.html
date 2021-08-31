@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Wealth Index | Big Data Analytics</title>
+  <meta name="description" content="SDG Bookdown" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Wealth Index | Big Data Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="SDG Bookdown" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Wealth Index | Big Data Analytics" />
+  
+  <meta name="twitter:description" content="SDG Bookdown" />
+  
+
+<meta name="author" content="Chapter 10 Wealth Index | Big Data Analytics Group" />
+
+
+<meta name="date" content="2021-08-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="optimization.html"/>
+<link rel="next" href="labor.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Big Data Analysis</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>Cover</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Cover</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#gps-analytics"><i class="fa fa-check"></i><b>1.1</b> <span>GPS Analytics</span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#labor-market-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.2</b> <span>Labor market analysis with Twitter data</span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#news-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.3</b> <span>News analysis with Twitter data</span></a></li>
+</ul></li>
+<li class="part"><span><b>GPS Analytics</b></span></li>
+<li class="chapter" data-level="2" data-path="gps.html"><a href="gps.html"><i class="fa fa-check"></i><b>2</b> Introduction - GPS</a></li>
+<li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#gps-data"><i class="fa fa-check"></i><b>3.1</b> GPS Data</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#wealth-index-data"><i class="fa fa-check"></i><b>3.2</b> Wealth Index Data</a></li>
+<li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#administrative-boundaries-data"><i class="fa fa-check"></i><b>3.3</b> Administrative Boundaries Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="geocode.html"><a href="geocode.html"><i class="fa fa-check"></i><b>4</b> Geocode</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="geocode.html"><a href="geocode.html#efficient-spatial-joining-and-geospatial-indexing"><i class="fa fa-check"></i><b>4.1</b> Efficient spatial joining and Geospatial Indexing</a></li>
+<li class="chapter" data-level="4.2" data-path="geocode.html"><a href="geocode.html#code"><i class="fa fa-check"></i><b>4.2</b> Code</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="geocode.html"><a href="geocode.html#loading-administrative-units"><i class="fa fa-check"></i><b>4.2.1</b> Loading administrative units</a></li>
+<li class="chapter" data-level="4.2.2" data-path="geocode.html"><a href="geocode.html#loading-ping-data-and-h3-indexing"><i class="fa fa-check"></i><b>4.2.2</b> Loading ping data and h3 indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="geocode.html"><a href="geocode.html#initial-coarse-geo-spatial-join-with-shapefiles"><i class="fa fa-check"></i><b>4.3</b> Initial coarse geo-spatial join with shapefiles</a></li>
+<li class="chapter" data-level="4.4" data-path="geocode.html"><a href="geocode.html#final-exact-join-with-a-subset-of-the-shapefiles"><i class="fa fa-check"></i><b>4.4</b> Final exact join with a subset of the shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="stops.html"><a href="stops.html"><i class="fa fa-check"></i><b>5</b> Finding Stops</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="stops.html"><a href="stops.html#definition"><i class="fa fa-check"></i><b>5.1</b> Definition</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="stops.html"><a href="stops.html#get-stop-locations"><i class="fa fa-check"></i><b>5.1.1</b> Get stop locations</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="stops.html"><a href="stops.html#clustering-recurrent-stops"><i class="fa fa-check"></i><b>5.2</b> Clustering recurrent stops</a></li>
+<li class="chapter" data-level="5.3" data-path="stops.html"><a href="stops.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>5.3</b> Appending pings from recent dates</a></li>
+<li class="chapter" data-level="5.4" data-path="stops.html"><a href="stops.html#stops-geocoding"><i class="fa fa-check"></i><b>5.4</b> Stops geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="labeling.html"><a href="labeling.html"><i class="fa fa-check"></i><b>6</b> Defining Home and Work Locations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="labeling.html"><a href="labeling.html#seasonal-patterns"><i class="fa fa-check"></i><b>6.1</b> Seasonal patterns</a></li>
+<li class="chapter" data-level="6.2" data-path="labeling.html"><a href="labeling.html#code-1"><i class="fa fa-check"></i><b>6.2</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="mobility.html"><a href="mobility.html"><i class="fa fa-check"></i><b>7</b> Mobility Patterns</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="mobility.html"><a href="mobility.html#socio-economic-groups"><i class="fa fa-check"></i><b>7.1</b> Socio-economic groups</a></li>
+<li class="chapter" data-level="7.2" data-path="mobility.html"><a href="mobility.html#selection"><i class="fa fa-check"></i><b>7.2</b> Individual’s selection</a></li>
+<li class="chapter" data-level="7.3" data-path="mobility.html"><a href="mobility.html#measures"><i class="fa fa-check"></i><b>7.3</b> Measures</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="mobility.html"><a href="mobility.html#measuring-mobility-patterns"><i class="fa fa-check"></i><b>7.3.1</b> Measuring mobility patterns</a></li>
+<li class="chapter" data-level="7.3.2" data-path="mobility.html"><a href="mobility.html#measuring-change"><i class="fa fa-check"></i><b>7.3.2</b> Measuring change</a></li>
+<li class="chapter" data-level="7.3.3" data-path="mobility.html"><a href="mobility.html#home-isolated-commuters-and-low-wealth-commuters"><i class="fa fa-check"></i><b>7.3.3</b> Home-isolated, commuters and low-wealth commuters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>8</b> Migration Patterns</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="migration.html"><a href="migration.html#description"><i class="fa fa-check"></i><b>8.1</b> Description</a></li>
+<li class="chapter" data-level="8.2" data-path="migration.html"><a href="migration.html#user-selection"><i class="fa fa-check"></i><b>8.2</b> User selection</a></li>
+<li class="chapter" data-level="8.3" data-path="migration.html"><a href="migration.html#code-2"><i class="fa fa-check"></i><b>8.3</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>9</b> Location labeling and parameter optimization</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="optimization.html"><a href="optimization.html#ground-truth"><i class="fa fa-check"></i><b>9.1</b> Ground truth</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="optimization.html"><a href="optimization.html#construction"><i class="fa fa-check"></i><b>9.1.1</b> Construction</a></li>
+<li class="chapter" data-level="9.1.2" data-path="optimization.html"><a href="optimization.html#validation"><i class="fa fa-check"></i><b>9.1.2</b> Validation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="optimization.html"><a href="optimization.html#parameter-optimization"><i class="fa fa-check"></i><b>9.2</b> Parameter optimization</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="optimization.html"><a href="optimization.html#performance-indicators"><i class="fa fa-check"></i><b>9.2.1</b> Performance indicators</a></li>
+<li class="chapter" data-level="9.2.2" data-path="optimization.html"><a href="optimization.html#performance-error-estimates-and-bootstrapping"><i class="fa fa-check"></i><b>9.2.2</b> Performance error estimates and bootstrapping</a></li>
+<li class="chapter" data-level="9.2.3" data-path="optimization.html"><a href="optimization.html#parallel-bootstrapping-and-optimization-result-storage"><i class="fa fa-check"></i><b>9.2.3</b> Parallel bootstrapping and optimization result storage</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="optimization.html"><a href="optimization.html#parameter-configuration-selection"><i class="fa fa-check"></i><b>9.3</b> Parameter configuration selection</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="windex.html"><a href="windex.html"><i class="fa fa-check"></i><b>10</b> Wealth Index</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="windex.html"><a href="windex.html#variables-to-estimate-the-social-gap-index-in-mexico"><i class="fa fa-check"></i><b>10.1</b> Variables to estimate the Social Gap Index in Mexico</a></li>
+<li class="chapter" data-level="10.2" data-path="windex.html"><a href="windex.html#education"><i class="fa fa-check"></i><b>10.2</b> Education</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="windex.html"><a href="windex.html#health-services-access"><i class="fa fa-check"></i><b>10.2.1</b> Health Services Access</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="windex.html"><a href="windex.html#household-characteristics"><i class="fa fa-check"></i><b>10.3</b> Household Characteristics</a></li>
+<li class="chapter" data-level="10.4" data-path="windex.html"><a href="windex.html#assets-ownership"><i class="fa fa-check"></i><b>10.4</b> Assets Ownership</a></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - Labor Market</b></span></li>
+<li class="chapter" data-level="11" data-path="labor.html"><a href="labor.html"><i class="fa fa-check"></i><b>11</b> Introduction - Labor Market</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="labor.html"><a href="labor.html#labor-market-analysis-with-twitter-data-1"><i class="fa fa-check"></i><b>11.1</b> Labor market analysis with Twitter data</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="training-data-preparation.html"><a href="training-data-preparation.html"><i class="fa fa-check"></i><b>12</b> Training data preparation</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="training-data-preparation.html"><a href="training-data-preparation.html#sampling"><i class="fa fa-check"></i><b>12.1</b> Sampling</a></li>
+<li class="chapter" data-level="12.2" data-path="training-data-preparation.html"><a href="training-data-preparation.html#labelling"><i class="fa fa-check"></i><b>12.2</b> Labelling</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="training-data-preparation.html"><a href="training-data-preparation.html#creating-a-qualtrics-survey"><i class="fa fa-check"></i><b>12.2.1</b> Creating a Qualtrics survey</a></li>
+<li class="chapter" data-level="12.2.2" data-path="training-data-preparation.html"><a href="training-data-preparation.html#sharing-the-survey-on-mturk"><i class="fa fa-check"></i><b>12.2.2</b> Sharing the survey on MTurk</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html"><i class="fa fa-check"></i><b>13</b> Finetuning BERT-based models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#training-the-model"><i class="fa fa-check"></i><b>13.1</b> Training the model</a></li>
+<li class="chapter" data-level="13.2" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#evaluation-on-the-random-set"><i class="fa fa-check"></i><b>13.2</b> Evaluation on the random set</a></li>
+<li class="chapter" data-level="13.3" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#active-learning"><i class="fa fa-check"></i><b>13.3</b> Active learning</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="unemployment-indicators.html"><a href="unemployment-indicators.html"><i class="fa fa-check"></i><b>14</b> Unemployment indicators</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="unemployment-indicators.html"><a href="unemployment-indicators.html#building-unemployment-indicators-from-individual-tweets"><i class="fa fa-check"></i><b>14.1</b> Building unemployment indicators from individual tweets</a></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - News</b></span></li>
+<li class="chapter" data-level="15" data-path="news.html"><a href="news.html"><i class="fa fa-check"></i><b>15</b> Introduction - News Analytics</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="news.html"><a href="news.html#news-articles"><i class="fa fa-check"></i><b>15.1</b> News articles</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html"><i class="fa fa-check"></i><b>16</b> Global vs. local news sentiment indicators</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#local-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.1</b> Local news sentiment indicator</a></li>
+<li class="chapter" data-level="16.2" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#global-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.2</b> Global news sentiment indicator</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html"><i class="fa fa-check"></i><b>17</b> News-sentiment measures</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#bag-of-words-model"><i class="fa fa-check"></i><b>17.1</b> Bag-of-words model</a></li>
+<li class="chapter" data-level="17.2" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#country-specific-news-sentiment-indicator"><i class="fa fa-check"></i><b>17.2</b> Country-specific news sentiment indicator</a></li>
+<li class="chapter" data-level="17.3" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#stylized-facts"><i class="fa fa-check"></i><b>17.3</b> Stylized facts</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Big Data Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="windex" class="section level1" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Wealth Index</h1>
+<p>In order to explain how the Wealth Index was built we’re going to exemplify
+the methodology used for Mexico. For the rest of the countries it was
+an analogous procedure, but the variables names are different.</p>
+<div id="variables-to-estimate-the-social-gap-index-in-mexico" class="section level2" number="10.1">
+<h2><span class="header-section-number">10.1</span> Variables to estimate the Social Gap Index in Mexico</h2>
+<p>To estimate the “Social Gap Index” for Mexico at localidad level, we followed the methodology
+of Coneval (National Council of Social Policy Evaluation) in Mexico.
+This methodology creates a unique indicator of wealth by reducing the dimensions of a vector of
+characteristics related to education, health, basic services and quality of home infrastructure.
+To do this, we used principal components using the following variables:</p>
+<ul>
+<li><strong>Education</strong>
+<ul>
+<li>Percentage of illiterate population aged 15 or more</li>
+<li>Percentage of population aged 6-14 that does not attend to school</li>
+<li>Percentage of population aged 15 or more years without complete elementary school</li>
+</ul></li>
+<li><strong>Health services access</strong>
+<ul>
+<li>Percentage of population with no access to health services</li>
+</ul></li>
+<li><strong>Household characteristics</strong>
+<ul>
+<li>Log of average occupants per room</li>
+<li>Percentage of with dirt floor</li>
+<li>Percentage of households with no toilet</li>
+<li>Percentage of households with no piped water</li>
+<li>Percentage of households with no sewer system</li>
+<li>Percentage of households with no electricity</li>
+<li>Percentage of households with no washing machine</li>
+<li>Percentage of inhabited private households with no fridge</li>
+</ul></li>
+</ul>
+<p>Then, we estimated the variables of interest as follows:</p>
+</div>
+<div id="education" class="section level2" number="10.2">
+<h2><span class="header-section-number">10.2</span> Education</h2>
+<ul>
+<li><p><strong>Percentage of illiterate population aged 15 or more</strong></p>
+<ul>
+<li>p15ym_an: Population 15-130 years old who cannot read or write</li>
+<li>p_15ymas: Total population older than 15</li>
+</ul>
+<p><strong>illiterate = p15ym_an/p_15ymas x 100</strong></p></li>
+<li><p><strong>Percentage of population aged 6-14 that does not attend school</strong></p>
+<ul>
+<li>p6a11_noa: Population aged 6-11 that do not attend to school</li>
+<li>p12a14noa: Population aged 12-14 that do not attend to school</li>
+<li>p_6a11: Population aged 6-11</li>
+<li>p_12a14: Population aged 12-14</li>
+</ul>
+<p><strong>not_attend_school = (p6a11_noa + p12a14noa)/ (p_6a11 + p_12a14) x 100</strong></p></li>
+<li><p><strong>Percentage of population aged &gt; 15 years old without full primary education</strong></p>
+<ul>
+<li><p>p15pri_in: Population 15-130 years old who completed 5th grade as maximum. It includes people who did not specify the grade passed in the this education level</p></li>
+<li><p>p15pri_co: Population 15-130 years old who completed 6th grade as maximum. It includes people who did not specify the grade passed in the this education level</p></li>
+<li><p>p15ym_se: Population 15-130 who do not passed any grade of schooling or that only have pre-school</p></li>
+<li><p>p15sec_in: Population 15-130 years old who did not complete secondary school</p></li>
+<li><p>p_15ymas: Total population older than 15</p>
+<p><strong>no_primary_educ = p15pri_in+ p15pri_co + p15ym_se + p15sec_in / p_15ymas x 100</strong></p></li>
+</ul></li>
+</ul>
+<div id="health-services-access" class="section level3" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Health Services Access</h3>
+<ul>
+<li><strong>Percentage of population with no access to health services</strong>
+<ul>
+<li>p_sinder: Total population who are not entitled to receive medical services in any public or private institution</li>
+<li>pobtot: Total population</li>
+</ul>
+<strong>no_access_health = psinder/pobtot x 100</strong></li>
+</ul>
+</div>
+</div>
+<div id="household-characteristics" class="section level2" number="10.3">
+<h2><span class="header-section-number">10.3</span> Household Characteristics</h2>
+<ul>
+<li><p><strong>Percentage of Households with dirt floor</strong></p>
+<ul>
+<li>vph_pisodt: Households with dirt floor. It includes households for which the characteristics of the house were captured, classified as independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class</li>
+<li>vivpar_hab: Total inhabited homes.</li>
+</ul>
+<p><strong>dirt_floor = vph_pisodt/ vivpar_hab x 100</strong></p></li>
+<li><p><strong>Average occupants per room</strong>
+Result of dividing the number of people residing in inhabited homes by the number of rooms in those homes.</p>
+<p><strong>LOG(pro_ocup_c)</strong>
+It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</p></li>
+<li><p><strong>Percentage of homes with no toilet</strong></p>
+<ul>
+<li>vph_excsa: Total number of homes with toilet.</li>
+<li>vivpar_hab: Total inhabited homes.</li>
+</ul>
+<p><strong>no_toilet = 1 - (vph_excsa)/(vivpar_hab) x 100</strong></p></li>
+<li><p><strong>Percentage of homes with no piped water</strong></p>
+<ul>
+<li>vph_aguafv: Households that have water availability from a public or hydrant tap, anotherdwelling, a pipe, a well, a river, a stream, a lake or another. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Total inhabited homes</li>
+</ul>
+<p><strong>no_water = (vph_aguafv) /(vivpar_hab) x 100</strong></p></li>
+<li><p><strong>Percentage of homes with no sewer system</strong></p>
+<ul>
+<li>vph_nodren: Households that have no drainage connected to the public network, septic tank, canyon, crack, river, lake or sea. It includes households for which the characteristics of the house were captured, classified as independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class</li>
+<li>vivpar_hab: Total inhabited homes</li>
+</ul>
+<p><strong>no_sewing = (vph_nodren) /(vivpar_hab) x 100</strong></p></li>
+<li><p><strong>Percentage of homes with no electricity</strong></p>
+<ul>
+<li>vph_s_elec: Inhabited private homes that do not have electricity. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Total inhabited homes</li>
+</ul>
+<p><strong>no_electricity = (vph_s_elec) /(vivpar_hab) x 100</strong></p></li>
+</ul>
+</div>
+<div id="assets-ownership" class="section level2" number="10.4">
+<h2><span class="header-section-number">10.4</span> Assets Ownership</h2>
+<ul>
+<li><p><strong>Percentage of Households with no washing machine</strong></p>
+<ul>
+<li>vph_lavad: Households that have washing machine. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Households of any kind: independent house, apartment in building, housing or room in neighborhood, housing or rooftop room, premises not built for room, mobile home, shelters or unspecified class. Includes households without occupant information.</li>
+</ul>
+<p><strong>no_washingmachine = 1 - (vph_lavad) / (vivpar_hab)</strong></p></li>
+<li><p><strong>Percentage of Households with no fridge</strong></p>
+<ul>
+<li>vph_refri: Households that have a refrigerator. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.</li>
+<li>vivpar_hab: Private dwellings inhabited of any kind: independent house, apartment in building, housing or room in neighborhood, housing or rooftop room, premises not built for room, mobile home, shelters or unspecified class. Includes households without occupant information.</li>
+</ul>
+<p><strong>no_fridge = 1 - (vph_refri) / vivpar_hab</strong></p></li>
+</ul>
+
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="optimization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="labor.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/worldbank/SDG-big-data/09-windex.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["big-daa.pdf", "big-daa.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

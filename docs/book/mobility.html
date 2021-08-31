@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Mobility Patterns | Big Data Analytics</title>
+  <meta name="description" content="SDG Bookdown" />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Mobility Patterns | Big Data Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="SDG Bookdown" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Mobility Patterns | Big Data Analytics" />
+  
+  <meta name="twitter:description" content="SDG Bookdown" />
+  
+
+<meta name="author" content="Chapter 7 Mobility Patterns | Big Data Analytics Group" />
+
+
+<meta name="date" content="2021-08-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="labeling.html"/>
+<link rel="next" href="migration.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Big Data Analysis</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>Cover</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Cover</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#gps-analytics"><i class="fa fa-check"></i><b>1.1</b> <span>GPS Analytics</span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#labor-market-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.2</b> <span>Labor market analysis with Twitter data</span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#news-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.3</b> <span>News analysis with Twitter data</span></a></li>
+</ul></li>
+<li class="part"><span><b>GPS Analytics</b></span></li>
+<li class="chapter" data-level="2" data-path="gps.html"><a href="gps.html"><i class="fa fa-check"></i><b>2</b> Introduction - GPS</a></li>
+<li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#gps-data"><i class="fa fa-check"></i><b>3.1</b> GPS Data</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#wealth-index-data"><i class="fa fa-check"></i><b>3.2</b> Wealth Index Data</a></li>
+<li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#administrative-boundaries-data"><i class="fa fa-check"></i><b>3.3</b> Administrative Boundaries Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="geocode.html"><a href="geocode.html"><i class="fa fa-check"></i><b>4</b> Geocode</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="geocode.html"><a href="geocode.html#efficient-spatial-joining-and-geospatial-indexing"><i class="fa fa-check"></i><b>4.1</b> Efficient spatial joining and Geospatial Indexing</a></li>
+<li class="chapter" data-level="4.2" data-path="geocode.html"><a href="geocode.html#code"><i class="fa fa-check"></i><b>4.2</b> Code</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="geocode.html"><a href="geocode.html#loading-administrative-units"><i class="fa fa-check"></i><b>4.2.1</b> Loading administrative units</a></li>
+<li class="chapter" data-level="4.2.2" data-path="geocode.html"><a href="geocode.html#loading-ping-data-and-h3-indexing"><i class="fa fa-check"></i><b>4.2.2</b> Loading ping data and h3 indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="geocode.html"><a href="geocode.html#initial-coarse-geo-spatial-join-with-shapefiles"><i class="fa fa-check"></i><b>4.3</b> Initial coarse geo-spatial join with shapefiles</a></li>
+<li class="chapter" data-level="4.4" data-path="geocode.html"><a href="geocode.html#final-exact-join-with-a-subset-of-the-shapefiles"><i class="fa fa-check"></i><b>4.4</b> Final exact join with a subset of the shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="stops.html"><a href="stops.html"><i class="fa fa-check"></i><b>5</b> Finding Stops</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="stops.html"><a href="stops.html#definition"><i class="fa fa-check"></i><b>5.1</b> Definition</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="stops.html"><a href="stops.html#get-stop-locations"><i class="fa fa-check"></i><b>5.1.1</b> Get stop locations</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="stops.html"><a href="stops.html#clustering-recurrent-stops"><i class="fa fa-check"></i><b>5.2</b> Clustering recurrent stops</a></li>
+<li class="chapter" data-level="5.3" data-path="stops.html"><a href="stops.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>5.3</b> Appending pings from recent dates</a></li>
+<li class="chapter" data-level="5.4" data-path="stops.html"><a href="stops.html#stops-geocoding"><i class="fa fa-check"></i><b>5.4</b> Stops geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="labeling.html"><a href="labeling.html"><i class="fa fa-check"></i><b>6</b> Defining Home and Work Locations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="labeling.html"><a href="labeling.html#seasonal-patterns"><i class="fa fa-check"></i><b>6.1</b> Seasonal patterns</a></li>
+<li class="chapter" data-level="6.2" data-path="labeling.html"><a href="labeling.html#code-1"><i class="fa fa-check"></i><b>6.2</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="mobility.html"><a href="mobility.html"><i class="fa fa-check"></i><b>7</b> Mobility Patterns</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="mobility.html"><a href="mobility.html#socio-economic-groups"><i class="fa fa-check"></i><b>7.1</b> Socio-economic groups</a></li>
+<li class="chapter" data-level="7.2" data-path="mobility.html"><a href="mobility.html#selection"><i class="fa fa-check"></i><b>7.2</b> Individual’s selection</a></li>
+<li class="chapter" data-level="7.3" data-path="mobility.html"><a href="mobility.html#measures"><i class="fa fa-check"></i><b>7.3</b> Measures</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="mobility.html"><a href="mobility.html#measuring-mobility-patterns"><i class="fa fa-check"></i><b>7.3.1</b> Measuring mobility patterns</a></li>
+<li class="chapter" data-level="7.3.2" data-path="mobility.html"><a href="mobility.html#measuring-change"><i class="fa fa-check"></i><b>7.3.2</b> Measuring change</a></li>
+<li class="chapter" data-level="7.3.3" data-path="mobility.html"><a href="mobility.html#home-isolated-commuters-and-low-wealth-commuters"><i class="fa fa-check"></i><b>7.3.3</b> Home-isolated, commuters and low-wealth commuters</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>8</b> Migration Patterns</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="migration.html"><a href="migration.html#description"><i class="fa fa-check"></i><b>8.1</b> Description</a></li>
+<li class="chapter" data-level="8.2" data-path="migration.html"><a href="migration.html#user-selection"><i class="fa fa-check"></i><b>8.2</b> User selection</a></li>
+<li class="chapter" data-level="8.3" data-path="migration.html"><a href="migration.html#code-2"><i class="fa fa-check"></i><b>8.3</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>9</b> Location labeling and parameter optimization</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="optimization.html"><a href="optimization.html#ground-truth"><i class="fa fa-check"></i><b>9.1</b> Ground truth</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="optimization.html"><a href="optimization.html#construction"><i class="fa fa-check"></i><b>9.1.1</b> Construction</a></li>
+<li class="chapter" data-level="9.1.2" data-path="optimization.html"><a href="optimization.html#validation"><i class="fa fa-check"></i><b>9.1.2</b> Validation</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="optimization.html"><a href="optimization.html#parameter-optimization"><i class="fa fa-check"></i><b>9.2</b> Parameter optimization</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="optimization.html"><a href="optimization.html#performance-indicators"><i class="fa fa-check"></i><b>9.2.1</b> Performance indicators</a></li>
+<li class="chapter" data-level="9.2.2" data-path="optimization.html"><a href="optimization.html#performance-error-estimates-and-bootstrapping"><i class="fa fa-check"></i><b>9.2.2</b> Performance error estimates and bootstrapping</a></li>
+<li class="chapter" data-level="9.2.3" data-path="optimization.html"><a href="optimization.html#parallel-bootstrapping-and-optimization-result-storage"><i class="fa fa-check"></i><b>9.2.3</b> Parallel bootstrapping and optimization result storage</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="optimization.html"><a href="optimization.html#parameter-configuration-selection"><i class="fa fa-check"></i><b>9.3</b> Parameter configuration selection</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="windex.html"><a href="windex.html"><i class="fa fa-check"></i><b>10</b> Wealth Index</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="windex.html"><a href="windex.html#variables-to-estimate-the-social-gap-index-in-mexico"><i class="fa fa-check"></i><b>10.1</b> Variables to estimate the Social Gap Index in Mexico</a></li>
+<li class="chapter" data-level="10.2" data-path="windex.html"><a href="windex.html#education"><i class="fa fa-check"></i><b>10.2</b> Education</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="windex.html"><a href="windex.html#health-services-access"><i class="fa fa-check"></i><b>10.2.1</b> Health Services Access</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="windex.html"><a href="windex.html#household-characteristics"><i class="fa fa-check"></i><b>10.3</b> Household Characteristics</a></li>
+<li class="chapter" data-level="10.4" data-path="windex.html"><a href="windex.html#assets-ownership"><i class="fa fa-check"></i><b>10.4</b> Assets Ownership</a></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - Labor Market</b></span></li>
+<li class="chapter" data-level="11" data-path="labor.html"><a href="labor.html"><i class="fa fa-check"></i><b>11</b> Introduction - Labor Market</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="labor.html"><a href="labor.html#labor-market-analysis-with-twitter-data-1"><i class="fa fa-check"></i><b>11.1</b> Labor market analysis with Twitter data</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="training-data-preparation.html"><a href="training-data-preparation.html"><i class="fa fa-check"></i><b>12</b> Training data preparation</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="training-data-preparation.html"><a href="training-data-preparation.html#sampling"><i class="fa fa-check"></i><b>12.1</b> Sampling</a></li>
+<li class="chapter" data-level="12.2" data-path="training-data-preparation.html"><a href="training-data-preparation.html#labelling"><i class="fa fa-check"></i><b>12.2</b> Labelling</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="training-data-preparation.html"><a href="training-data-preparation.html#creating-a-qualtrics-survey"><i class="fa fa-check"></i><b>12.2.1</b> Creating a Qualtrics survey</a></li>
+<li class="chapter" data-level="12.2.2" data-path="training-data-preparation.html"><a href="training-data-preparation.html#sharing-the-survey-on-mturk"><i class="fa fa-check"></i><b>12.2.2</b> Sharing the survey on MTurk</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html"><i class="fa fa-check"></i><b>13</b> Finetuning BERT-based models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#training-the-model"><i class="fa fa-check"></i><b>13.1</b> Training the model</a></li>
+<li class="chapter" data-level="13.2" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#evaluation-on-the-random-set"><i class="fa fa-check"></i><b>13.2</b> Evaluation on the random set</a></li>
+<li class="chapter" data-level="13.3" data-path="finetuning-bert-based-models.html"><a href="finetuning-bert-based-models.html#active-learning"><i class="fa fa-check"></i><b>13.3</b> Active learning</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="unemployment-indicators.html"><a href="unemployment-indicators.html"><i class="fa fa-check"></i><b>14</b> Unemployment indicators</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="unemployment-indicators.html"><a href="unemployment-indicators.html#building-unemployment-indicators-from-individual-tweets"><i class="fa fa-check"></i><b>14.1</b> Building unemployment indicators from individual tweets</a></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - News</b></span></li>
+<li class="chapter" data-level="15" data-path="news.html"><a href="news.html"><i class="fa fa-check"></i><b>15</b> Introduction - News Analytics</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="news.html"><a href="news.html#news-articles"><i class="fa fa-check"></i><b>15.1</b> News articles</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html"><i class="fa fa-check"></i><b>16</b> Global vs. local news sentiment indicators</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#local-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.1</b> Local news sentiment indicator</a></li>
+<li class="chapter" data-level="16.2" data-path="global-vs.-local-news-sentiment-indicators.html"><a href="global-vs.-local-news-sentiment-indicators.html#global-news-sentiment-indicator"><i class="fa fa-check"></i><b>16.2</b> Global news sentiment indicator</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html"><i class="fa fa-check"></i><b>17</b> News-sentiment measures</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#bag-of-words-model"><i class="fa fa-check"></i><b>17.1</b> Bag-of-words model</a></li>
+<li class="chapter" data-level="17.2" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#country-specific-news-sentiment-indicator"><i class="fa fa-check"></i><b>17.2</b> Country-specific news sentiment indicator</a></li>
+<li class="chapter" data-level="17.3" data-path="news-sentiment-measures.html"><a href="news-sentiment-measures.html#stylized-facts"><i class="fa fa-check"></i><b>17.3</b> Stylized facts</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Big Data Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mobility" class="section level1" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Mobility Patterns</h1>
+<p>Individual mobility analysis represent a key ingredient to understand and timely follow changes in their behavioural patterns. In this book we relie on heavily tested and robust GPS traces preprocessing to measure and quantify individual mobility patterns.</p>
+<div id="socio-economic-groups" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Socio-economic groups</h2>
+<p>Particular attention is devoted to different socio-economig groups. Groups are assigned to individuals based on the administrative unit where their principal pre-pandemic home-location is detected. Three main socio-economic groups are analysed here: the 40% with lowest index value (the 0% to 40% administrative units with lowest wealth index value), the middle ones (from 40% to 80%), and the top 20% (the wealthiest 80 to 100 percentiles).
+Socio-economic groups are drawn both by considering the entire country wealth index percentiles and by considering percentiles relatively to the metropolitan area administrative units are part of.</p>
+<p>The computation is performed by loading and grouping administrative information “admin.csv” files for each country using pyspark.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="mobility.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process_admin(country,admin_path):</span>
+<span id="cb12-2"><a href="mobility.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb12-3"><a href="mobility.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">  INPUT:  country ISO code, path to the admin files (saved as &quot;{country}/admin.csv&quot; files)</span></span>
+<span id="cb12-4"><a href="mobility.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">  OUTPUT: three pandas dataframes</span></span>
+<span id="cb12-5"><a href="mobility.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">          - &quot;admins_by_country&quot;: all country administrative units with socio-economic group assigned based on entire country</span></span>
+<span id="cb12-6"><a href="mobility.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">          - &quot;admins_by_metro_area&quot;: wealth groups computed relatively to the emtropolitan area of each unit</span></span>
+<span id="cb12-7"><a href="mobility.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">          - total population of the metropolitan areas</span></span>
+<span id="cb12-8"><a href="mobility.html#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
+<span id="cb12-9"><a href="mobility.html#cb12-9" aria-hidden="true" tabindex="-1"></a>  cols <span class="op">=</span> [<span class="st">&#39;geom_id&#39;</span>, <span class="st">&#39;metro_area_name&#39;</span>, <span class="st">&#39;pop&#39;</span>, <span class="st">&#39;wealth_index&#39;</span>]</span>
+<span id="cb12-10"><a href="mobility.html#cb12-10" aria-hidden="true" tabindex="-1"></a>  admin <span class="op">=</span> spark.read.option(<span class="st">&#39;header&#39;</span>, <span class="st">&#39;true&#39;</span>).csv(admin_path<span class="op">+</span><span class="ss">f&#39;</span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">/admin.csv&#39;</span>).toPandas()</span>
+<span id="cb12-11"><a href="mobility.html#cb12-11" aria-hidden="true" tabindex="-1"></a>  admins <span class="op">=</span> admins[[cols]]</span>
+<span id="cb12-12"><a href="mobility.html#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="mobility.html#cb12-13" aria-hidden="true" tabindex="-1"></a>  admins <span class="op">=</span> admins.rename(columns<span class="op">=</span>{<span class="st">&#39;metro_ar_1&#39;</span>: <span class="st">&#39;metro_area_name&#39;</span>, <span class="st">&#39;wealth_ind&#39;</span>: <span class="st">&#39;wealth_index&#39;</span>})</span>
+<span id="cb12-14"><a href="mobility.html#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="mobility.html#cb12-15" aria-hidden="true" tabindex="-1"></a>  admins_by_country <span class="op">=</span> admins[[<span class="st">&#39;geom_id&#39;</span>, <span class="st">&#39;pop&#39;</span>, <span class="st">&#39;wealth_index&#39;</span>]].dropna(</span>
+<span id="cb12-16"><a href="mobility.html#cb12-16" aria-hidden="true" tabindex="-1"></a>  ).sort_values(by<span class="op">=</span>[<span class="st">&#39;wealth_index&#39;</span>], ascending<span class="op">=</span>[<span class="va">False</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-17"><a href="mobility.html#cb12-17" aria-hidden="true" tabindex="-1"></a>  admins_by_country[<span class="st">&#39;pct_wealth&#39;</span>] <span class="op">=</span> admins_by_country[<span class="st">&#39;pop&#39;</span>].cumsum().divide(</span>
+<span id="cb12-18"><a href="mobility.html#cb12-18" aria-hidden="true" tabindex="-1"></a>      admins_by_country[<span class="st">&#39;pop&#39;</span>].<span class="bu">sum</span>())</span>
+<span id="cb12-19"><a href="mobility.html#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="mobility.html#cb12-20" aria-hidden="true" tabindex="-1"></a>  admins_by_metro_area <span class="op">=</span> admins[[<span class="st">&#39;geom_id&#39;</span>, <span class="st">&#39;metro_area_name&#39;</span>, <span class="st">&#39;pop&#39;</span>, <span class="st">&#39;wealth_index&#39;</span>]].dropna(</span>
+<span id="cb12-21"><a href="mobility.html#cb12-21" aria-hidden="true" tabindex="-1"></a>  ).sort_values(by<span class="op">=</span>[<span class="st">&#39;metro_area_name&#39;</span>, <span class="st">&#39;wealth_index&#39;</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-22"><a href="mobility.html#cb12-22" aria-hidden="true" tabindex="-1"></a>  admins_by_metro_area[<span class="st">&#39;pct_wealth&#39;</span>] <span class="op">=</span> admins_by_metro_area.groupby(</span>
+<span id="cb12-23"><a href="mobility.html#cb12-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;metro_area_name&#39;</span>)[<span class="st">&#39;pop&#39;</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.cumsum()<span class="op">/</span>x.<span class="bu">sum</span>())</span>
+<span id="cb12-24"><a href="mobility.html#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="mobility.html#cb12-25" aria-hidden="true" tabindex="-1"></a>  pop_metro_areas <span class="op">=</span> admins_by_metro_area.groupby(</span>
+<span id="cb12-26"><a href="mobility.html#cb12-26" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;metro_area_name&#39;</span>)[<span class="st">&#39;pop&#39;</span>].<span class="bu">sum</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-27"><a href="mobility.html#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="mobility.html#cb12-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> admins_by_country, admins_by_metro_area, pop_metro_areas</span></code></pre></div>
+</div>
+<div id="selection" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Individual’s selection</h2>
+<p>Following the preprocessing pipeline description presented in the previous sections of the book, here we introduce an additional step aiming at refinining the pool of individuals analysed. Our intent is to measure mobility patterns only for individuals whose activity level is sufficiently high to ensure a minimum level of representativeness of the data. Individuals with recods over only a small number of days cannot be considered as a complete and correct representation fairly proxying the mobility features of an individual.</p>
+<p>To this extent we use the duration of each individuals records, which have been computed during the pipeline run.
+The selection imposes two requirements on individuals: i) each individual should be active (i.e. should have at least one stop record) for a minimum number of days during the pre-pandemic period (which is choose to run from the beginning of January 2020 until March 15, 2020; ii) each individual should be active for a minimum fraction of days after the pre-pandemic period until the end of 2020. This selection process is obtained invoking the following python function which returns a list of the users to be included during the analyses.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="mobility.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_active_list(durations, country, activity_level):</span>
+<span id="cb13-2"><a href="mobility.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb13-3"><a href="mobility.html#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">  For each country invoke the following function to get a list of all active individuals.</span></span>
+<span id="cb13-4"><a href="mobility.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">    INPUT: spark dataframe with precomputed individual stops&#39; durations; country ISO code; minimum activity level required</span></span>
+<span id="cb13-5"><a href="mobility.html#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">    OUTPUT: list of active individuals &quot;user_id&quot;</span></span>
+<span id="cb13-6"><a href="mobility.html#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
+<span id="cb13-7"><a href="mobility.html#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="mobility.html#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Indonesia experiences a major dropout from the service during January 2020. For this reason, a specific pre-pandemic period was adopted</span></span>
+<span id="cb13-9"><a href="mobility.html#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> country <span class="op">==</span> <span class="st">&#39;ID&#39;</span>:</span>
+<span id="cb13-10"><a href="mobility.html#cb13-10" aria-hidden="true" tabindex="-1"></a>      durations_2 <span class="op">=</span> durations.where(col(<span class="st">&#39;date_trunc&#39;</span>) <span class="op">&gt;=</span> <span class="st">&#39;2020-02-01&#39;</span>)</span>
+<span id="cb13-11"><a href="mobility.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>:</span>
+<span id="cb13-12"><a href="mobility.html#cb13-12" aria-hidden="true" tabindex="-1"></a>      durations_2 <span class="op">=</span> durations</span>
+<span id="cb13-13"><a href="mobility.html#cb13-13" aria-hidden="true" tabindex="-1"></a>  durations_2 <span class="op">=</span> durations_2.where(col(<span class="st">&#39;date_trunc&#39;</span>) <span class="op">&lt;</span> <span class="st">&#39;2021-01-01&#39;</span>)</span>
+<span id="cb13-14"><a href="mobility.html#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="mobility.html#cb13-15" aria-hidden="true" tabindex="-1"></a>  active_days <span class="op">=</span> (durations_2</span>
+<span id="cb13-16"><a href="mobility.html#cb13-16" aria-hidden="true" tabindex="-1"></a>                 .withColumn(<span class="st">&#39;pandemic&#39;</span>, F.when(col(<span class="st">&#39;date_trunc&#39;</span>) <span class="op">&lt;</span> <span class="st">&#39;2020-03-15&#39;</span>, <span class="st">&#39;pre&#39;</span>).otherwise(<span class="st">&#39;post&#39;</span>))</span>
+<span id="cb13-17"><a href="mobility.html#cb13-17" aria-hidden="true" tabindex="-1"></a>                 .groupby(<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;pandemic&#39;</span>)</span>
+<span id="cb13-18"><a href="mobility.html#cb13-18" aria-hidden="true" tabindex="-1"></a>                 .agg(F.countDistinct(<span class="st">&#39;date_trunc&#39;</span>).alias(<span class="st">&#39;n_days&#39;</span>)))</span>
+<span id="cb13-19"><a href="mobility.html#cb13-19" aria-hidden="true" tabindex="-1"></a>  active_days.cache()</span>
+<span id="cb13-20"><a href="mobility.html#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="mobility.html#cb13-21" aria-hidden="true" tabindex="-1"></a>  max_days_pre <span class="op">=</span> (active_days</span>
+<span id="cb13-22"><a href="mobility.html#cb13-22" aria-hidden="true" tabindex="-1"></a>                  .where(col(<span class="st">&#39;pandemic&#39;</span>) <span class="op">==</span> <span class="st">&#39;pre&#39;</span>)</span>
+<span id="cb13-23"><a href="mobility.html#cb13-23" aria-hidden="true" tabindex="-1"></a>                  .agg(F.<span class="bu">max</span>(<span class="st">&#39;n_days&#39;</span>).alias(<span class="st">&#39;max_days_pre&#39;</span>))</span>
+<span id="cb13-24"><a href="mobility.html#cb13-24" aria-hidden="true" tabindex="-1"></a>                  .toPandas().loc[<span class="dv">0</span>, <span class="st">&#39;max_days_pre&#39;</span>])</span>
+<span id="cb13-25"><a href="mobility.html#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="mobility.html#cb13-26" aria-hidden="true" tabindex="-1"></a>  max_days_all <span class="op">=</span> (active_days</span>
+<span id="cb13-27"><a href="mobility.html#cb13-27" aria-hidden="true" tabindex="-1"></a>                  .groupby(<span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb13-28"><a href="mobility.html#cb13-28" aria-hidden="true" tabindex="-1"></a>                  .agg(F.<span class="bu">sum</span>(<span class="st">&#39;n_days&#39;</span>).alias(<span class="st">&#39;n_days&#39;</span>))</span>
+<span id="cb13-29"><a href="mobility.html#cb13-29" aria-hidden="true" tabindex="-1"></a>                  .agg(F.<span class="bu">max</span>(<span class="st">&#39;n_days&#39;</span>).alias(<span class="st">&#39;max_days_all&#39;</span>))</span>
+<span id="cb13-30"><a href="mobility.html#cb13-30" aria-hidden="true" tabindex="-1"></a>                  .toPandas().loc[<span class="dv">0</span>, <span class="st">&#39;max_days_all&#39;</span>])</span>
+<span id="cb13-31"><a href="mobility.html#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="mobility.html#cb13-32" aria-hidden="true" tabindex="-1"></a>  active_users <span class="op">=</span> (active_days</span>
+<span id="cb13-33"><a href="mobility.html#cb13-33" aria-hidden="true" tabindex="-1"></a>                  .groupby(<span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb13-34"><a href="mobility.html#cb13-34" aria-hidden="true" tabindex="-1"></a>                  .pivot(<span class="st">&#39;pandemic&#39;</span>)</span>
+<span id="cb13-35"><a href="mobility.html#cb13-35" aria-hidden="true" tabindex="-1"></a>                  .agg(F.first(<span class="st">&#39;n_days&#39;</span>))</span>
+<span id="cb13-36"><a href="mobility.html#cb13-36" aria-hidden="true" tabindex="-1"></a>                  .fillna(<span class="dv">0</span>)</span>
+<span id="cb13-37"><a href="mobility.html#cb13-37" aria-hidden="true" tabindex="-1"></a>                  .withColumn(<span class="st">&#39;tot&#39;</span>, col(<span class="st">&#39;pre&#39;</span>)<span class="op">+</span>col(<span class="st">&#39;post&#39;</span>))</span>
+<span id="cb13-38"><a href="mobility.html#cb13-38" aria-hidden="true" tabindex="-1"></a>                  .where(col(<span class="st">&#39;pre&#39;</span>) <span class="op">&gt;=</span> activity_level<span class="op">*</span>max_days_pre)</span>
+<span id="cb13-39"><a href="mobility.html#cb13-39" aria-hidden="true" tabindex="-1"></a>                  .where(col(<span class="st">&#39;tot&#39;</span>) <span class="op">&gt;=</span> activity_level<span class="op">*</span>max_days_all))</span>
+<span id="cb13-40"><a href="mobility.html#cb13-40" aria-hidden="true" tabindex="-1"></a>  active_days.unpersist()</span>
+<span id="cb13-41"><a href="mobility.html#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="mobility.html#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> active_users</span></code></pre></div>
+</div>
+<div id="measures" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Measures</h2>
+<p>The focus on socio-economic groups require an aggregation process which is performed for each individuals based on their home-location administrative unit. Both stop-locations and duration data processed during the pipeline run are used here.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="mobility.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_durations_and_admins(country, data_date, stop_path, activity_level<span class="op">=</span><span class="dv">0</span>, hw<span class="op">=</span><span class="dv">28</span>, ww<span class="op">=</span><span class="dv">28</span>, wa<span class="op">=</span><span class="dv">900</span>, mph<span class="op">=</span><span class="dv">10</span>, mpw<span class="op">=</span><span class="dv">7</span>):</span>
+<span id="cb14-2"><a href="mobility.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb14-3"><a href="mobility.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">  INPUT: country ISO code, date of the data to consider, path to the stop locations data,</span></span>
+<span id="cb14-4"><a href="mobility.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">         minimum activity level for individuals to be included, **{pipeline computation specific parameters}</span></span>
+<span id="cb14-5"><a href="mobility.html#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">  OUTPUT: spark dataframe containing &quot;date&quot; (with daily frequency), &quot;user_id&quot;, &quot;H&quot; (time spent at home), &quot;W&quot; (time spent at work),</span></span>
+<span id="cb14-6"><a href="mobility.html#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">          &quot;R&quot; (1 if not leaving home), &quot;C&quot; (1 if commuting to work), &quot;O&quot; (time spent in locations which are neither home nor work)</span></span>
+<span id="cb14-7"><a href="mobility.html#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
+<span id="cb14-8"><a href="mobility.html#cb14-8" aria-hidden="true" tabindex="-1"></a>  personal_nf <span class="op">=</span> <span class="ss">f&quot;personal_stop_location_hw</span><span class="sc">{hw}</span><span class="ss">_ww</span><span class="sc">{ww}</span><span class="ss">_wa</span><span class="sc">{wa}</span><span class="ss">_mph</span><span class="sc">{</span>mph<span class="sc">}</span><span class="ss">_mpw</span><span class="sc">{</span>mpw<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb14-9"><a href="mobility.html#cb14-9" aria-hidden="true" tabindex="-1"></a>  stops <span class="op">=</span> spark.read.parquet(<span class="ss">f&quot;</span><span class="sc">{</span>stop_path<span class="sc">}{</span>country<span class="sc">}</span><span class="ss">/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date</span><span class="sc">{</span>data_date<span class="sc">}</span><span class="ss">/&quot;</span> <span class="op">+</span> personal_nf)</span>
+<span id="cb14-10"><a href="mobility.html#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="mobility.html#cb14-11" aria-hidden="true" tabindex="-1"></a>  fname_nf <span class="op">=</span> <span class="ss">f&#39;durations_window_hw</span><span class="sc">{hw}</span><span class="ss">_ww</span><span class="sc">{ww}</span><span class="ss">_wa</span><span class="sc">{wa}</span><span class="ss">_mph</span><span class="sc">{</span>mph<span class="sc">}</span><span class="ss">_mpw</span><span class="sc">{</span>mpw<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb14-12"><a href="mobility.html#cb14-12" aria-hidden="true" tabindex="-1"></a>  durations_path_nf <span class="op">=</span> <span class="ss">f&#39;</span><span class="sc">{</span>stop_path<span class="sc">}{</span>country<span class="sc">}</span><span class="ss">/accuracy100_maxtimestop3600_staytime300_radius50_dbscanradius50/date</span><span class="sc">{</span>data_date<span class="sc">}</span><span class="ss">/&#39;</span> <span class="op">+</span> fname_nf</span>
+<span id="cb14-13"><a href="mobility.html#cb14-13" aria-hidden="true" tabindex="-1"></a>  durations <span class="op">=</span> spark.read.parquet(durations_path_nf)</span>
+<span id="cb14-14"><a href="mobility.html#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="mobility.html#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># aggregate day/night</span></span>
+<span id="cb14-16"><a href="mobility.html#cb14-16" aria-hidden="true" tabindex="-1"></a>  durations <span class="op">=</span> (durations</span>
+<span id="cb14-17"><a href="mobility.html#cb14-17" aria-hidden="true" tabindex="-1"></a>               .groupby(<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb14-18"><a href="mobility.html#cb14-18" aria-hidden="true" tabindex="-1"></a>               .agg(F.<span class="bu">sum</span>(<span class="st">&#39;H&#39;</span>).alias(<span class="st">&#39;H&#39;</span>),</span>
+<span id="cb14-19"><a href="mobility.html#cb14-19" aria-hidden="true" tabindex="-1"></a>                    F.<span class="bu">sum</span>(<span class="st">&#39;W&#39;</span>).alias(<span class="st">&#39;W&#39;</span>),</span>
+<span id="cb14-20"><a href="mobility.html#cb14-20" aria-hidden="true" tabindex="-1"></a>                    F.<span class="bu">sum</span>(<span class="st">&#39;O&#39;</span>).alias(<span class="st">&#39;O&#39;</span>)))</span>
+<span id="cb14-21"><a href="mobility.html#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="mobility.html#cb14-22" aria-hidden="true" tabindex="-1"></a>  active_users <span class="op">=</span> get_active_list(durations, country, activity_level)</span>
+<span id="cb14-23"><a href="mobility.html#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-24"><a href="mobility.html#cb14-24" aria-hidden="true" tabindex="-1"></a>  durations <span class="op">=</span> durations.join(active_users.select(</span>
+<span id="cb14-25"><a href="mobility.html#cb14-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;user_id&#39;</span>), on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>)</span>
+<span id="cb14-26"><a href="mobility.html#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="mobility.html#cb14-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create binary column for commuters</span></span>
+<span id="cb14-28"><a href="mobility.html#cb14-28" aria-hidden="true" tabindex="-1"></a>  durations <span class="op">=</span> durations.withColumn(</span>
+<span id="cb14-29"><a href="mobility.html#cb14-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;C&#39;</span>, F.when(col(<span class="st">&#39;W&#39;</span>).isNull(), <span class="dv">0</span>).otherwise(<span class="dv">1</span>))</span>
+<span id="cb14-30"><a href="mobility.html#cb14-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-31"><a href="mobility.html#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create binary column for people who don&#39;t leave home, aka recluse</span></span>
+<span id="cb14-32"><a href="mobility.html#cb14-32" aria-hidden="true" tabindex="-1"></a>  durations <span class="op">=</span> durations.withColumn(<span class="st">&#39;R&#39;</span>, F.when(</span>
+<span id="cb14-33"><a href="mobility.html#cb14-33" aria-hidden="true" tabindex="-1"></a>      (col(<span class="st">&#39;W&#39;</span>).isNull()) <span class="op">&amp;</span> (col(<span class="st">&#39;O&#39;</span>).isNull()), <span class="dv">1</span>).otherwise(<span class="dv">0</span>))</span>
+<span id="cb14-34"><a href="mobility.html#cb14-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="mobility.html#cb14-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute H and W id for wealth labels</span></span>
+<span id="cb14-36"><a href="mobility.html#cb14-36" aria-hidden="true" tabindex="-1"></a>  w <span class="op">=</span> Window.partitionBy(<span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb14-37"><a href="mobility.html#cb14-37" aria-hidden="true" tabindex="-1"></a>  user_h_id <span class="op">=</span> (stops</span>
+<span id="cb14-38"><a href="mobility.html#cb14-38" aria-hidden="true" tabindex="-1"></a>               .where(col(<span class="st">&#39;location_type&#39;</span>) <span class="op">==</span> <span class="st">&#39;H&#39;</span>)</span>
+<span id="cb14-39"><a href="mobility.html#cb14-39" aria-hidden="true" tabindex="-1"></a>               .where(col(<span class="st">&#39;date_trunc&#39;</span>) <span class="op">&lt;=</span> <span class="st">&#39;2020-03-15&#39;</span>)</span>
+<span id="cb14-40"><a href="mobility.html#cb14-40" aria-hidden="true" tabindex="-1"></a>               .groupby(<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;geom_id&#39;</span>)</span>
+<span id="cb14-41"><a href="mobility.html#cb14-41" aria-hidden="true" tabindex="-1"></a>               .agg(F.countDistinct(<span class="st">&#39;date_trunc&#39;</span>).alias(<span class="st">&#39;n_days&#39;</span>))</span>
+<span id="cb14-42"><a href="mobility.html#cb14-42" aria-hidden="true" tabindex="-1"></a>               .withColumn(<span class="st">&#39;max_days&#39;</span>, F.<span class="bu">max</span>(<span class="st">&#39;n_days&#39;</span>).over(w))</span>
+<span id="cb14-43"><a href="mobility.html#cb14-43" aria-hidden="true" tabindex="-1"></a>               .where(col(<span class="st">&#39;n_days&#39;</span>) <span class="op">==</span> col(<span class="st">&#39;max_days&#39;</span>))</span>
+<span id="cb14-44"><a href="mobility.html#cb14-44" aria-hidden="true" tabindex="-1"></a>               .groupby(<span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb14-45"><a href="mobility.html#cb14-45" aria-hidden="true" tabindex="-1"></a>               .agg(F.first(<span class="st">&#39;geom_id&#39;</span>).alias(<span class="st">&#39;geom_id_home&#39;</span>)))</span>
+<span id="cb14-46"><a href="mobility.html#cb14-46" aria-hidden="true" tabindex="-1"></a>  user_w_id <span class="op">=</span> (stops</span>
+<span id="cb14-47"><a href="mobility.html#cb14-47" aria-hidden="true" tabindex="-1"></a>               .where(col(<span class="st">&#39;location_type&#39;</span>) <span class="op">==</span> <span class="st">&#39;W&#39;</span>)</span>
+<span id="cb14-48"><a href="mobility.html#cb14-48" aria-hidden="true" tabindex="-1"></a>               <span class="co"># .where(col(&#39;date_trunc&#39;) &lt;= &#39;2020-03-15&#39;)</span></span>
+<span id="cb14-49"><a href="mobility.html#cb14-49" aria-hidden="true" tabindex="-1"></a>               .groupby(<span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;geom_id&#39;</span>)</span>
+<span id="cb14-50"><a href="mobility.html#cb14-50" aria-hidden="true" tabindex="-1"></a>               .agg(F.countDistinct(<span class="st">&#39;date_trunc&#39;</span>).alias(<span class="st">&#39;n_days&#39;</span>))</span>
+<span id="cb14-51"><a href="mobility.html#cb14-51" aria-hidden="true" tabindex="-1"></a>               .withColumn(<span class="st">&#39;max_days&#39;</span>, F.<span class="bu">max</span>(<span class="st">&#39;n_days&#39;</span>).over(w))</span>
+<span id="cb14-52"><a href="mobility.html#cb14-52" aria-hidden="true" tabindex="-1"></a>               .where(col(<span class="st">&#39;n_days&#39;</span>) <span class="op">==</span> col(<span class="st">&#39;max_days&#39;</span>))</span>
+<span id="cb14-53"><a href="mobility.html#cb14-53" aria-hidden="true" tabindex="-1"></a>               .groupby(<span class="st">&#39;user_id&#39;</span>)</span>
+<span id="cb14-54"><a href="mobility.html#cb14-54" aria-hidden="true" tabindex="-1"></a>               .agg(F.first(<span class="st">&#39;geom_id&#39;</span>).alias(<span class="st">&#39;geom_id_work&#39;</span>)))</span>
+<span id="cb14-55"><a href="mobility.html#cb14-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-56"><a href="mobility.html#cb14-56" aria-hidden="true" tabindex="-1"></a>  durations_and_admins <span class="op">=</span> (durations</span>
+<span id="cb14-57"><a href="mobility.html#cb14-57" aria-hidden="true" tabindex="-1"></a>                          .withColumnRenamed(<span class="st">&#39;date_trunc&#39;</span>, <span class="st">&#39;date&#39;</span>)</span>
+<span id="cb14-58"><a href="mobility.html#cb14-58" aria-hidden="true" tabindex="-1"></a>                          .select(<span class="st">&#39;date&#39;</span>, <span class="st">&#39;user_id&#39;</span>, <span class="st">&#39;H&#39;</span>, <span class="st">&#39;R&#39;</span>, <span class="st">&#39;W&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;O&#39;</span>)</span>
+<span id="cb14-59"><a href="mobility.html#cb14-59" aria-hidden="true" tabindex="-1"></a>                          .join(user_h_id, on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;left&#39;</span>)</span>
+<span id="cb14-60"><a href="mobility.html#cb14-60" aria-hidden="true" tabindex="-1"></a>                          .join(user_w_id, on<span class="op">=</span><span class="st">&#39;user_id&#39;</span>, how<span class="op">=</span><span class="st">&#39;left&#39;</span>))</span>
+<span id="cb14-61"><a href="mobility.html#cb14-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-62"><a href="mobility.html#cb14-62" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> durations_and_admins</span></code></pre></div>
+<p>The aggregation process takes the output of “compute_durations_and_admins” and compute the weighted average of the different metrics of interest.
+Before focusing on the aggregated metrics produced, it is important to highlight that during this process metrics are reweighted based on the fraction of population living in administrative units in which at least one individual in our dataset is living. This step rebalance the data satial-coverage biases giving more importance to individuals living in administrative units with larger population.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="mobility.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_durations_normalized_by_wealth_home(durations_and_admins, admins, labels_wealth, bins_wealth):</span>
+<span id="cb15-2"><a href="mobility.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb15-3"><a href="mobility.html#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">    INPUT:  df output of &quot;compute_durations_and_admins&quot;, df (first) output of &quot;process_admins&quot;, wealth labels, wealth bins</span></span>
+<span id="cb15-4"><a href="mobility.html#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">    OUTPUT: df with weight column dataframe</span></span>
+<span id="cb15-5"><a href="mobility.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
+<span id="cb15-6"><a href="mobility.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  admins[<span class="st">&#39;wealth_label&#39;</span>] <span class="op">=</span> pd.cut(</span>
+<span id="cb15-7"><a href="mobility.html#cb15-7" aria-hidden="true" tabindex="-1"></a>      admins[<span class="st">&#39;pct_wealth&#39;</span>], bins_wealth, labels<span class="op">=</span>labels_wealth)</span>
+<span id="cb15-8"><a href="mobility.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  admins[<span class="st">&#39;geom_id&#39;</span>] <span class="op">=</span> admins[<span class="st">&#39;geom_id&#39;</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb15-9"><a href="mobility.html#cb15-9" aria-hidden="true" tabindex="-1"></a>  admins[<span class="st">&#39;wealth_label&#39;</span>] <span class="op">=</span> admins[<span class="st">&#39;wealth_label&#39;</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb15-10"><a href="mobility.html#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get admin info for home and work location</span></span>
+<span id="cb15-11"><a href="mobility.html#cb15-11" aria-hidden="true" tabindex="-1"></a>  tmp1 <span class="op">=</span> spark.createDataFrame(</span>
+<span id="cb15-12"><a href="mobility.html#cb15-12" aria-hidden="true" tabindex="-1"></a>      admins[[<span class="st">&#39;geom_id&#39;</span>, <span class="st">&#39;pop&#39;</span>, <span class="st">&#39;pct_wealth&#39;</span>, <span class="st">&#39;wealth_label&#39;</span>]].rename(columns<span class="op">=</span><span class="kw">lambda</span> x: x<span class="op">+</span><span class="st">&#39;_home&#39;</span>))</span>
+<span id="cb15-13"><a href="mobility.html#cb15-13" aria-hidden="true" tabindex="-1"></a>  out1 <span class="op">=</span> (durations_and_admins</span>
+<span id="cb15-14"><a href="mobility.html#cb15-14" aria-hidden="true" tabindex="-1"></a>          .join(tmp1, on<span class="op">=</span><span class="st">&#39;geom_id_home&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>))</span>
+<span id="cb15-15"><a href="mobility.html#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="mobility.html#cb15-16" aria-hidden="true" tabindex="-1"></a>  geom_users <span class="op">=</span> (out1</span>
+<span id="cb15-17"><a href="mobility.html#cb15-17" aria-hidden="true" tabindex="-1"></a>                .groupby(<span class="st">&#39;geom_id_home&#39;</span>)</span>
+<span id="cb15-18"><a href="mobility.html#cb15-18" aria-hidden="true" tabindex="-1"></a>                .agg(F.countDistinct(<span class="st">&#39;user_id&#39;</span>).alias(<span class="st">&#39;n_users&#39;</span>)))</span>
+<span id="cb15-19"><a href="mobility.html#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="mobility.html#cb15-20" aria-hidden="true" tabindex="-1"></a>  out <span class="op">=</span> (out1</span>
+<span id="cb15-21"><a href="mobility.html#cb15-21" aria-hidden="true" tabindex="-1"></a>         .join(geom_users, on<span class="op">=</span><span class="st">&#39;geom_id_home&#39;</span>, how<span class="op">=</span><span class="st">&#39;inner&#39;</span>)</span>
+<span id="cb15-22"><a href="mobility.html#cb15-22" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;weight&#39;</span>, col(<span class="st">&#39;pop_home&#39;</span>)<span class="op">/</span>col(<span class="st">&#39;n_users&#39;</span>)))</span>
+<span id="cb15-23"><a href="mobility.html#cb15-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> out</span>
+<span id="cb15-24"><a href="mobility.html#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-25"><a href="mobility.html#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="mobility.html#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> output(out, column):</span>
+<span id="cb15-27"><a href="mobility.html#cb15-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb15-28"><a href="mobility.html#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co">    INPUT:  df output of &quot;compute_durations_normalized_by_wealth_home&quot;, measure to aggregate</span></span>
+<span id="cb15-29"><a href="mobility.html#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="co">    OUTPUT: aggregated and normalized dataframe</span></span>
+<span id="cb15-30"><a href="mobility.html#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
+<span id="cb15-31"><a href="mobility.html#cb15-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute aggregate measures</span></span>
+<span id="cb15-32"><a href="mobility.html#cb15-32" aria-hidden="true" tabindex="-1"></a>  out <span class="op">=</span> (out</span>
+<span id="cb15-33"><a href="mobility.html#cb15-33" aria-hidden="true" tabindex="-1"></a>         .fillna(<span class="dv">0</span>, subset<span class="op">=</span>column)</span>
+<span id="cb15-34"><a href="mobility.html#cb15-34" aria-hidden="true" tabindex="-1"></a>         .groupby(<span class="st">&#39;date&#39;</span>, <span class="st">&#39;wealth_label_home&#39;</span>)</span>
+<span id="cb15-35"><a href="mobility.html#cb15-35" aria-hidden="true" tabindex="-1"></a>         .agg((F.<span class="bu">sum</span>(col(column)<span class="op">*</span>col(<span class="st">&#39;weight&#39;</span>))<span class="op">/</span>F.<span class="bu">sum</span>(col(<span class="st">&#39;weight&#39;</span>))).alias(<span class="st">&#39;mean&#39;</span>),</span>
+<span id="cb15-36"><a href="mobility.html#cb15-36" aria-hidden="true" tabindex="-1"></a>              F.stddev(column).alias(<span class="st">&#39;std&#39;</span>),</span>
+<span id="cb15-37"><a href="mobility.html#cb15-37" aria-hidden="true" tabindex="-1"></a>              F.count(column).alias(<span class="st">&#39;n&#39;</span>),</span>
+<span id="cb15-38"><a href="mobility.html#cb15-38" aria-hidden="true" tabindex="-1"></a>              F.countDistinct(<span class="st">&#39;user_id&#39;</span>).alias(<span class="st">&#39;n_unique&#39;</span>))</span>
+<span id="cb15-39"><a href="mobility.html#cb15-39" aria-hidden="true" tabindex="-1"></a>         .withColumn(<span class="st">&#39;sem&#39;</span>, col(<span class="st">&#39;std&#39;</span>)<span class="op">/</span>F.sqrt(col(<span class="st">&#39;n&#39;</span>)))</span>
+<span id="cb15-40"><a href="mobility.html#cb15-40" aria-hidden="true" tabindex="-1"></a>         .drop(<span class="st">&#39;std&#39;</span>))</span>
+<span id="cb15-41"><a href="mobility.html#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-42"><a href="mobility.html#cb15-42" aria-hidden="true" tabindex="-1"></a>  durations_normalized_by_wealth_home <span class="op">=</span> out.toPandas(</span>
+<span id="cb15-43"><a href="mobility.html#cb15-43" aria-hidden="true" tabindex="-1"></a>  ).set_index([<span class="st">&#39;wealth_label_home&#39;</span>, <span class="st">&#39;date&#39;</span>])</span>
+<span id="cb15-44"><a href="mobility.html#cb15-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> durations_normalized_by_wealth_home</span></code></pre></div>
+<div id="measuring-mobility-patterns" class="section level3" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Measuring mobility patterns</h3>
+<p>We can now go back and discuss the metrics coded so far which we selected as proxies of different aspect of individuals mobility behaviour.
+“H” (time spent at home“),”W" (time spent at work), “O” (time spent in locations which are neither home nor work) are quantities directly computed as the weighted average of the time spent in three diferent location categories, namely, the home-locations of an individuals, its work locations, and all the other locations which are neither home nor work. Additionally, we also compute the fraction of people not leaving their home-location on an entire day, “R,” and the fraction of commuters going to their workplace on a specific date, “C.” All these quantities are computed and aggregated following the wealth bins provided (e.g. “low-income”: 0-40% wealth-index percentile, “middle income”: 40-80% wealth-index percentile, “high-income”: 80-100% wealth-index percentile). To further specialize on most fragile individuals’ groups, we focus our attention on i) the “low-income” individuals and their fraction of commuters, and ii) the “low-income” individuals and thir time spent at their work places. These two quantities aims at providing in-dept insights over the working behaviour and its changes during the pandeimc.</p>
+<p>Here we report an example code using the functions presented in the previous sections and the data computed by running the preprocessing pipeline.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="mobility.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb16-2"><a href="mobility.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-3"><a href="mobility.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb16-4"><a href="mobility.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.dates <span class="im">as</span> mdates</span>
+<span id="cb16-5"><a href="mobility.html#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb16-6"><a href="mobility.html#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb16-7"><a href="mobility.html#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="mobility.html#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyspark.sql.functions <span class="im">as</span> F</span>
+<span id="cb16-9"><a href="mobility.html#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql.functions <span class="im">import</span> col, desc, lit</span>
+<span id="cb16-10"><a href="mobility.html#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyspark.sql <span class="im">import</span> Window</span>
+<span id="cb16-11"><a href="mobility.html#cb16-11" aria-hidden="true" tabindex="-1"></a>spark.conf.<span class="bu">set</span>(<span class="st">&quot;spark.sql.shuffle.partitions&quot;</span>, <span class="dv">1500</span>)</span>
+<span id="cb16-12"><a href="mobility.html#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="mobility.html#cb16-13" aria-hidden="true" tabindex="-1"></a>start_baseline <span class="op">=</span> <span class="st">&#39;2020-02-01&#39;</span></span>
+<span id="cb16-14"><a href="mobility.html#cb16-14" aria-hidden="true" tabindex="-1"></a>end_baseline <span class="op">=</span> <span class="st">&#39;2020-03-01&#39;</span></span>
+<span id="cb16-15"><a href="mobility.html#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="mobility.html#cb16-16" aria-hidden="true" tabindex="-1"></a>start_date <span class="op">=</span> <span class="st">&#39;2020-02-01&#39;</span></span>
+<span id="cb16-17"><a href="mobility.html#cb16-17" aria-hidden="true" tabindex="-1"></a>end_date <span class="op">=</span> <span class="st">&#39;2021-04-15&#39;</span></span>
+<span id="cb16-18"><a href="mobility.html#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="mobility.html#cb16-19" aria-hidden="true" tabindex="-1"></a>results_dir <span class="op">=</span> <span class="st">&quot;SAVE_RESULTS_HERE&quot;</span></span>
+<span id="cb16-20"><a href="mobility.html#cb16-20" aria-hidden="true" tabindex="-1"></a>admin_path <span class="op">=</span> <span class="st">&quot;FIND_ADMIN_DATA_HERE&quot;</span> <span class="co"># country specific admin files should be stored as &quot;{admin_path}/{country}/admin.csv&quot;</span></span>
+<span id="cb16-21"><a href="mobility.html#cb16-21" aria-hidden="true" tabindex="-1"></a>stop_path <span class="op">=</span> <span class="st">&quot;FIND_PIPELINE_STOP_DATA_HERE&quot;</span></span>
+<span id="cb16-22"><a href="mobility.html#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="mobility.html#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co"># define wealth groups</span></span>
+<span id="cb16-24"><a href="mobility.html#cb16-24" aria-hidden="true" tabindex="-1"></a>bins_wealth <span class="op">=</span> [<span class="dv">0</span>, <span class="fl">0.4</span>, <span class="fl">0.8</span>, <span class="dv">1</span>]</span>
+<span id="cb16-25"><a href="mobility.html#cb16-25" aria-hidden="true" tabindex="-1"></a>bins_dist <span class="op">=</span> [<span class="dv">0</span>, <span class="fl">0.4</span>, <span class="fl">0.8</span>, <span class="dv">1</span>]</span>
+<span id="cb16-26"><a href="mobility.html#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="mobility.html#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co"># select countries for which produce metric results</span></span>
+<span id="cb16-28"><a href="mobility.html#cb16-28" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> [<span class="st">&#39;ID&#39;</span>, <span class="st">&#39;PH&#39;</span>, <span class="st">&#39;BR&#39;</span>, <span class="st">&#39;CO&#39;</span>, <span class="st">&#39;MX&#39;</span>, <span class="st">&#39;ZA&#39;</span>]</span>
+<span id="cb16-29"><a href="mobility.html#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-30"><a href="mobility.html#cb16-30" aria-hidden="true" tabindex="-1"></a>c_dates <span class="op">=</span> {<span class="st">&#39;BR&#39;</span>: <span class="st">&#39;2021-05-16&#39;</span>,</span>
+<span id="cb16-31"><a href="mobility.html#cb16-31" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;CO&#39;</span>: <span class="st">&#39;2021-05-16&#39;</span>,</span>
+<span id="cb16-32"><a href="mobility.html#cb16-32" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;ID&#39;</span>: <span class="st">&#39;2021-05-16&#39;</span>,</span>
+<span id="cb16-33"><a href="mobility.html#cb16-33" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;MX&#39;</span>: <span class="st">&#39;2021-05-16&#39;</span>,</span>
+<span id="cb16-34"><a href="mobility.html#cb16-34" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;PH&#39;</span>: <span class="st">&#39;2021-05-16&#39;</span>,</span>
+<span id="cb16-35"><a href="mobility.html#cb16-35" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;ZA&#39;</span>: <span class="st">&#39;2021-05-16&#39;</span>,</span>
+<span id="cb16-36"><a href="mobility.html#cb16-36" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;AR&#39;</span>: <span class="st">&#39;2021-05-16&#39;</span>}</span>
+<span id="cb16-37"><a href="mobility.html#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-38"><a href="mobility.html#cb16-38" aria-hidden="true" tabindex="-1"></a>activity_level <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb16-39"><a href="mobility.html#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-40"><a href="mobility.html#cb16-40" aria-hidden="true" tabindex="-1"></a>hw <span class="op">=</span> <span class="dv">49</span></span>
+<span id="cb16-41"><a href="mobility.html#cb16-41" aria-hidden="true" tabindex="-1"></a>ww <span class="op">=</span> <span class="dv">49</span></span>
+<span id="cb16-42"><a href="mobility.html#cb16-42" aria-hidden="true" tabindex="-1"></a>wa <span class="op">=</span> <span class="dv">3600</span></span>
+<span id="cb16-43"><a href="mobility.html#cb16-43" aria-hidden="true" tabindex="-1"></a>mph <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb16-44"><a href="mobility.html#cb16-44" aria-hidden="true" tabindex="-1"></a>mpw <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb16-45"><a href="mobility.html#cb16-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-46"><a href="mobility.html#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="co"># smoothing window size</span></span>
+<span id="cb16-47"><a href="mobility.html#cb16-47" aria-hidden="true" tabindex="-1"></a>ma <span class="op">=</span> <span class="dv">28</span></span>
+<span id="cb16-48"><a href="mobility.html#cb16-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-49"><a href="mobility.html#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="co"># weath-group names</span></span>
+<span id="cb16-50"><a href="mobility.html#cb16-50" aria-hidden="true" tabindex="-1"></a>labels_wealth <span class="op">=</span> [x<span class="op">+</span><span class="st">&#39; (&#39;</span><span class="op">+</span><span class="bu">str</span>(<span class="bu">int</span>(bins_wealth[i]<span class="op">*</span><span class="dv">100</span>))<span class="op">+</span><span class="st">&#39;%-&#39;</span><span class="op">+</span><span class="bu">str</span>(<span class="bu">int</span>(bins_wealth[i<span class="op">+</span><span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span>)) <span class="op">+</span><span class="st">&#39;%)&#39;</span> <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="bu">len</span>(bins_wealth)<span class="op">-</span><span class="dv">1</span>), [<span class="st">&#39;Low&#39;</span>, <span class="st">&#39;Medium&#39;</span>, <span class="st">&#39;High&#39;</span>])]</span>
+<span id="cb16-51"><a href="mobility.html#cb16-51" aria-hidden="true" tabindex="-1"></a>labels_dist <span class="op">=</span> [x<span class="op">+</span><span class="st">&#39; (&#39;</span><span class="op">+</span><span class="bu">str</span>(<span class="bu">int</span>(bins_dist[i]<span class="op">*</span><span class="dv">100</span>))<span class="op">+</span><span class="st">&#39;%-&#39;</span><span class="op">+</span><span class="bu">str</span>(<span class="bu">int</span>(bins_dist[i<span class="op">+</span><span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span>)) <span class="op">+</span><span class="st">&#39;%)&#39;</span> <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="bu">len</span>(bins_dist)<span class="op">-</span><span class="dv">1</span>), [<span class="st">&#39;Low&#39;</span>, <span class="st">&#39;Medium&#39;</span>, <span class="st">&#39;High&#39;</span>])]</span>
+<span id="cb16-52"><a href="mobility.html#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="co"># largest metropolis names</span></span>
+<span id="cb16-53"><a href="mobility.html#cb16-53" aria-hidden="true" tabindex="-1"></a>country_capitals <span class="op">=</span> {<span class="st">&#39;MX&#39;</span>: <span class="st">&#39;Mexico City&#39;</span>, <span class="st">&#39;BR&#39;</span>: <span class="st">&#39;São Paulo&#39;</span>, <span class="st">&#39;CO&#39;</span>: <span class="st">&#39;Bogota&#39;</span>, <span class="st">&#39;PH&#39;</span>: <span class="st">&#39;Quezon City [Manila]&#39;</span>, <span class="st">&#39;ID&#39;</span>: <span class="st">&#39;Jakarta&#39;</span>, <span class="st">&#39;ZA&#39;</span>: <span class="st">&#39;Johannesburg&#39;</span>, <span class="st">&#39;AR&#39;</span>: <span class="st">&#39;GBuenos Aires&#39;</span>}</span>
+<span id="cb16-54"><a href="mobility.html#cb16-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-55"><a href="mobility.html#cb16-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-56"><a href="mobility.html#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize dictionary where to store results</span></span>
+<span id="cb16-57"><a href="mobility.html#cb16-57" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {}</span>
+<span id="cb16-58"><a href="mobility.html#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> countries:</span>
+<span id="cb16-59"><a href="mobility.html#cb16-59" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(country)</span>
+<span id="cb16-60"><a href="mobility.html#cb16-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-61"><a href="mobility.html#cb16-61" aria-hidden="true" tabindex="-1"></a>    admins_by_country, admins_by_metro_area, pop_metro_areas <span class="op">=</span> process_admin(country,admin_path)</span>
+<span id="cb16-62"><a href="mobility.html#cb16-62" aria-hidden="true" tabindex="-1"></a>    capital_geomid <span class="op">=</span> admins_by_metro_area[admins_by_metro_area.metro_area_name <span class="op">==</span> country_capitals[country]].geom_id.unique().tolist()</span>
+<span id="cb16-63"><a href="mobility.html#cb16-63" aria-hidden="true" tabindex="-1"></a>    durations_and_admins <span class="op">=</span> compute_durations_and_admins(country, c_dates[country], stop_path, activity_level<span class="op">=</span>activity_level, hw<span class="op">=</span>hw, ww<span class="op">=</span>ww, wa<span class="op">=</span>wa, mph<span class="op">=</span>mph, mpw<span class="op">=</span>mpw)</span>
+<span id="cb16-64"><a href="mobility.html#cb16-64" aria-hidden="true" tabindex="-1"></a>    durations_and_admins.cache()</span>
+<span id="cb16-65"><a href="mobility.html#cb16-65" aria-hidden="true" tabindex="-1"></a>    out1 <span class="op">=</span> compute_durations_normalized_by_wealth_home(durations_and_admins, admins_by_country, labels_wealth, bins_wealth)</span>
+<span id="cb16-66"><a href="mobility.html#cb16-66" aria-hidden="true" tabindex="-1"></a>    out2 <span class="op">=</span> compute_durations_normalized_by_wealth_home_wealth_work(durations_and_admins, admins_by_country, labels_wealth, bins_wealth)</span>
+<span id="cb16-67"><a href="mobility.html#cb16-67" aria-hidden="true" tabindex="-1"></a>    results[(country, <span class="st">&#39;t_home&#39;</span>)] <span class="op">=</span> output(out1, column<span class="op">=</span><span class="st">&#39;H&#39;</span>)</span>
+<span id="cb16-68"><a href="mobility.html#cb16-68" aria-hidden="true" tabindex="-1"></a>    results[(country, <span class="st">&#39;t_work&#39;</span>)] <span class="op">=</span> output(out1, column<span class="op">=</span><span class="st">&#39;W&#39;</span>)</span>
+<span id="cb16-69"><a href="mobility.html#cb16-69" aria-hidden="true" tabindex="-1"></a>    results[(country, <span class="st">&#39;t_other&#39;</span>)] <span class="op">=</span> output(out1, column<span class="op">=</span><span class="st">&#39;O&#39;</span>)</span>
+<span id="cb16-70"><a href="mobility.html#cb16-70" aria-hidden="true" tabindex="-1"></a>    results[(country, <span class="st">&#39;rec&#39;</span>)] <span class="op">=</span> output(out1, column<span class="op">=</span><span class="st">&#39;R&#39;</span>)</span>
+<span id="cb16-71"><a href="mobility.html#cb16-71" aria-hidden="true" tabindex="-1"></a>    results[(country, <span class="st">&#39;comms&#39;</span>)] <span class="op">=</span> output(out1, column<span class="op">=</span><span class="st">&#39;C&#39;</span>)</span>
+<span id="cb16-72"><a href="mobility.html#cb16-72" aria-hidden="true" tabindex="-1"></a>    results[(country, <span class="st">&#39;comms_hw&#39;</span>)] <span class="op">=</span> output_hw(out2, column<span class="op">=</span><span class="st">&#39;C&#39;</span>)</span>
+<span id="cb16-73"><a href="mobility.html#cb16-73" aria-hidden="true" tabindex="-1"></a>    results[(country, <span class="st">&#39;t_work_hw&#39;</span>)] <span class="op">=</span> output_hw(out2, column<span class="op">=</span><span class="st">&#39;W&#39;</span>)</span>
+<span id="cb16-74"><a href="mobility.html#cb16-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-75"><a href="mobility.html#cb16-75" aria-hidden="true" tabindex="-1"></a>    durations_and_admins.unpersist()</span>
+<span id="cb16-76"><a href="mobility.html#cb16-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-77"><a href="mobility.html#cb16-77" aria-hidden="true" tabindex="-1"></a><span class="co"># save all countries results in a single .csv file</span></span>
+<span id="cb16-78"><a href="mobility.html#cb16-78" aria-hidden="true" tabindex="-1"></a>res2 <span class="op">=</span> pd.DataFrame(columns<span class="op">=</span>[<span class="st">&#39;state&#39;</span>, <span class="st">&#39;measure&#39;</span>,</span>
+<span id="cb16-79"><a href="mobility.html#cb16-79" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&#39;wealth_label_home&#39;</span>, <span class="st">&#39;date&#39;</span>, <span class="st">&#39;mean&#39;</span>, <span class="st">&#39;sem&#39;</span>])</span>
+<span id="cb16-80"><a href="mobility.html#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, res <span class="kw">in</span> results.items():</span>
+<span id="cb16-81"><a href="mobility.html#cb16-81" aria-hidden="true" tabindex="-1"></a>    res_tmp <span class="op">=</span> res.reset_index().copy()</span>
+<span id="cb16-82"><a href="mobility.html#cb16-82" aria-hidden="true" tabindex="-1"></a>    res_tmp[<span class="st">&#39;state&#39;</span>], res_tmp[<span class="st">&#39;measure&#39;</span>] <span class="op">=</span> key</span>
+<span id="cb16-83"><a href="mobility.html#cb16-83" aria-hidden="true" tabindex="-1"></a>    res2 <span class="op">=</span> res2.append(res_tmp, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-84"><a href="mobility.html#cb16-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-85"><a href="mobility.html#cb16-85" aria-hidden="true" tabindex="-1"></a>res2.to_csv(results_dir<span class="op">+</span><span class="st">&#39;all_hw_weighted.csv&#39;</span>)</span></code></pre></div>
+</div>
+<div id="measuring-change" class="section level3" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Measuring change</h3>
+<p>It is of particular interest, due to the dramatic societal impact the pandemic had at a global scale, to study these quantities in relation to the pre-pandemic periods. A comparison bethween individuals mobility behaviour from the months preceding the explosive diffusion of the SARS-ncov virus represent an important indicator of how much each socio-economic group was affected by the local regulations and how individuals were forced to reshape their daily mobility patterns in response to the pandemic threat. To this extent, we implemented a change metric which directly compare the levels of the metrics discussed in terms of the period going from the beginning of January 2020 and March 15, 2020. Change is computed on a daily basis, comparing the level of a specific date with the day-of-the-week median value of the same metric. This accounts for weekly periodical effects, accounting, for example, for the physiological reduction in the number of commuters during weekends.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="mobility.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> google_change_metric(df_original, start_baseline, end_baseline,other_groups<span class="op">=</span>[]):</span>
+<span id="cb17-2"><a href="mobility.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">&#39;&#39;&#39;</span></span>
+<span id="cb17-3"><a href="mobility.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">  INPUT:  dataframe with (at least) 2 columns named &quot;mean&quot; and &quot;sem&quot;</span></span>
+<span id="cb17-4"><a href="mobility.html#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">  OUTPUT: dataframe with the values of the two columns converted to google change metric</span></span>
+<span id="cb17-5"><a href="mobility.html#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">  </span><span class="al">NOTE</span><span class="co">: Google uses as baseline period the 5-weeks period from Jan 3 to Feb 6</span></span>
+<span id="cb17-6"><a href="mobility.html#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">  &#39;&#39;&#39;</span></span>
+<span id="cb17-7"><a href="mobility.html#cb17-7" aria-hidden="true" tabindex="-1"></a>  df <span class="op">=</span> df_original.copy()</span>
+<span id="cb17-8"><a href="mobility.html#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="mobility.html#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute weekday baseline values</span></span>
+<span id="cb17-10"><a href="mobility.html#cb17-10" aria-hidden="true" tabindex="-1"></a>  baseline <span class="op">=</span> df.loc[start_baseline:end_baseline,[<span class="st">&#39;mean&#39;</span>,<span class="st">&#39;sem&#39;</span>]<span class="op">+</span>other_groups].copy()</span>
+<span id="cb17-11"><a href="mobility.html#cb17-11" aria-hidden="true" tabindex="-1"></a>  baseline[<span class="st">&#39;weekday&#39;</span>] <span class="op">=</span> <span class="bu">list</span>(baseline.index.dayofweek.values)</span>
+<span id="cb17-12"><a href="mobility.html#cb17-12" aria-hidden="true" tabindex="-1"></a>  baseline <span class="op">=</span> baseline.groupby([<span class="st">&#39;weekday&#39;</span>]<span class="op">+</span>other_groups,dropna<span class="op">=</span><span class="va">False</span>,as_index<span class="op">=</span><span class="va">False</span>).mean()</span>
+<span id="cb17-13"><a href="mobility.html#cb17-13" aria-hidden="true" tabindex="-1"></a>  df[<span class="st">&#39;weekday&#39;</span>] <span class="op">=</span> <span class="bu">list</span>(df.index.dayofweek.values)</span>
+<span id="cb17-14"><a href="mobility.html#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="mobility.html#cb17-15" aria-hidden="true" tabindex="-1"></a>  date <span class="op">=</span> df.index.copy()</span>
+<span id="cb17-16"><a href="mobility.html#cb17-16" aria-hidden="true" tabindex="-1"></a>  df <span class="op">=</span> df.merge(baseline, on<span class="op">=</span>[<span class="st">&#39;weekday&#39;</span>]<span class="op">+</span>other_groups, how<span class="op">=</span><span class="st">&#39;left&#39;</span>, <span class="op">=</span>(<span class="st">&#39;&#39;</span>, <span class="st">&#39;_baseline&#39;</span>))</span>
+<span id="cb17-17"><a href="mobility.html#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="mobility.html#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute &quot;mean&quot; change with respect to weekday baseline values</span></span>
+<span id="cb17-19"><a href="mobility.html#cb17-19" aria-hidden="true" tabindex="-1"></a>  df[<span class="st">&#39;mean&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;mean&#39;</span>]<span class="op">-</span> df[<span class="st">&#39;mean_baseline&#39;</span>]) <span class="op">/</span> np.<span class="bu">abs</span>(df[<span class="st">&#39;mean_baseline&#39;</span>])</span>
+<span id="cb17-20"><a href="mobility.html#cb17-20" aria-hidden="true" tabindex="-1"></a>  df[<span class="st">&#39;sem&#39;</span>] <span class="op">=</span> np.<span class="bu">abs</span>(df[<span class="st">&#39;sem&#39;</span>]<span class="op">/</span>df[<span class="st">&#39;mean_baseline&#39;</span>])</span>
+<span id="cb17-21"><a href="mobility.html#cb17-21" aria-hidden="true" tabindex="-1"></a>  df.index <span class="op">=</span> date</span>
+<span id="cb17-22"><a href="mobility.html#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="mobility.html#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return input dataframe with &quot;mean&quot; and &quot;sem&quot; column now expressing the relative change and its error</span></span>
+<span id="cb17-24"><a href="mobility.html#cb17-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df.drop([<span class="st">&#39;weekday&#39;</span>,<span class="st">&#39;mean_baseline&#39;</span>],axis<span class="op">=</span><span class="dv">1</span>,errors<span class="op">=</span><span class="st">&#39;ignore&#39;</span>)</span></code></pre></div>
+</div>
+<div id="home-isolated-commuters-and-low-wealth-commuters" class="section level3" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> Home-isolated, commuters and low-wealth commuters</h3>
+<p>In this section we present a summary of the results for three different metrics computed for six different countries. Countries are selected among middle-low income countries to include at least one state on three different continents: America, Asia and Africa. Similar pattern changes are found between socio-economics groups across the globe.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:mobility-fig"></span>
+<img src="big-daa_files/figure-html/mobility-fig-1.png" alt="Results for six different countries (rows): Brazil, Colombia, Indonesia, Mexico, Philippines, and South Africa. Measuring (columns): relative change in the fraction of people not leaving home, relative change of the number of people commuting from home to workplace, relative change of individuals from living in low-wealth admin units. The three coloured lines distinguishes the metric changes for the three different socio-economic groups." width="80%" />
+<p class="caption">
+Figure 7.1: Results for six different countries (rows): Brazil, Colombia, Indonesia, Mexico, Philippines, and South Africa. Measuring (columns): relative change in the fraction of people not leaving home, relative change of the number of people commuting from home to workplace, relative change of individuals from living in low-wealth admin units. The three coloured lines distinguishes the metric changes for the three different socio-economic groups.
+</p>
+</div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="labeling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="migration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/worldbank/SDG-big-data/06-mobility.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["big-daa.pdf", "big-daa.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

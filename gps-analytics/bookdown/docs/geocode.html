@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Geocode | GPS Analytics</title>
+  <meta name="description" content="Guided step by step analysis of income based mobility patterns from GPS data." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Geocode | GPS Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Guided step by step analysis of income based mobility patterns from GPS data." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Geocode | GPS Analytics" />
+  
+  <meta name="twitter:description" content="Guided step by step analysis of income based mobility patterns from GPS data." />
+  
+
+<meta name="author" content="Chapter 3 Geocode | GPS Analytics Group" />
+
+
+<meta name="date" content="2021-08-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data.html"/>
+<link rel="next" href="stops.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">GPS Mobility Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#gps-data"><i class="fa fa-check"></i><b>2.1</b> GPS Data</a></li>
+<li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#wealth-index-data"><i class="fa fa-check"></i><b>2.2</b> Wealth Index Data</a></li>
+<li class="chapter" data-level="2.3" data-path="data.html"><a href="data.html#administrative-boundaries-data"><i class="fa fa-check"></i><b>2.3</b> Administrative Boundaries Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="geocode.html"><a href="geocode.html"><i class="fa fa-check"></i><b>3</b> Geocode</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="geocode.html"><a href="geocode.html#efficient-spatial-joining-and-geospatial-indexing"><i class="fa fa-check"></i><b>3.1</b> Efficient spatial joining and Geospatial Indexing</a></li>
+<li class="chapter" data-level="3.2" data-path="geocode.html"><a href="geocode.html#todo-put-an-image-or-create-one"><i class="fa fa-check"></i><b>3.2</b> TODO: put an image or create one</a></li>
+<li class="chapter" data-level="3.3" data-path="geocode.html"><a href="geocode.html#code"><i class="fa fa-check"></i><b>3.3</b> Code</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="geocode.html"><a href="geocode.html#loading-administrative-units"><i class="fa fa-check"></i><b>3.3.1</b> Loading administrative units</a></li>
+<li class="chapter" data-level="3.3.2" data-path="geocode.html"><a href="geocode.html#loading-ping-data-and-h3-indexing"><i class="fa fa-check"></i><b>3.3.2</b> Loading ping data and h3 indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="geocode.html"><a href="geocode.html#initial-coarse-geo-spatial-join-with-shapefiles"><i class="fa fa-check"></i><b>3.4</b> Initial coarse geo-spatial join with shapefiles</a></li>
+<li class="chapter" data-level="3.5" data-path="geocode.html"><a href="geocode.html#final-exact-join-with-a-subset-of-the-shapefiles"><i class="fa fa-check"></i><b>3.5</b> Final exact join with a subset of the shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="stops.html"><a href="stops.html"><i class="fa fa-check"></i><b>4</b> Finding Stops</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="stops.html"><a href="stops.html#definition"><i class="fa fa-check"></i><b>4.1</b> Definition</a></li>
+<li class="chapter" data-level="4.2" data-path="stops.html"><a href="stops.html#infostop"><i class="fa fa-check"></i><b>4.2</b> Infostop</a></li>
+<li class="chapter" data-level="4.3" data-path="stops.html"><a href="stops.html#code-1"><i class="fa fa-check"></i><b>4.3</b> Code</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="stops.html"><a href="stops.html#data-preparation"><i class="fa fa-check"></i><b>4.3.1</b> Data preparation</a></li>
+<li class="chapter" data-level="4.3.2" data-path="stops.html"><a href="stops.html#get-stop-locations"><i class="fa fa-check"></i><b>4.3.2</b> Get stop locations</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="stops.html"><a href="stops.html#clustering-recurrent-stops"><i class="fa fa-check"></i><b>4.4</b> Clustering recurrent stops</a></li>
+<li class="chapter" data-level="4.5" data-path="stops.html"><a href="stops.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>4.5</b> Appending pings from recent dates</a></li>
+<li class="chapter" data-level="4.6" data-path="stops.html"><a href="stops.html#stops-geocoding"><i class="fa fa-check"></i><b>4.6</b> Stops geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html"><i class="fa fa-check"></i><b>5</b> Defining Home and Work Locations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html#seasonal-patterns"><i class="fa fa-check"></i><b>5.1</b> Seasonal patterns</a></li>
+<li class="chapter" data-level="5.2" data-path="defining-home-and-work-locations.html"><a href="defining-home-and-work-locations.html#code-2"><i class="fa fa-check"></i><b>5.2</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="6" data-path="migration.html"><a href="migration.html"><i class="fa fa-check"></i><b>6</b> Migration Patterns</a></li>
+<li class="chapter" data-level="7" data-path="optimization.html"><a href="optimization.html"><i class="fa fa-check"></i><b>7</b> Parameter Optimization</a></li>
+<li class="chapter" data-level="8" data-path="index.html"><a href="index.html#index"><i class="fa fa-check"></i><b>8</b> Wealth Index</a></li>
+<li class="chapter" data-level="9" data-path="voronoi.html"><a href="voronoi.html"><i class="fa fa-check"></i><b>9</b> Voronoi</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GPS Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="geocode" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Geocode</h1>
+<p>As a first step in our pipeline we want to associate to each GPS data point (ping) the smallest administrative unit available
+in our shapefiles for one country. This will allow us to join the gps data with the census
+and the stringency index are indices based on the same shapefiles, and to group by larger administrative units (such
+as city or region for more general analysis. We will refer to the process of associating a ping to a shape in the county’s
+shapefile as geocoding.
+The data we are utilizing was provided by Veraset. If a user has installed one of the Veraset’s
+partners’ apps on his or her mobile phone, the users’ position and postion’s accuracy is sent to the Veraset server where
+it is recorded at regular intervals.</p>
+<div id="efficient-spatial-joining-and-geospatial-indexing" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Efficient spatial joining and Geospatial Indexing</h2>
+<p>To be able to deal with billions of points, we need an efficient way to perform spatial queries. Since it is not feasible
+to join directly thousands of shapes with the billions of points, for computational reasons, we need an efficient way to reduce the
+computational cost by checking only few shapes that are in the surroundings of the point we want to join.
+As geo-spatial index we use the <a href="https://eng.uber.com/h3/">H3</a> indexing created by Uber
+which partitions the World in hexagons (and some pentagons in the ocean) at different sizes.</p>
+<p>Since the shape-files cannot be exactly tasseled by hexagons of a size that is reasonable for a quick spatial join, we
+run the risk of mis-join pings that end up close to the border: since the hexagon tesselation is fixed, we might end up
+with points close to the borders that belongs to the hexagon of a wrong adjacent shape.</p>
+</div>
+<div id="todo-put-an-image-or-create-one" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> TODO: put an image or create one</h2>
+<p>To overcome this problem we perform two joins: the first one will use a geospatial index, and will get the shapes that are close enough to
+the points we want to geocode, after buffering the shapes to be sure that any hexagon that is around the border of a shape
+is included in the join. The second join will be only between these subsets of shapes selected and the actual point. This greatly
+reduces the computational cost and makes this problem tractable.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:nice-fig"></span>
+<img src="gps-mobility_files/figure-html/nice-fig-1.png" alt="H3 indexing representation. Figure taken from the H3 website referenced above." width="80%" />
+<p class="caption">
+Figure 3.1: H3 indexing representation. Figure taken from the H3 website referenced above.
+</p>
+</div>
+</div>
+<div id="code" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Code</h2>
+<div id="loading-administrative-units" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Loading administrative units</h3>
+<p>We first load the administrative files containing the polygons and the wealth index information, then, using <em>Apache Sedona</em> (previously named GeoSpark) we
+can transform the Well-Known Text representation of the polygons (WKT) into geometries and create a buffer around them.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb1-1"><a href="geocode.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> admin <span class="op">=</span> spark<span class="op">.</span>read<span class="op">.</span><span class="fu">option</span><span class="op">(</span><span class="st">&quot;header&quot;</span><span class="op">,</span><span class="st">&quot;true&quot;</span><span class="op">).</span><span class="fu">csv</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;admin_path&quot;</span><span class="op">)</span> <span class="op">+</span> <span class="st">&quot;/&quot;</span> <span class="op">+</span> <span class="fu">c</span><span class="op">(</span><span class="st">&quot;country&quot;</span><span class="op">)</span> <span class="op">+</span> <span class="st">&quot;/admin.csv&quot;</span><span class="op">)</span></span>
+<span id="cb1-2"><a href="geocode.html#cb1-2" aria-hidden="true" tabindex="-1"></a>admin<span class="op">.</span><span class="fu">createOrReplaceTempView</span><span class="op">(</span><span class="st">&quot;admin&quot;</span><span class="op">)</span></span>
+<span id="cb1-3"><a href="geocode.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="geocode.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="geocode.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> query <span class="op">=</span> <span class="st">&quot;SELECT geom_id AS geom_id, ST_GeomFromText(geometry) as polygon FROM admin&quot;</span></span>
+<span id="cb1-6"><a href="geocode.html#cb1-6" aria-hidden="true" tabindex="-1"></a>admin <span class="op">=</span> spark<span class="op">.</span><span class="fu">sql</span><span class="op">(</span>query<span class="op">)</span></span>
+<span id="cb1-7"><a href="geocode.html#cb1-7" aria-hidden="true" tabindex="-1"></a>admin<span class="op">.</span><span class="fu">createOrReplaceTempView</span><span class="op">(</span><span class="st">&quot;admin_with_polygons&quot;</span><span class="op">)</span></span>
+<span id="cb1-8"><a href="geocode.html#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="geocode.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="geocode.html#cb1-10" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;SELECT *, ST_Buffer(polygon, 0.005) as polygon_buff FROM admin_with_polygons&quot;</span></span>
+<span id="cb1-11"><a href="geocode.html#cb1-11" aria-hidden="true" tabindex="-1"></a>admin <span class="op">=</span> spark<span class="op">.</span><span class="fu">sql</span><span class="op">(</span>query<span class="op">)</span></span></code></pre></div>
+</div>
+<div id="loading-ping-data-and-h3-indexing" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Loading ping data and h3 indexing</h3>
+<p>We will also be needing the ping data from <em>Veraset</em>. In our case we’ll load them from the following table depending on the country.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="geocode.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> table <span class="op">=</span> <span class="ss">s&quot;</span><span class="st">pings.</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;source&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">_</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;country&quot;</span><span class="op">)</span><span class="ss">}&quot;</span></span></code></pre></div>
+<p>Then we’re able to proceed indexing the pings and the buffered geometries.
+In order to do this we only take those pings that have correct longitude and latitude
+values and threshold the accuracy (provided in the data) of the GPS point location. That last part is a confidence
+estimate of the real location of the device, we can usually see this in our phone when using a geolocation app which
+gives you information such as “accuracy &lt; 3m” which means that the actual position could be anywhere in a 3m radius circle with
+center at the position given.</p>
+<p>When reading the pings, we first filter the ones having wrong coordinates or an accuracy &gt; than 1km, and add to the spark
+table a column containing the county’s offset (if a country has only one timezone), since we want to compare different
+countries for the same time of the days, we will use this offset to align all the timestamps. We then index each buffered
+admin shape and ping using h3.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb3-1"><a href="geocode.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> pings <span class="op">=</span> spark<span class="op">.</span><span class="fu">sql</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">SELECT lat, lon, accuracy, timestamp AS time, device_id AS user_id FROM </span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;input_table&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st"> WHERE country = &#39;</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;country&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">&#39;</span><span class="ss">&quot;</span><span class="op">)</span></span>
+<span id="cb3-2"><a href="geocode.html#cb3-2" aria-hidden="true" tabindex="-1"></a>pings<span class="op">.</span><span class="fu">filter</span><span class="op">(</span>$<span class="st">&quot;lat&quot;</span> <span class="op">&gt;</span> <span class="op">-</span><span class="dv">90</span> <span class="op">&amp;&amp;</span> $<span class="st">&quot;lat&quot;</span> <span class="op">&lt;</span> <span class="dv">90</span> <span class="op">&amp;&amp;</span> $<span class="st">&quot;lon&quot;</span> <span class="op">&gt;</span> <span class="op">-</span><span class="dv">180</span> <span class="op">&amp;&amp;</span> $<span class="st">&quot;lon&quot;</span> <span class="op">&lt;</span> <span class="dv">180</span> <span class="op">&amp;&amp;</span> $<span class="st">&quot;accuracy&quot;</span> <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> $<span class="st">&quot;accuracy&quot;</span> <span class="op">&lt;=</span> <span class="dv">1000</span><span class="op">)</span></span>
+<span id="cb3-3"><a href="geocode.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;country&quot;</span><span class="op">)</span> <span class="op">==</span> <span class="st">&quot;CO&quot;</span><span class="op">){</span></span>
+<span id="cb3-4"><a href="geocode.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  pings <span class="op">=</span> pings<span class="op">.</span><span class="fu">withColumn</span><span class="op">(</span><span class="st">&quot;offset&quot;</span><span class="op">,</span> <span class="fu">lit</span><span class="op">(-</span><span class="dv">5</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="dv">60</span><span class="op">))</span> <span class="co">//colombia offset</span></span>
+<span id="cb3-5"><a href="geocode.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  pings<span class="op">.</span><span class="fu">printSchema</span><span class="op">()</span></span>
+<span id="cb3-6"><a href="geocode.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-7"><a href="geocode.html#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="geocode.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> res <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb3-9"><a href="geocode.html#cb3-9" aria-hidden="true" tabindex="-1"></a>pings <span class="op">=</span> pings<span class="op">.</span><span class="fu">withColumn</span><span class="op">(</span><span class="st">&quot;time&quot;</span><span class="op">,</span> <span class="fu">col</span><span class="op">(</span><span class="st">&quot;time&quot;</span><span class="op">)</span> <span class="op">+</span> <span class="fu">col</span><span class="op">(</span><span class="st">&quot;offset&quot;</span><span class="op">)).</span><span class="fu">withColumn</span><span class="op">(</span><span class="st">&quot;h3index&quot;</span><span class="op">,</span> <span class="fu">geoToH3</span><span class="op">(</span><span class="fu">col</span><span class="op">(</span><span class="st">&quot;lat&quot;</span><span class="op">),</span> <span class="fu">col</span><span class="op">(</span><span class="st">&quot;lon&quot;</span><span class="op">),</span> <span class="fu">lit</span><span class="op">(</span>res<span class="op">)))</span></span>
+<span id="cb3-10"><a href="geocode.html#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="geocode.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> adminH3 <span class="op">=</span> admin<span class="op">.</span><span class="fu">withColumn</span><span class="op">(</span><span class="st">&quot;h3index&quot;</span><span class="op">,</span> <span class="fu">multiPolygonToH3</span><span class="op">(</span><span class="fu">col</span><span class="op">(</span><span class="st">&quot;polygon_buff&quot;</span><span class="op">),</span> <span class="fu">lit</span><span class="op">(</span>res<span class="op">))).</span><span class="fu">select</span><span class="op">(</span><span class="st">&quot;geom_id&quot;</span><span class="op">,</span> <span class="st">&quot;h3index&quot;</span><span class="op">).</span><span class="fu">withColumn</span><span class="op">(</span><span class="st">&quot;h3index&quot;</span><span class="op">,</span> <span class="fu">explode</span><span class="op">(</span>$<span class="st">&quot;h3index&quot;</span><span class="op">))</span></span>
+<span id="cb3-12"><a href="geocode.html#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="geocode.html#cb3-13" aria-hidden="true" tabindex="-1"></a>pings<span class="op">.</span><span class="fu">createOrReplaceTempView</span><span class="op">(</span><span class="st">&quot;pingsH3&quot;</span><span class="op">)</span></span>
+<span id="cb3-14"><a href="geocode.html#cb3-14" aria-hidden="true" tabindex="-1"></a>adminH3<span class="op">.</span><span class="fu">createOrReplaceTempView</span><span class="op">(</span><span class="st">&quot;adminH3&quot;</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div id="initial-coarse-geo-spatial-join-with-shapefiles" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Initial coarse geo-spatial join with shapefiles</h2>
+<p>We then perform the first approximated spatial join using the spatial index and write it on an intermediate table</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb4-1"><a href="geocode.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> query <span class="op">=</span> <span class="st">&quot;&quot;&quot;SELECT p.time</span></span>
+<span id="cb4-2"><a href="geocode.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">                    , p.user_id</span></span>
+<span id="cb4-3"><a href="geocode.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">                    , p.lat</span></span>
+<span id="cb4-4"><a href="geocode.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">                    , p.lon</span></span>
+<span id="cb4-5"><a href="geocode.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">                    , p.accuracy</span></span>
+<span id="cb4-6"><a href="geocode.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">                    , s.geom_id</span></span>
+<span id="cb4-7"><a href="geocode.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">                FROM pingsH3 AS p</span></span>
+<span id="cb4-8"><a href="geocode.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">                INNER JOIN adminH3 AS s</span></span>
+<span id="cb4-9"><a href="geocode.html#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">                ON (p.h3index = s.h3index)&quot;&quot;&quot;</span></span>
+<span id="cb4-10"><a href="geocode.html#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="geocode.html#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> pings_geocoded <span class="op">=</span> spark<span class="op">.</span><span class="fu">sql</span><span class="op">(</span>query<span class="op">)</span></span>
+<span id="cb4-12"><a href="geocode.html#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="geocode.html#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> out_table_temp <span class="op">=</span> <span class="ss">s&quot;</span><span class="st">pings.</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;source&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">_</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;country&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">_geocoded_temp</span><span class="ss">&quot;</span></span>
+<span id="cb4-14"><a href="geocode.html#cb4-14" aria-hidden="true" tabindex="-1"></a>pings_geocoded<span class="op">.</span>write<span class="op">.</span><span class="fu">format</span><span class="op">(</span><span class="st">&quot;delta&quot;</span><span class="op">).</span><span class="fu">mode</span><span class="op">(</span><span class="st">&quot;overwrite&quot;</span><span class="op">).</span><span class="fu">saveAsTable</span><span class="op">(</span>out_table_temp<span class="op">)</span></span></code></pre></div>
+</div>
+<div id="final-exact-join-with-a-subset-of-the-shapefiles" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Final exact join with a subset of the shapefiles</h2>
+<p>Finally perform the accurate spatial join on the reduced subset of shapes and pings without the spatial index and save it.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb5-1"><a href="geocode.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> out_table_temp <span class="op">=</span> <span class="ss">s&quot;</span><span class="st">pings.</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;source&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">_</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;country&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">_geocoded_temp</span><span class="ss">&quot;</span></span>
+<span id="cb5-2"><a href="geocode.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="geocode.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> admin <span class="op">=</span> spark<span class="op">.</span><span class="fu">sql</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">select geom_id, polygon from admin_with_polygon</span><span class="ss">&quot;</span><span class="op">)</span></span>
+<span id="cb5-4"><a href="geocode.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> pings_geo <span class="op">=</span> spark<span class="op">.</span>read<span class="op">.</span><span class="fu">table</span><span class="op">(</span>out_table_temp<span class="op">)</span></span>
+<span id="cb5-5"><a href="geocode.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> pings_geo_pol <span class="op">=</span> pings_geo<span class="op">.</span><span class="fu">join</span><span class="op">(</span><span class="fu">broadcast</span><span class="op">(</span>admin<span class="op">),</span> on<span class="op">=</span><span class="er">&#39;</span>geom_id<span class="er">&#39;</span><span class="op">)</span></span>
+<span id="cb5-6"><a href="geocode.html#cb5-6" aria-hidden="true" tabindex="-1"></a>pings_geo_pol<span class="op">.</span><span class="fu">createOrReplaceTempView</span><span class="op">(</span><span class="st">&quot;pings_geo&quot;</span><span class="op">)</span></span>
+<span id="cb5-7"><a href="geocode.html#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="geocode.html#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> query <span class="op">=</span> <span class="st">&quot;SELECT *, ST_Point(cast(lon as Decimal(13,10)), cast(lat as Decimal(13,10))) as point FROM pings_geo&quot;</span></span>
+<span id="cb5-9"><a href="geocode.html#cb5-9" aria-hidden="true" tabindex="-1"></a>pings_geo_pol <span class="op">=</span> spark<span class="op">.</span><span class="fu">sql</span><span class="op">(</span>query<span class="op">)</span></span>
+<span id="cb5-10"><a href="geocode.html#cb5-10" aria-hidden="true" tabindex="-1"></a>pings_geo_pol<span class="op">.</span><span class="fu">createOrReplaceTempView</span><span class="op">(</span><span class="st">&quot;pings_geo&quot;</span><span class="op">)</span></span>
+<span id="cb5-11"><a href="geocode.html#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="geocode.html#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> query <span class="op">=</span> <span class="st">&quot;SELECT * FROM pings_geo WHERE ST_Intersects(point, polygon)&quot;</span></span>
+<span id="cb5-13"><a href="geocode.html#cb5-13" aria-hidden="true" tabindex="-1"></a>pings_geo_pol <span class="op">=</span> spark<span class="op">.</span><span class="fu">sql</span><span class="op">(</span>query<span class="op">).</span><span class="fu">drop</span><span class="op">(</span><span class="st">&quot;polygon&quot;</span><span class="op">,</span> <span class="st">&quot;point&quot;</span><span class="op">,</span> <span class="st">&quot;valid&quot;</span><span class="op">)</span></span>
+<span id="cb5-14"><a href="geocode.html#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="geocode.html#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> out_table_temp <span class="op">=</span> <span class="ss">s&quot;</span><span class="st">pings.</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;source&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">_</span><span class="ss">${</span><span class="fu">c</span><span class="op">(</span><span class="st">&quot;country&quot;</span><span class="op">)</span><span class="ss">}</span><span class="st">_geocoded</span><span class="ss">&quot;</span></span>
+<span id="cb5-16"><a href="geocode.html#cb5-16" aria-hidden="true" tabindex="-1"></a>pings_geo_pol<span class="op">.</span>write<span class="op">.</span><span class="fu">format</span><span class="op">(</span><span class="st">&quot;delta&quot;</span><span class="op">).</span><span class="fu">mode</span><span class="op">(</span><span class="st">&quot;overwrite&quot;</span><span class="op">).</span><span class="fu">saveAsTable</span><span class="op">(</span>out_table<span class="op">)</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="stops.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/worldbank/SDG-big-data/tree/GPS-analytics/02-geocode.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["gps-mobility.pdf", "gps-mobility.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
