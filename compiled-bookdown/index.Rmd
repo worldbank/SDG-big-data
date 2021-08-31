@@ -35,7 +35,14 @@ knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/mobility-cou
 
 Online social networks, such as Twitter, play a key role in the diffusion of information on jobs. For instance, companies and job aggregators post job offers while users disclose their labor market situation seeking emotional support or new job opportunities through their online network. In this context, Twitter data can be seen as a complementary data source to official statistics as it provides timely information about labor market trends.
 
-In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. The methodology is presented in this [IC2S2 2020 presentation](https://www.youtube.com/watch?v=ZxFrtUW2dYA) and detailed in Tonneau et al. (2021) (in review). Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends. 
+In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. The methodology is presented in this [IC2S2 2020 presentation](https://www.youtube.com/watch?v=ZxFrtUW2dYA) and detailed in Tonneau et al. (2021) (in review). Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends.
+
+The indicators resulting from this study can be found below, for the US, Brazil and Mexico. The x-axis corresponds to the share of Twitter users we inferred in a given month to:
+- have found a job
+- be unemployed
+- have shared a job offer
+- be looking for a job
+- have lost their job
 
 ```{r echo=FALSE}
 knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-country.html", height = "750px")
