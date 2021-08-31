@@ -10,5 +10,6 @@ In this book, we present the following:
 - building a training set allowing to recognize disclosures on personal job situation in tweets
 - finetuning and evaluating a BERT-based classifier
 - improving a classifier's performance through active learning
+- building unemployment indicators using the classifier's output
 
 

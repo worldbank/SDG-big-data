@@ -4,7 +4,7 @@
 
 After reaching good classification performance in detecting disclosures about personal labor market situations, we now need to aggregate this individual information to build timely unemployment indicators from Twitter data.
 
-The first step is to agree on a classification threshold to determine which tweets are positives and negatives. To choose this threshold, we rely on the labelled tweets sampled along the confidence score distribution, as described in the previous part.
+The first step is to agree on a classification threshold to determine which tweets are positives and negatives. To choose this threshold, we rely on the labelled tweets sampled along the confidence score distribution, as described in the previous part. To define the cutoff, we identify the two points in the rank distribution between which the share of positives goes from over 0.5 to below 0.5. We take the average together the confidence scores at these two points and consider the result as our cutoff.
 
 Once the cutoff is defined, for a given class, we can isolate tweets considered as positives, that is with a confidence score above the cutoff score previously defined. Using this information, we can then determine the number of users with positive tweets for a given month and year, location, gender, etc... After storing the confidence scores for each tweet in the dataframe `tweet_scores` and for a given class `class_` and `cutoff`:
 
