@@ -3,7 +3,7 @@
 
 Online social networks, such as Twitter, play a key role in the diffusion of information on jobs. For instance, companies and job aggregators post job offers while users disclose their labor market situation seeking emotional support or new job opportunities through their online network. In this context, Twitter data can be seen as a complementary data source to official statistics as it provides timely information about labor market trends.
 
-In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. The methodology is presented in this [IC2S2 2020 presentation](https://www.youtube.com/watch?v=ZxFrtUW2dYA) and detailed in Tonneau et al. (2021) **(add link)**. Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends. **(add reference if existing)**
+In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. The methodology is presented in this [IC2S2 2020 presentation](https://www.youtube.com/watch?v=ZxFrtUW2dYA) and detailed in Tonneau et al. (2021) (in review). Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends. 
 
 
 In this folder, we provide resources to reproduce our methodology, in order to identify disclosures of labor market situations on the one hand, as well as build labor market indexes using this individual information on the other hand. The structure of the folder is as follows:
@@ -24,4 +24,4 @@ Additionally, we provide [a basic example](https://github.com/worldbank/TwitterE
 
 Devlin, Jacob, et al. "Bert: Pre-training of deep bidirectional transformers for language understanding." arXiv preprint arXiv:1810.04805 (2018).
 
-Tonneau, Manuel, et al. "BERT is Looking for a Job: Identifying Unemployment on Twitter using BERT and Active Learning" (in submission)
+Tonneau, Manuel, et al. "BERT is Looking for a Job: Identifying Unemployment on Twitter using BERT and Active Learning" (in review)
