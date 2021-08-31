@@ -58,6 +58,6 @@ replace iso2 = "US" if country=="United States"
 compress
 d
 
-save "..\indicator\sentiment_country.dta", replace
+save "..\indicators\sentiment_country.dta", replace
 
 cap log close
