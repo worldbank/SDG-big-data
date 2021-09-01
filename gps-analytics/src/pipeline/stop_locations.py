@@ -3,6 +3,26 @@ import pandas as pd
 import pyspark.sql.functions as F
 from pyspark.sql.functions import col
 from pyspark.sql.types import *
+import argparse
+
+parser = argparse.ArgumentParser(description='Pipeline arguments')
+parser.add_argument('--country', type=str)
+parser.add_argument('--stop_locations_dir', type=str)
+parser.add_argument('--radius', type=int)
+parser.add_argument('--stay_time', type=int)
+parser.add_argument('--min_pts_per_stop_location', type=int)
+parser.add_argument('--max_time_stop_location', type=int)
+parser.add_argument('--max_accuracy', type=int)
+parser.add_argument('--db_scan_radius', type=int)
+args = parser.parse_args()
+country = args.country
+stop_location_dir = args.stop_location_dir
+radius = args.radius
+stay_time = args.stay_time
+min_pts_per_stop_location = args.min_pts_per_stop_location
+max_time_stop_location = args.max_time_stop_location
+max_accuracy = args.max_accuracy
+db_scan_radius = args.db_scan_radius
 
 
 schema_df = StructType([

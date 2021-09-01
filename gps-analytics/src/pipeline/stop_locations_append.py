@@ -5,8 +5,29 @@ import os
 import pyspark.sql.functions as F
 from pyspark.sql.functions import col
 from pyspark.sql.types import *
+import argparse
 
-dates_computed = os.listdir('/dbfs'+c.stop_locations_dir[:-15])
+parser = argparse.ArgumentParser(description='Pipeline arguments')
+parser.add_argument('--country', type=str)
+parser.add_argument('--stop_locations_dir', type=str)
+parser.add_argument('--radius', type=int)
+parser.add_argument('--stay_time', type=int)
+parser.add_argument('--min_pts_per_stop_location', type=int)
+parser.add_argument('--max_time_stop_location', type=int)
+parser.add_argument('--max_accuracy', type=int)
+parser.add_argument('--db_scan_radius', type=int)
+args = parser.parse_args()
+country = args.country
+stop_location_dir = args.stop_location_dir
+radius = args.radius
+stay_time = args.stay_time
+min_pts_per_stop_location = args.min_pts_per_stop_location
+max_time_stop_location = args.max_time_stop_location
+max_accuracy = args.max_accuracy
+db_scan_radius = args.db_scan_radius
+
+
+dates_computed = os.listdir('/dbfs'+stop_locations_dir[:-15])
 dates_f = [datetime.strptime(date[4:], '%Y-%m-%d') for date in dates_computed]
 old_end_date = dates_computed[dates_f.index(max(dates_f))]
 
@@ -56,7 +77,7 @@ def make_list(start, end):
     return res
 
 
-old_file_date = os.path.join(c.stop_locations_dir, '..', old_end_date)
+old_file_date = os.path.join(stop_locations_dir, '..', old_end_date)
 current = spark.read.parquet(old_file_date)
 # Get the last date on file and go back one days
 last_date = int(datetime.timestamp(datetime.strptime(
@@ -71,13 +92,13 @@ filter_string = f"accuracy >=0 AND lat > -90 AND lat < 90 AND lon > -180 AND lon
 
 if not tz:  # add a check on TZ_OFFSET
     pings = spark.sql(
-        f"SELECT  device_id AS user_id, lat, lon, accuracy, timestamp, TZ_OFFSET_SEC FROM default.veraset_{c.country}_tz WHERE country = '{c.country}' AND {filter_string}")
+        f"SELECT  device_id AS user_id, lat, lon, accuracy, timestamp, TZ_OFFSET_SEC FROM default.veraset_{country}_tz WHERE country = '{country}' AND {filter_string}")
     pings = (pings
              .withColumn('epoch_time', col("timestamp") + col("TZ_OFFSET_SEC").cast("long"))
              .drop("TZ_OFFSET_SEC", "timestamp"))
 elif tz:
     pings = spark.sql(
-        f"SELECT  device_id AS user_id, lat, lon, accuracy, timestamp FROM default.veraset_primary_1  WHERE country = '{c.country}' AND {filter_string}")
+        f"SELECT  device_id AS user_id, lat, lon, accuracy, timestamp FROM default.veraset_primary_1  WHERE country = '{country}' AND {filter_string}")
     pings = (pings
              .withColumn('time', F.to_timestamp('timestamp'))
              .withColumn('new_time', F.from_utc_timestamp('time', tz))
