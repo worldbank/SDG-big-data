@@ -1,6 +1,6 @@
-# Migration Patterns {#migration}
+## Migration Patterns {#migration}
 
-## Description
+### Description
 A great amount of [media attention](https://www.nytimes.com/2021/05/12/opinion/New-York-San-Francisco-after-covid.html) has
 been focusing on how large cities are being empitied out by the pandemic.
 We are also interested in this behavior and used similar process as the described in the previous chapter \@ref(mobility),
@@ -17,7 +17,7 @@ city of each country:
 |Philippines|PH|Quezon City (Manila)|
 |South Africa|ZA|Johannesburg|
 
-## User selection
+### User selection
 
 Here, we restrict our sample \@ref(selection) of individuals to only active users (as defined in the previous chapter) who had a home location in the city at any given time. It's important to note that although we use the term _city_ we are using the whole extent of their metropolitan
 area.
@@ -28,7 +28,7 @@ The wealth percentiles represent the cummulative population of the administrativ
 This means that users that fall into the *Low \[0\%-40\%\]* group are the ones with their house in the areas with the
 lowest wealth index that make up to $40\%$ of the population.
 
-## Code
+### Code
 
 We select the largest city and break their wealth index in 3 bins. And define a column to discern from urban and rural places.
 The bins and labels are the same as the ones from the previous chapter \@ref(mobility).
@@ -56,7 +56,7 @@ admin_rural = read_admin(country)
 ```
 
 Then we select our user sample, which are the ones with a minimum percentage of active days ($20\%$) using the same function
-```get_active_list()``` and select the users with a home in the city.
+_get_active_list()_ and select the users with a home in the city.
 
 ```{python eval=FALSE}
 # get list of active users

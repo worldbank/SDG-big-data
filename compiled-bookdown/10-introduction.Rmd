@@ -1,6 +1,6 @@
 # (PART\*) Twitter Analytics - Labor Market{-}
 
-# Introduction - Labor Market {#labor}
+# Labor Market {#labor}
 
 ## Labor market analysis with Twitter data
 

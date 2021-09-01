@@ -3,10 +3,11 @@ fig:home-patterns
 fig:work-patterns
 fig:mobility-fig
 fig:migration-fig
+fig:groudtruthdashboard-fig
 fig:unnamed-chunk-54
 fig:unnamed-chunk-55
 fig:unnamed-chunk-56
-cover
+introduction
 gps-analytics
 labor-market-analysis-with-twitter-data
 news-analysis-with-twitter-data

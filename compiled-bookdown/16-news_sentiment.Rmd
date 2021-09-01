@@ -1,12 +1,12 @@
-# News-sentiment measures
+## News-sentiment measures
 
-## Bag-of-words model
+### Bag-of-words model
 
-Sentiment is measured using a simple dictionary approach based on [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771). To measure news sentiment, we use a `bag-of-words` model, allowing us to reduce complex and multi-dimensional text data into a single number. 
+Sentiment is measured using a simple dictionary approach based on [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771). To measure news sentiment, we use a `bag-of-words` model, allowing us to reduce complex and multi-dimensional text data into a single number.
 
-First, we combine existing lists of positive and negative words found in financial texts by [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771) and in texts related to economic policy by [Young and Soroka (2012)](https://doi.org/10.1080/10584609.2012.671234). We then expand our lists by including the inflections of each word: for example, the word `lose` belongs to the negative list, hence we also include the words `losing`, `loser`, `lost`, `loss`, etc, leading to a final list of 7,217 negative words and 3,250 positive words. 
+First, we combine existing lists of positive and negative words found in financial texts by [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771) and in texts related to economic policy by [Young and Soroka (2012)](https://doi.org/10.1080/10584609.2012.671234). We then expand our lists by including the inflections of each word: for example, the word `lose` belongs to the negative list, hence we also include the words `losing`, `loser`, `lost`, `loss`, etc, leading to a final list of 7,217 negative words and 3,250 positive words.
 
-The following table shows the most frequent tonal words inour corpus. 
+The following table shows the most frequent tonal words inour corpus.
 
 | Positive word | Fraction of positive words | Fraction of articles |  IDF  | Negative word | Fraction of negative words | Fraction of articles |  IDF  |
 |:-------------:|:--------------------------:|:--------------------:|:-----:|:-------------:|:--------------------------:|:--------------------:|:-----:|
@@ -37,22 +37,22 @@ Table: Most frequent positive (left) and negative (right) words.
 
 *Source:* Words lists come from [Loughran and Mcdonald (2011)](https://www.jstor.org/stable/29789771) and [Young and Soroka (2012)](https://doi.org/10.1080/10584609.2012.671234). News articles come from [Factiva.com](https://professional.dowjones.com/factiva/).
 
-## Country-specific news sentiment indicator
+### Country-specific news sentiment indicator
 
 Next, we define the sentiment of an article $j$ as:
 $$ s_{j} = \dfrac{\sum_{i} w_{ij} p_{ij} - \sum_{i} w_{ij} n_{ij}}{\sum_{i} w_{ij} t_{ij}} $$
-where $p_{ij}$ is the number of occurrences of positive word $i$ in article $j$, $n_{ij}$ is the number of occurrences of negative word $i$ in article $j$, $t_{ij}$ is the number of occurrences of word $i$ in article $j$, and $w_{ij}$ is the weight associated with word $i$ in article $j$. 
+where $p_{ij}$ is the number of occurrences of positive word $i$ in article $j$, $n_{ij}$ is the number of occurrences of negative word $i$ in article $j$, $t_{ij}$ is the number of occurrences of word $i$ in article $j$, and $w_{ij}$ is the weight associated with word $i$ in article $j$.
 
 In our baseline estimates, we take $w_{ij} = 1$, allowing each word to contribute to the sentiment measure proportionally to its frequency of occurrence. In a robustness check, we let each word contribute to the sentiment measure proportionally to its Term Frequency-Inverse Document Frequency (TF-IDF, [Manning et al. 2008](https://nlp.stanford.edu/IR-book/information-retrieval-book.html)) by taking:
 $$ w_{ij} = \log\left(\frac{N}{N_{i}}\right) $$
-where $N$ is the number of articles in the corpus and $N_{i}$ is the number of articles in which word $i$ is present. Hence, this weighting smoothes out differences in word frequency naturally occurring in the English language by giving more weight to words that appear more rarely across documents. It is well established that the distribution of words in the English language follows a power law. For a broader discussion on power laws in Economics, see [Gabaix 2016](https://www.aeaweb.org/articles?id=10.1257/jep.30.1.185). 
+where $N$ is the number of articles in the corpus and $N_{i}$ is the number of articles in which word $i$ is present. Hence, this weighting smoothes out differences in word frequency naturally occurring in the English language by giving more weight to words that appear more rarely across documents. It is well established that the distribution of words in the English language follows a power law. For a broader discussion on power laws in Economics, see [Gabaix 2016](https://www.aeaweb.org/articles?id=10.1257/jep.30.1.185).
 
 ```{python, eval=FALSE}
 def get_counts(idx,data=df['full_text'],tones=list(tone2keywords)):
-    
+
     # Split into words and remove non-letter characters
     tokens = re.sub("[^a-zA-Z]"," ", data.loc[idx].lower()).split()
-    
+
     # Return Words and Their Count
     counter = collections.Counter(tokens)
 
@@ -79,7 +79,7 @@ def get_counts(idx,data=df['full_text'],tones=list(tone2keywords)):
                 tf = sum(counts)/T
             else:
                 tf = counts/T
-                
+
             tfidf = np.dot(counts,idfs)/T
 
         else:
@@ -92,11 +92,11 @@ def get_counts(idx,data=df['full_text'],tones=list(tone2keywords)):
 
         values.append(tfidf)
         index.append('% '+tone+' tfidf')
-        
+
     return pd.Series(values,index=index,name=idx)
 ```
 
-To illustrate our sentiment measure, we show the example of an article in which tonal words are highlighted in bold, indicating that although our sentiment measure does not capture all of the nuances in the text, it provides a good indication of its overall tone. This article contains the tags `Argentina` and `Economic News`: 
+To illustrate our sentiment measure, we show the example of an article in which tonal words are highlighted in bold, indicating that although our sentiment measure does not capture all of the nuances in the text, it provides a good indication of its overall tone. This article contains the tags `Argentina` and `Economic News`:
 
 <div class="panel panel-info">
 
@@ -121,7 +121,7 @@ Next, we compute a daily sentiment index for each country by taking the average 
 insheet using ///
 	"..\..\replication\data\sentiments-panel-reuters-econ-fin-mkt-25-countries-1991-2019.csv" ///
 	, comma clear
-	
+
 ren v1 country
 
 gen sentiment_country = positive - negative
@@ -170,12 +170,12 @@ replace iso2 = "US" if country=="United States"
 ds sentiment*
 
 foreach vv in `r(varlist)' {
-	
+
 	bys iso2: egen _mean = mean(`vv')
 	bys iso2: egen _sd = sd(`vv')
-	
+
 	replace `vv' = (`vv' - _mean) / _sd
-	
+
 	drop _mean _sd
 }
 
@@ -187,7 +187,7 @@ save "..\indicator\sentiment_country.dta", replace
 
 ## Stylized facts
 
-The following table reports standard statistics about the cross country (raw) sentiment indices: 
+The following table reports standard statistics about the cross country (raw) sentiment indices:
 
 | Country |  Variable |    N    |   Mean  |   SD   |   Min   |   p25   |  Median |   p75  |   Max  |
 |:-------:|:---------:|:-------:|:-------:|:------:|:-------:|:-------:|:-------:|:------:|:------:|
@@ -224,9 +224,9 @@ Table: Summary statistics of the sentiment index by country.
 
 *Note: This table reports summary statistics about the (raw) daily sentiment indices for each country. Sentiment denotes our baseline measure of news sentiment. The AE and EM rows report summary statistics by country groups; the Total row reports summary statistics across all countries in our sample.*
 
-Overall, we find that the the mean and the median of news indices are negative, reflecting the fact that our dictionary of tonal words contains more negative words. We also find very little difference in the properties of the indices across advanced and emerging markets, or among emerging markets. 
+Overall, we find that the the mean and the median of news indices are negative, reflecting the fact that our dictionary of tonal words contains more negative words. We also find very little difference in the properties of the indices across advanced and emerging markets, or among emerging markets.
 
-Unsurprisingly, we also find that the news sentiment index takes values that are, on average, higher in "good" times. The latter is true whether we define good times using real variables (e.g. when GDP growth is positive) or financial (strong equity market performance). 
+Unsurprisingly, we also find that the news sentiment index takes values that are, on average, higher in "good" times. The latter is true whether we define good times using real variables (e.g. when GDP growth is positive) or financial (strong equity market performance).
 
 ```{r,echo=FALSE,out.width="60%",fig.cap="Behaviour of the news sentiment index in good vs. bad times.",fig.show='hold',fig.align='center'}
 
@@ -236,7 +236,7 @@ grid::grid.raster(img)
 ```
 *Note: This figure reports the average and median values of the (raw) sentiment index using various definitions of good and bad times. The first two columns split the sample based on periods where a country's real GDP growth has been positive (or negative). The third and fourth columns split the sample based on each country's stock market index being above or below its trend, where the trend is constructed using a two-sided HP filter with a smoothing parameter of 129,600, set using the [Ravn and Uhlig (2002)](https://doi.org/10.1162/003465302317411604) rule for monthly data. The last two categories split the sample based on whether the country's daily stock market return has been positive or negative.*
 
-To give more intuition about the index, we also report the behaviour of the news sentiment index around key economic and financial events. We first plot the daily news sentiment index around equity crisis (left) and booms (right); where we define crisis or booms as daily variations of the local equity index greater than 3 standard deviation (on either side). As expected, we find that news sentiment collapses (or improves drastically) around equity busts (booms). 
+To give more intuition about the index, we also report the behaviour of the news sentiment index around key economic and financial events. We first plot the daily news sentiment index around equity crisis (left) and booms (right); where we define crisis or booms as daily variations of the local equity index greater than 3 standard deviation (on either side). As expected, we find that news sentiment collapses (or improves drastically) around equity busts (booms).
 
 ```{r,echo=FALSE,out.width="49%",out.height="20%",fig.cap="Sentiment indices around equity crisis (left) and booms (left)",fig.show='hold',fig.align='center'}
 

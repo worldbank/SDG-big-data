@@ -1,10 +1,10 @@
-# Data {#data}
+## Data {#data}
 
 The complex task of analysing mobility data given the socioeconomic background of the user requires multiple data sources
 because we need a type of data that allow us to study individual spatio-temporal behavior, another one with demographic and
 economic information and one to serve as a bridge to the other two.
 
-## GPS Data
+### GPS Data
 Anonymous raw GPS points are provided at a global scale by the *Veraset* data company in the framework
 of the World Bank “Monitoring COVID-19 policy response through human mobility data” project.
 Veraset Movements data consists of raw GPS point information from devices all around the World.
@@ -17,7 +17,7 @@ In this work multiple countries were analysed to assess the impact of the pandem
 spectrum of potentially different behaviours.
 
 
-## Wealth Index Data
+### Wealth Index Data
 
 Aiming for universal behaviors is a hard endeavour as there are cultural and economic differences between every country.
 This is why we need an homologated number or index that can describe the level of marginalization or deprivation of goods
@@ -27,7 +27,7 @@ unit level available. Then we take all of these values and embed them in a new c
 Analysis (PCA) and take the normalized value of the first component as a proxy to wealth. This approach yields a continuous variable
 which we later discretize by quantiles.
 
-## Administrative Boundaries Data
+### Administrative Boundaries Data
 
 The country-wise geographical information is given in the form of spatial databases that represent certain areas
 with polygons made of vertices in a given cartographic projection, commonly represented by their longitude and latitude

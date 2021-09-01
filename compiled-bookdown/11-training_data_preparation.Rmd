@@ -1,6 +1,6 @@
-# Training data preparation
+## Training data preparation
 
-## Sampling
+### Sampling
 
 The first step in order to train classifiers to detect disclosures of labor market situation is to sample informative tweets and have them labelled. Owing to the very low share of tweets containing these disclosures, a random sampling would yield very few positive examples which would not allow to train a good-performing classifier. We instead decided to opt for stratified sampling, namely by defining a list of n-grams, both specific to the labor market context and frequent enough, and sampling tweets containing these n-grams.
 
@@ -19,11 +19,11 @@ for ngram in ngram_list:
 ```
 We sample 150 tweets per n-gram for each class and language. In total, we end up with approximately 5000 samples for each language. A detailed list of n-grams for each language and class can be found in Tonneau et al. (2021).
 
-## Labelling
+### Labelling
 
 After sampling informative tweets, we have them labelled by crowdworkers. We use the crowdsourcing platform Amazon Mechanical Turk. This platform has the advantage of having an international workforce speaking several languages, including Spanish and Brazilian Portuguese on top of English.
 
-### Creating a Qualtrics survey
+#### Creating a Qualtrics survey
 
 The first step was to create a survey we would then send to crowdworkers. For this, we use Qualtrics which implies having a Qualtrics API token and a datacenter ID. We build beforehand a survey template one can create manually on Qualtrics that we can then load questions from for the different labelling sessions.
 
@@ -101,7 +101,7 @@ update_question(QuestionData=QuestionData, QuestionID=QuestionID, SurveyID=Surve
 
 The entire code we used to create a Qualtrics survey using Python and the Qualtrics API is available at `src/1-training_data_preparation/qualtrics/get_training_set_to_qualtrics_API_classification.py`. After loading the questions and embedding the data into them, the survey is ready to be sent to crowdworkers.
 
-### Sharing the survey on MTurk
+#### Sharing the survey on MTurk
 To share the Qualtrics survey on MTurk, we use the Python package `boto3`. After collecting our access and secret access keys (respectively `access_key_id` and `secret_access_key`), we initiate the client:
 
 

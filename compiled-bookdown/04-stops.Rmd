@@ -1,13 +1,13 @@
-# Finding Stops {#stops}
+## Finding Stops {#stops}
 
-## Definition
+### Definition
 
 Pings recorded from the gps devices are often noisy: unless an user is perfectly still in a place, the mobile will record
 slightly different positions. As an example, if an user is at home and he moves between the different rooms of the house, we want to
 group all the pings under a single label, home, to analyze the time spent at each location.
 This would not be possible by considering individual pings. A standard procedure to
 reduce the noise is to compute stop locations, by spatially and temporally clustering the raw pings.
-## Infostop
+### Infostop
 
 In order to do this we need both the spatial and the temporal data from each ping. This
 is, how far are consecutive pings from each other in time and space. We rely on the first part of the
@@ -31,8 +31,8 @@ associate it to a stop location, with as coordinates the centroid of the points 
 the difference in time between the first point of the event and the last point of the event.
 
 Differently from infostop, we choose to use DBSCAN instead of Infomap to cluster stop locations.
-## Code
-### Data preparation
+### Code
+#### Data preparation
 
 Once we load the required data, we make sure that they meet the timezone metadata requirements and that their coordinates
 are valid geographical points.
@@ -56,7 +56,7 @@ else:
   raise Exception ("Undefined time zone in config or tz_offset in input table")
 ```
 
-### Get stop locations
+#### Get stop locations
 
 Now we have the data ready to identify stops, we only need to sort pings by their timestamp for each user.
 
@@ -144,7 +144,7 @@ def get_stop_location(df, radius, stay_time, min_pts_per_stop_location, max_time
     return df
 ```
 
-## Clustering recurrent stops
+### Clustering recurrent stops
 
 The clustering part is where our approach differs from the Infostop one, as the assign cluster labels by building a network of
 stops if they're located closer than a distance $r_2$ and then use the [Infomap](https://www.mapequation.org/assets/publications/RosvallBergstromPNAS2008Full.pdf)
@@ -168,7 +168,7 @@ sl = (sl
       .withColumn("duration", F.col("t_end") - F.col("t_start")))
 ```
 
-## Appending pings from recent dates
+### Appending pings from recent dates
 
 GPS data is passively gathered and as so it's continiously growing, this translates in the need for contiously find stops and
 assign cluster labels to them. This whole process is very computationally expensive and running it on the whole data would be
@@ -176,7 +176,7 @@ highly inefficient, this is why we keep old stops and only compute new ones, but
 the labels can change every time. Fortunately the number of stops is several order magnitudes lower than the pings as the smallest
 stop has at least two of them and we drop those that didn't make up a stop.
 
-## Stops geocoding
+### Stops geocoding
 
 Now that our data is composed by new aggregated points we replicate the indexing from \@ref(geocode) but with the stops instead
 of the pings.

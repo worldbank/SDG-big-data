@@ -12,8 +12,8 @@ github-repo: rstudio/bookdown-demo
 description: "SDG Bookdown"
 ---
 
-# (PART\*) Cover {-}
-# Cover
+# (PART\*) Introduction {-}
+# Introduction
 
 This book is comprised by three main chapters in which we detail the use of big data for mobility
 analysis using individual GPS information as well as NLP tools to build labor market indicators from Twitter data as well as understand the sentiment around news.

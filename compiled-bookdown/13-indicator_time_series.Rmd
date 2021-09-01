@@ -1,6 +1,6 @@
-# Unemployment indicators
+## Unemployment indicators
 
-## Building unemployment indicators from individual tweets
+### Building unemployment indicators from individual tweets
 
 After reaching good classification performance in detecting disclosures about personal labor market situations, we now need to aggregate this individual information to build timely unemployment indicators from Twitter data.
 

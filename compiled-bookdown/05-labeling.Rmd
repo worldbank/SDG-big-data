@@ -1,4 +1,4 @@
-# Defining Home and Work Locations {#labeling}
+## Defining Home and Work Locations {#labeling}
 
 From the census data we have socioeconomic information for every geographical region in
 each country and we used that to assign a Wealth Index value to them. A good proxy of
@@ -9,7 +9,7 @@ it falls into. Moreover we can do this for every stops' cluster. Our focus lies 
 home and the work locations as they're likely to be the places where indiviuals spend more time
 and define the largest bulk of their mobility patterns.
 
-## Seasonal patterns
+### Seasonal patterns
 ```{r home-patterns, fig.cap='Number of stops by weekday and start hour at home location', out.width='100%', fig.asp=1, fig.align='center', echo=FALSE}
 img <- png::readPNG("figures/home_patterns.png")
 grid::grid.raster(img)
@@ -24,7 +24,7 @@ As we can see from \@ref(fig:home-patterns) and \@ref(fig:work-patterns) usually
 structure so we label each stop with it's corresponding day of the week. For this reason we need to label each stop with the
 weekday value when it was created.
 
-## Code
+### Code
 ```{python eval=FALSE}
 df = df.withColumn("t_start_hour", F.hour( F.to_timestamp("t_start")))
         .withColumn("t_end_hour", F.hour( F.to_timestamp("t_end")))

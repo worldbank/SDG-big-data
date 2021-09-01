@@ -1,5 +1,5 @@
 # (PART\*) GPS Analytics {-}
-# Introduction - GPS {#gps}
+# GPS {#gps}
 
 In latest years new sources of data have been proven to be valuable assets to understand human behavior and thus
 help in the creation of public policies based on evidence. Among those lies mobile phone data which is commonly used

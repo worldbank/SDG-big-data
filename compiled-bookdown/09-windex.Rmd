@@ -1,10 +1,11 @@
-# Wealth Index {#windex}
+## (PART\*) Appendix {-}
+## Wealth Index {#windex}
 
 In order to explain how the Wealth Index was built we're going to exemplify
 the methodology used for Mexico. For the rest of the countries it was
 an analogous procedure, but the variables names are different.
 
-## Variables to estimate the Social Gap Index in Mexico
+### Variables to estimate the Social Gap Index in Mexico
 
 To estimate the “Social Gap Index” for Mexico at localidad level, we followed the methodology
 of Coneval (National Council of Social Policy Evaluation) in Mexico.
@@ -32,7 +33,7 @@ To do this, we used principal components using the following variables:
 
 Then, we estimated the variables of interest as follows:
 
-## Education
+### Education
 
 * **Percentage of illiterate population aged 15 or more**
     * p15ym_an:  Population 15-130 years old who cannot read or write
@@ -57,7 +58,7 @@ Then, we estimated the variables of interest as follows:
 
       **no_primary_educ = p15pri_in+ p15pri_co + p15ym_se + p15sec_in / p_15ymas x 100**
 
-### Health Services Access
+#### Health Services Access
 
 * **Percentage of population with no access to health services**
     * p_sinder: Total population who are not entitled to receive medical services in any public or private institution
@@ -66,7 +67,7 @@ Then, we estimated the variables of interest as follows:
     **no_access_health = psinder/pobtot x 100**
 
 
-## Household Characteristics
+### Household Characteristics
 
 * **Percentage of Households with dirt floor**
     * vph_pisodt: Households with dirt floor. It includes households for which the characteristics of the house were captured, classified as independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class
@@ -110,7 +111,7 @@ Then, we estimated the variables of interest as follows:
     **no_electricity = (vph_s_elec) /(vivpar_hab) x 100**
 
 
-## Assets Ownership
+### Assets Ownership
 
 * **Percentage of Households with no washing machine**
     * vph_lavad: Households that have washing machine. It includes households for which the characteristics of the house were captured, classified as an independent house, apartment in building, housing or room in neighborhood and housing or rooftop room and to which they did not specify housing class.

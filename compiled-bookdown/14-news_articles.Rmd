@@ -1,5 +1,5 @@
 # (PART\*) Twitter Analytics - News {-}
-# Introduction - News Analytics {#news}
+# News Analytics {#news}
 
 We take news articles focusing on a specific country and compute the sentiment associated with the article. The methodology is detailed in [Fraiberger et al. (2021)](https://doi.org/10.1016/j.jinteco.2021.103526) with an application to understanding international asset prices. 
 

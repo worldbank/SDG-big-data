@@ -1,7 +1,7 @@
-# Mobility Patterns {#mobility}
+## Mobility Patterns {#mobility}
 Individual mobility analysis represent a key ingredient to understand and timely follow changes in their behavioural patterns. In this book we relie on heavily tested and robust GPS traces preprocessing to measure and quantify individual mobility patterns.
 
-## Socio-economic groups
+### Socio-economic groups
 Particular attention is devoted to different socio-economig groups. Groups are assigned to individuals based on the administrative unit where their principal pre-pandemic home-location is detected. Three main socio-economic groups are analysed here: the 40% with lowest index value (the 0% to 40% administrative units with lowest wealth index value), the middle ones (from 40% to 80%), and the top 20% (the wealthiest 80 to 100 percentiles).
 Socio-economic groups are drawn both by considering the entire country wealth index percentiles and by considering percentiles relatively to the metropolitan area administrative units are part of.
 
@@ -39,7 +39,7 @@ def process_admin(country,admin_path):
   return admins_by_country, admins_by_metro_area, pop_metro_areas
 ```
 
-## Individual's selection {#selection}
+### Individual's selection {#selection}
 Following the preprocessing pipeline description presented in the previous sections of the book, here we introduce an additional step aiming at refinining the pool of individuals analysed. Our intent is to measure mobility patterns only for individuals whose activity level is sufficiently high to ensure a minimum level of representativeness of the data. Individuals with recods over only a small number of days cannot be considered as a complete and correct representation fairly proxying the mobility features of an individual.
 
 To this extent we use the duration of each individuals records, which have been computed during the pipeline run.
@@ -90,7 +90,7 @@ def get_active_list(durations, country, activity_level):
   return active_users
 ```
 
-## Measures
+### Measures
 The focus on socio-economic groups require an aggregation process which is performed for each individuals based on their home-location administrative unit. Both stop-locations and duration data processed during the pipeline run are used here.
 ```{python eval=FALSE}
 def compute_durations_and_admins(country, data_date, stop_path, activity_level=0, hw=28, ww=28, wa=900, mph=10, mpw=7):
@@ -207,7 +207,7 @@ def output(out, column):
   return durations_normalized_by_wealth_home
 ```
 
-### Measuring mobility patterns
+#### Measuring mobility patterns
 We can now go back and discuss the metrics coded so far which we selected as proxies of different aspect of individuals mobility behaviour.
 "H" (time spent at home"), "W" (time spent at work), "O" (time spent in locations which are neither home nor work) are quantities directly computed as the weighted average of the time spent in three diferent location categories, namely, the home-locations of an individuals, its work locations, and all the other locations which are neither home nor work. Additionally, we also compute the fraction of people not leaving their home-location on an entire day, "R", and the fraction of commuters going to their workplace on a specific date, "C". All these quantities are computed and aggregated following the wealth bins provided (e.g. "low-income": 0-40% wealth-index percentile,  "middle income": 40-80% wealth-index percentile,  "high-income": 80-100% wealth-index percentile). To further specialize on most fragile individuals' groups, we focus our attention on i) the "low-income" individuals and their fraction of commuters, and ii) the "low-income" individuals and thir time spent at their work places. These two quantities aims at providing in-dept insights over the working behaviour and its changes during the pandeimc.
 
@@ -301,7 +301,7 @@ for key, res in results.items():
 res2.to_csv(results_dir+'all_hw_weighted.csv')
 ```
 
-### Measuring change
+#### Measuring change
 It is of particular interest, due to the dramatic societal impact the pandemic had at a global scale, to study these quantities in relation to the pre-pandemic periods. A comparison bethween individuals mobility behaviour from the months preceding the explosive diffusion of the SARS-ncov virus represent an important indicator of how much each socio-economic group was affected by the local regulations and how individuals were forced to reshape their daily mobility patterns in response to the pandemic threat. To this extent, we implemented a change metric which directly compare the levels of the metrics discussed in terms of the period going from the beginning of January 2020 and March 15, 2020. Change is computed on a daily basis, comparing the level of a specific date with the day-of-the-week median value of the same metric. This accounts for weekly periodical effects, accounting, for example, for the physiological reduction in the number of commuters during weekends.
 
 
@@ -333,7 +333,7 @@ def google_change_metric(df_original, start_baseline, end_baseline,other_groups=
 ```
 
 
-### Home-isolated, commuters and low-wealth commuters
+#### Home-isolated, commuters and low-wealth commuters
 In this section we present a summary of the results for three different metrics computed for six different countries. Countries are selected among middle-low income countries to include at least one state on three different continents: America, Asia and Africa. Similar pattern changes are found between socio-economics groups across the globe.
 
 ```{r mobility-fig, fig.cap='Results for six different countries (rows): Brazil, Colombia, Indonesia, Mexico, Philippines, and South Africa. Measuring (columns): relative change in the fraction of people not leaving home, relative change of the number of people commuting from home to workplace, relative change of individuals from living in low-wealth admin units. The three coloured lines distinguishes the metric changes for the three different socio-economic groups.', out.width='80%', fig.asp=.75, fig.align='center', echo=FALSE}
