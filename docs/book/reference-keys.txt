@@ -3,9 +3,9 @@ fig:home-patterns
 fig:work-patterns
 fig:mobility-fig
 fig:migration-fig
+fig:unnamed-chunk-54
 fig:unnamed-chunk-55
 fig:unnamed-chunk-56
-fig:unnamed-chunk-57
 cover
 gps-analytics
 labor-market-analysis-with-twitter-data

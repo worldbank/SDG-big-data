@@ -12,6 +12,9 @@ import spark.implicits._
 
 SedonaSQLRegistrator.registerAll(sqlContext)
 
+val source = args(0)
+val country = args(1)
+
 //!!!! check that the timezone is correct for cuebiq data before running anything. See http://wrschneider.github.io/2019/09/01/timezones-parquet-redshift.html
 require(spark.conf.get("spark.sql.session.timeZone") == "Etc/UTC")
 

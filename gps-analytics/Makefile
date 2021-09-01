@@ -1,6 +1,6 @@
 ########################################
 ##        GPS-mobility Pipeline       ##
-##     Ollin Demian Langle Chimal     ##
+##                                    ##
 ########################################
 
 .PHONY: clean data lint init deps sync_to_gs sync_from_gs
@@ -33,13 +33,11 @@ init: prepare ##@dependencias Prepara la computadora para el funcionamiento del 
 prepare: deps
 	yes | conda create --name ${PROJECT_NAME}_venv python=3.7
 	conda activate ${PROJECT_NAME}_venv
-#	pyenv virtualenv ${PROJECT_NAME}_venv
-#	pyenv local ${PROJECT_NAME}_venv
 
-#pyenv: .python-version
-#	@pyenv install $(VERSION_PYTHON)
+pyenv: .python-version
+	@pyenv install $(VERSION_PYTHON)
 
-deps: pip airdb
+deps: pip wbgps airdb
 
 pip: requirements.txt
 	@conda install -c conda-forge --file $<
@@ -62,84 +60,54 @@ deldata:
 	@ yes | rm data/raw/* data/clean/*
 
 runpipeline:
-	@airflow dags backfill gpspipeline -s $(DATE)
+	@airflow dags backfill gpspipeline -s $(DATE) --conf {"country":$(country), "end_date":$(DATE)}
 
-prune:
-	@docker container prune
+# prune:
+#     @docker container prune
 ########################################
 ##          Infrastructure            ##
 ##    	   Execution Tasks            ##
 ########################################
+# this part is only needed in in case we need to manage Docker containers or
+# local infrastructure
 
-create: ##@infrastructure Builds the required containers
-	$(MAKE) -c=infrastructure --directory=infrastructure build
-
-start: ##@infraestructura Starts the Docker Compose and build the images if required
-	$(MAKE) --directory=infrastructure init
-
-stop: ##@infrastructure Stops the Docker Compose infrastructure
-	$(MAKE) --directory=infrastructure stop
-
-status: ##@infrastructure Infrastructure status
-	$(MAKE) --directory=infrastructure status
-
-destroy: ##@infrastructure Delete the docker images
-	$(MAKE) --directory=infrastructure clean
-	@docker rmi ollin18/gpspipeline:0.1 gpspipeline:latest
-
-nuke: ##@infrastructure Destroy all infrastructure (TODO)
-	$(MAKE) --directory=infrastructure nuke
-
-neo4j:
-	@$(MAKE) --directory=infrastructure init
-
-# neo4jrebuild:
-#     @$(MAKE) --directory=infrastructure rebuild
-
-ingest:
-	@$(MAKE) --directory=infrastructure ingester
-
-dockerbuild:
-	@$(MAKE) --directory=infrastructure build
+# create: ##@infrastructure Builds the required containers
+#     $(MAKE) -c=infrastructure --directory=infrastructure build
+#
+# start: ##@infraestructura Starts the Docker Compose and build the images if required
+#     $(MAKE) --directory=infrastructure init
+#
+# stop: ##@infrastructure Stops the Docker Compose infrastructure
+#     $(MAKE) --directory=infrastructure stop
+#
+# status: ##@infrastructure Infrastructure status
+#     $(MAKE) --directory=infrastructure status
+#
+# destroy: ##@infrastructure Delete the docker images
+#     $(MAKE) --directory=infrastructure clean
+#     @docker rmi ollin18/gpspipeline:0.1 gpspipeline:latest
+#
+# nuke: ##@infrastructure Destroy all infrastructure (TODO)
+#     $(MAKE) --directory=infrastructure nuke
+#
+# ingest:
+#     @$(MAKE) --directory=infrastructure ingester
+#
+# dockerbuild:
+#     @$(MAKE) --directory=infrastructure build
 
 ########################################
 ##           Data Sync Tasks          ##
 ########################################
 
-sync_to_gs: ##@data Sincroniza los datos hacia GCP GS
+sync_to_gs: ##@data sync data to GCP GS
 	@gsutil -m rsync -R data/ $(GS_BUCKET)/data/
 
-sync_from_gs: ##@data Sincroniza los datos desde GCP GS
+sync_from_gs: ##@data sync data from GCP GS
 	@gsutil -m rsync -R $(GS_BUCKET)/data/ data/
 
-sync_to_s3: ##@data Sincroniza los datos hacia AWS S3
+sync_to_s3: ##@data sync data to AWS S3
 	@aws s3 sync data/ s3://$(S3_BUCKET)/data/
 
-sync_from_s3: ##@data Sincroniza los datos desde AWS S3
+sync_from_s3: ##@data sync data from AWS S3
 	@aws s3 sync s3://$(S3_BUCKET)/data/ data/
-
-########################################
-##          Project Tasks             ##
-########################################
-
-run:       ##@proyecto Ejecuta el pipeline de datos
-	$(MAKE) --directory=$(PROJECT_NAME) run
-
-setup: build install ##@proyecto Crea las imágenes del pipeline e instala el pipeline como paquete en el PYTHONPATH
-
-build:
-	$(MAKE) --directory=$(PROJECT_NAME) build
-
-install:
-	@pip install --editable .
-
-uninstall:
-	@while pip uninstall -y ${PROJECT_NAME}; do true; done
-	@python setup.py clean
-
-## Verificando dependencias
-## Basado en código de Fernando Cisneros @ datank
-
-EXECUTABLES = docker docker-compose docker-machine rg pip
-TEST_EXEC := $(foreach exec,$(EXECUTABLES),\
-				$(if $(shell which $(exec)), some string, $(error "${BOLD}${RED}ERROR${RESET}: $(exec) is not in the PATH")))

@@ -302,109 +302,109 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">16.1</span> Local news sentiment indicator</h2>
 <p>Local news sentiment isolates local news from country-specific news articles.</p>
 <p>Specifically, we recompute the sentiment index of each country after excluding any article mentioning any other country. Applying this filter allows us to capture the sentiment of purely local news.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode stata"><code class="sourceCode stata"><span id="cb47-1"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insheet</span> <span class="kw">using</span> <span class="st">&quot;..\..</span><span class="ch">\r</span><span class="st">eplication\data</span><span class="ch">\f</span><span class="st">eatures-1991-1996-missing-countries.csv&quot;</span>, <span class="kw">comma</span> <span class="kw">clear</span></span>
-<span id="cb47-2"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
-<span id="cb47-3"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="kw">drop</span> v1</span>
-<span id="cb47-4"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="kw">tempfile</span> _tmp</span>
-<span id="cb47-5"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="ot">`_tmp&#39;</span></span>
-<span id="cb47-6"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-7"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="kw">insheet</span> <span class="kw">using</span> <span class="st">&quot;..\..</span><span class="ch">\r</span><span class="st">eplication\data</span><span class="ch">\n</span><span class="st">ews.csv&quot;</span>, <span class="kw">comma</span> <span class="kw">clear</span></span>
-<span id="cb47-8"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
-<span id="cb47-9"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="kw">d</span></span>
-<span id="cb47-10"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="kw">append</span> <span class="kw">using</span> <span class="ot">`_tmp&#39;</span>, <span class="kw">gen</span>(source)</span>
-<span id="cb47-11"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-12"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-12" aria-hidden="true" tabindex="-1"></a>* Tags <span class="kw">of</span> topic-specific articles</span>
-<span id="cb47-13"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-14"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-14" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *commodity* *commdty*</span>
-<span id="cb47-15"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-15" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *monetary* *money*</span>
-<span id="cb47-16"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-16" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *<span class="kw">external</span>* *extrnl*</span>
-<span id="cb47-17"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-17" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *political* *polit*</span>
-<span id="cb47-18"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-18" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *general* *<span class="kw">gen</span>*</span>
-<span id="cb47-19"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-19" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *policy* *pol*</span>
-<span id="cb47-20"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-20" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *performance* *perform*</span>
-<span id="cb47-21"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-21" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *corporate* *corp*</span>
-<span id="cb47-22"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-22" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *derivative* *deriv*</span>
-<span id="cb47-23"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-23" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *market* *mkt*</span>
-<span id="cb47-24"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-24" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *economic* *ecn*</span>
-<span id="cb47-25"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-25" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *government* *govt*</span>
-<span id="cb47-26"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-26" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *indicators* *ind*</span>
-<span id="cb47-27"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-27" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *financial* *fin*</span>
-<span id="cb47-28"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-28" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *payments* *pay*</span>
-<span id="cb47-29"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-29" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *securities* *scrty*</span>
-<span id="cb47-30"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-30" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *industrial* *indl*</span>
-<span id="cb47-31"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-31" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *forex* *fx*</span>
-<span id="cb47-32"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-32" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *pay* **</span>
-<span id="cb47-33"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-33" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *mkts* *mkt*</span>
-<span id="cb47-34"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-34" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *bond* **</span>
-<span id="cb47-35"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-35" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *perform* **</span>
-<span id="cb47-36"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-36" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *commdty* *comm*</span>
-<span id="cb47-37"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-37" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *finance* *fin*</span>
-<span id="cb47-38"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-39"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-39" aria-hidden="true" tabindex="-1"></a>* Local baseline sentiment excluding topics with no signal</span>
-<span id="cb47-40"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-41"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-41" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> sentiment_local = positive - negative <span class="kw">if</span> <span class="kw">local</span>==1 &amp; <span class="co">///</span></span>
-<span id="cb47-42"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-42" aria-hidden="true" tabindex="-1"></a>    !(<span class="kw">table</span>==1 | tables==1 | tradeextrnl==1 | ecnind==1 | debtmkt==1)</span>
-<span id="cb47-43"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-44"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-44" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> n_articles_local = (words!=0) &amp; <span class="kw">local</span>==1 &amp; <span class="co">///</span></span>
-<span id="cb47-45"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-45" aria-hidden="true" tabindex="-1"></a>    !(<span class="kw">table</span>==1 | tables==1 | tradeextrnl==1 | ecnind==1 | debtmkt==1)</span>
-<span id="cb47-46"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-47"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-47" aria-hidden="true" tabindex="-1"></a><span class="kw">ren</span> <span class="fu">date</span> str_date</span>
-<span id="cb47-48"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-48" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> <span class="fu">date</span> = <span class="fu">date</span>(str_date, <span class="st">&quot;YMD&quot;</span>, 2000), after(str_date)</span>
-<span id="cb47-49"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-49" aria-hidden="true" tabindex="-1"></a><span class="kw">format</span> <span class="fu">date</span> %tdnn/dd/CCYY</span>
-<span id="cb47-50"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-51"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-51" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> country <span class="fu">date</span> sentiment* n_articles*</span>
-<span id="cb47-52"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-53"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-53" aria-hidden="true" tabindex="-1"></a><span class="kw">collapse</span> (<span class="kw">mean</span>) sentiment* (<span class="kw">sum</span>) n_articles*, <span class="kw">by</span>(country <span class="fu">date</span>)</span>
-<span id="cb47-54"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-55"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-55" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
-<span id="cb47-56"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-57"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-57" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> iso2 = <span class="st">&quot;&quot;</span>, after(country)</span>
-<span id="cb47-58"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-58" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;AR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Argentina&quot;</span></span>
-<span id="cb47-59"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-59" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;BR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Brazil&quot;</span></span>
-<span id="cb47-60"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-60" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;CL&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Chile&quot;</span></span>
-<span id="cb47-61"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-61" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;CN&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;China&quot;</span></span>
-<span id="cb47-62"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-62" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;FR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;France&quot;</span></span>
-<span id="cb47-63"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-63" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;DE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Germany&quot;</span></span>
-<span id="cb47-64"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-64" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;GR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Greece&quot;</span></span>
-<span id="cb47-65"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-65" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IN&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;India&quot;</span></span>
-<span id="cb47-66"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-66" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ID&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Indonesia&quot;</span></span>
-<span id="cb47-67"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-67" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Ireland&quot;</span></span>
-<span id="cb47-68"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-68" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IT&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Italy&quot;</span></span>
-<span id="cb47-69"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-69" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;JP&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Japan&quot;</span></span>
-<span id="cb47-70"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-70" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;KR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Korea&quot;</span></span>
-<span id="cb47-71"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-71" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;MY&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Malaysia&quot;</span></span>
-<span id="cb47-72"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-72" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;MX&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Mexico&quot;</span></span>
-<span id="cb47-73"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-73" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Peru&quot;</span></span>
-<span id="cb47-74"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-74" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PH&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Philippines&quot;</span></span>
-<span id="cb47-75"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-75" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PL&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Poland&quot;</span></span>
-<span id="cb47-76"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-76" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PT&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Portugal&quot;</span></span>
-<span id="cb47-77"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-77" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;RU&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Russia&quot;</span></span>
-<span id="cb47-78"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-78" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ZA&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;South Africa&quot;</span></span>
-<span id="cb47-79"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-79" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;KR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;South Korea&quot;</span></span>
-<span id="cb47-80"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-80" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ES&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Spain&quot;</span></span>
-<span id="cb47-81"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-81" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;TH&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Thailand&quot;</span></span>
-<span id="cb47-82"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-82" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;TR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Turkey&quot;</span></span>
-<span id="cb47-83"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-83" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;US&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;United States&quot;</span></span>
-<span id="cb47-84"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">tab</span> iso2, <span class="fu">m</span></span>
-<span id="cb47-85"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-86"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-86" aria-hidden="true" tabindex="-1"></a>* Convert to z-scores within each country</span>
-<span id="cb47-87"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-88"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-88" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> sentiment*</span>
-<span id="cb47-89"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-90"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-90" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> vv <span class="kw">in</span> <span class="ot">`r(varlist)&#39;</span> {</span>
-<span id="cb47-91"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-91" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-92"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-92" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _mean = <span class="kw">mean</span>(<span class="ot">`vv&#39;</span>)</span>
-<span id="cb47-93"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-93" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _sd = <span class="fu">sd</span>(<span class="ot">`vv&#39;</span>)</span>
-<span id="cb47-94"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-94" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-95"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-95" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`vv&#39;</span> = (<span class="ot">`vv&#39;</span> - _mean) / _sd</span>
-<span id="cb47-96"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-96" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-97"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-97" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> _mean _sd</span>
-<span id="cb47-98"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-98" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb47-99"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-100"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-100" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
-<span id="cb47-101"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-101" aria-hidden="true" tabindex="-1"></a><span class="kw">d</span></span>
-<span id="cb47-102"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-103"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-103" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">&quot;..\indicator\sentiment_local.dta&quot;</span>, <span class="kw">replace</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode stata"><code class="sourceCode stata"><span id="cb46-1"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insheet</span> <span class="kw">using</span> <span class="st">&quot;..\..</span><span class="ch">\r</span><span class="st">eplication\data</span><span class="ch">\f</span><span class="st">eatures-1991-1996-missing-countries.csv&quot;</span>, <span class="kw">comma</span> <span class="kw">clear</span></span>
+<span id="cb46-2"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb46-3"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="kw">drop</span> v1</span>
+<span id="cb46-4"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="kw">tempfile</span> _tmp</span>
+<span id="cb46-5"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="ot">`_tmp&#39;</span></span>
+<span id="cb46-6"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="kw">insheet</span> <span class="kw">using</span> <span class="st">&quot;..\..</span><span class="ch">\r</span><span class="st">eplication\data</span><span class="ch">\n</span><span class="st">ews.csv&quot;</span>, <span class="kw">comma</span> <span class="kw">clear</span></span>
+<span id="cb46-8"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb46-9"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="kw">d</span></span>
+<span id="cb46-10"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="kw">append</span> <span class="kw">using</span> <span class="ot">`_tmp&#39;</span>, <span class="kw">gen</span>(source)</span>
+<span id="cb46-11"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-12"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-12" aria-hidden="true" tabindex="-1"></a>* Tags <span class="kw">of</span> topic-specific articles</span>
+<span id="cb46-13"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-14"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-14" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *commodity* *commdty*</span>
+<span id="cb46-15"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-15" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *monetary* *money*</span>
+<span id="cb46-16"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-16" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *<span class="kw">external</span>* *extrnl*</span>
+<span id="cb46-17"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-17" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *political* *polit*</span>
+<span id="cb46-18"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-18" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *general* *<span class="kw">gen</span>*</span>
+<span id="cb46-19"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-19" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *policy* *pol*</span>
+<span id="cb46-20"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-20" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *performance* *perform*</span>
+<span id="cb46-21"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-21" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *corporate* *corp*</span>
+<span id="cb46-22"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-22" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *derivative* *deriv*</span>
+<span id="cb46-23"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-23" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *market* *mkt*</span>
+<span id="cb46-24"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-24" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *economic* *ecn*</span>
+<span id="cb46-25"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-25" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *government* *govt*</span>
+<span id="cb46-26"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-26" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *indicators* *ind*</span>
+<span id="cb46-27"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-27" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *financial* *fin*</span>
+<span id="cb46-28"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-28" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *payments* *pay*</span>
+<span id="cb46-29"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-29" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *securities* *scrty*</span>
+<span id="cb46-30"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-30" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *industrial* *indl*</span>
+<span id="cb46-31"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-31" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *forex* *fx*</span>
+<span id="cb46-32"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-32" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *pay* **</span>
+<span id="cb46-33"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-33" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *mkts* *mkt*</span>
+<span id="cb46-34"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-34" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *bond* **</span>
+<span id="cb46-35"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-35" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *perform* **</span>
+<span id="cb46-36"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-36" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *commdty* *comm*</span>
+<span id="cb46-37"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-37" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">ren</span> *finance* *fin*</span>
+<span id="cb46-38"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-39"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-39" aria-hidden="true" tabindex="-1"></a>* Local baseline sentiment excluding topics with no signal</span>
+<span id="cb46-40"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-41"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-41" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> sentiment_local = positive - negative <span class="kw">if</span> <span class="kw">local</span>==1 &amp; <span class="co">///</span></span>
+<span id="cb46-42"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-42" aria-hidden="true" tabindex="-1"></a>    !(<span class="kw">table</span>==1 | tables==1 | tradeextrnl==1 | ecnind==1 | debtmkt==1)</span>
+<span id="cb46-43"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-44"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-44" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> n_articles_local = (words!=0) &amp; <span class="kw">local</span>==1 &amp; <span class="co">///</span></span>
+<span id="cb46-45"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-45" aria-hidden="true" tabindex="-1"></a>    !(<span class="kw">table</span>==1 | tables==1 | tradeextrnl==1 | ecnind==1 | debtmkt==1)</span>
+<span id="cb46-46"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-47"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-47" aria-hidden="true" tabindex="-1"></a><span class="kw">ren</span> <span class="fu">date</span> str_date</span>
+<span id="cb46-48"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-48" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> <span class="fu">date</span> = <span class="fu">date</span>(str_date, <span class="st">&quot;YMD&quot;</span>, 2000), after(str_date)</span>
+<span id="cb46-49"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-49" aria-hidden="true" tabindex="-1"></a><span class="kw">format</span> <span class="fu">date</span> %tdnn/dd/CCYY</span>
+<span id="cb46-50"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-51"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-51" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> country <span class="fu">date</span> sentiment* n_articles*</span>
+<span id="cb46-52"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-53"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-53" aria-hidden="true" tabindex="-1"></a><span class="kw">collapse</span> (<span class="kw">mean</span>) sentiment* (<span class="kw">sum</span>) n_articles*, <span class="kw">by</span>(country <span class="fu">date</span>)</span>
+<span id="cb46-54"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-55"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-55" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb46-56"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-57"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-57" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> iso2 = <span class="st">&quot;&quot;</span>, after(country)</span>
+<span id="cb46-58"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-58" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;AR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Argentina&quot;</span></span>
+<span id="cb46-59"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-59" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;BR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Brazil&quot;</span></span>
+<span id="cb46-60"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-60" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;CL&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Chile&quot;</span></span>
+<span id="cb46-61"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-61" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;CN&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;China&quot;</span></span>
+<span id="cb46-62"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-62" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;FR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;France&quot;</span></span>
+<span id="cb46-63"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-63" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;DE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Germany&quot;</span></span>
+<span id="cb46-64"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-64" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;GR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Greece&quot;</span></span>
+<span id="cb46-65"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-65" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IN&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;India&quot;</span></span>
+<span id="cb46-66"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-66" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ID&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Indonesia&quot;</span></span>
+<span id="cb46-67"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-67" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Ireland&quot;</span></span>
+<span id="cb46-68"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-68" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;IT&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Italy&quot;</span></span>
+<span id="cb46-69"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-69" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;JP&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Japan&quot;</span></span>
+<span id="cb46-70"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-70" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;KR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Korea&quot;</span></span>
+<span id="cb46-71"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-71" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;MY&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Malaysia&quot;</span></span>
+<span id="cb46-72"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-72" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;MX&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Mexico&quot;</span></span>
+<span id="cb46-73"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-73" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PE&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Peru&quot;</span></span>
+<span id="cb46-74"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-74" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PH&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Philippines&quot;</span></span>
+<span id="cb46-75"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-75" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PL&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Poland&quot;</span></span>
+<span id="cb46-76"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-76" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;PT&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Portugal&quot;</span></span>
+<span id="cb46-77"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-77" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;RU&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Russia&quot;</span></span>
+<span id="cb46-78"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-78" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ZA&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;South Africa&quot;</span></span>
+<span id="cb46-79"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-79" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;KR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;South Korea&quot;</span></span>
+<span id="cb46-80"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-80" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;ES&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Spain&quot;</span></span>
+<span id="cb46-81"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-81" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;TH&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Thailand&quot;</span></span>
+<span id="cb46-82"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-82" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;TR&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;Turkey&quot;</span></span>
+<span id="cb46-83"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-83" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> iso2 = <span class="st">&quot;US&quot;</span> <span class="kw">if</span> country==<span class="st">&quot;United States&quot;</span></span>
+<span id="cb46-84"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">tab</span> iso2, <span class="fu">m</span></span>
+<span id="cb46-85"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-86"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-86" aria-hidden="true" tabindex="-1"></a>* Convert to z-scores within each country</span>
+<span id="cb46-87"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-88"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-88" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> sentiment*</span>
+<span id="cb46-89"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-90"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-90" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> vv <span class="kw">in</span> <span class="ot">`r(varlist)&#39;</span> {</span>
+<span id="cb46-91"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-91" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb46-92"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-92" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _mean = <span class="kw">mean</span>(<span class="ot">`vv&#39;</span>)</span>
+<span id="cb46-93"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-93" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _sd = <span class="fu">sd</span>(<span class="ot">`vv&#39;</span>)</span>
+<span id="cb46-94"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-94" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb46-95"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-95" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`vv&#39;</span> = (<span class="ot">`vv&#39;</span> - _mean) / _sd</span>
+<span id="cb46-96"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-96" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb46-97"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-97" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> _mean _sd</span>
+<span id="cb46-98"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-98" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb46-99"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-100"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-100" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb46-101"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-101" aria-hidden="true" tabindex="-1"></a><span class="kw">d</span></span>
+<span id="cb46-102"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-103"><a href="global-vs.-local-news-sentiment-indicators.html#cb46-103" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">&quot;..\indicator\sentiment_local.dta&quot;</span>, <span class="kw">replace</span></span></code></pre></div>
 </div>
 <div id="global-news-sentiment-indicator" class="section level2" number="16.2">
 <h2><span class="header-section-number">16.2</span> Global news sentiment indicator</h2>
@@ -417,51 +417,51 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \end{align*}\]</span>
 where <span class="math inline">\(S_{i,t}\)</span> refers to the news sentiment index in country <span class="math inline">\(i\)</span> on day <span class="math inline">\(t\)</span>, <span class="math inline">\(F_{t}\)</span> is the (unobserved) global news sentiment factor at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(P_{i}\)</span> is the country-specific factor loading. We use an AR(8) for the factor structure and estimate the model using Maximum Likelihood.</p>
 <p>The data coverage for news articles does not start at the same time for all countries. In order to ensure that all countries in our sample have the longest time coverage, we impute these missing observations with zeroes when we estimate the factor model to extract the global news sentiment.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode stata"><code class="sourceCode stata"><span id="cb48-1"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">&quot;..\indicator\sentiment_country.dta&quot;</span>, <span class="kw">clear</span></span>
-<span id="cb48-2"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> iso2 <span class="fu">date</span> sentiment_country</span>
-<span id="cb48-4"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-5"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="kw">reshape</span> <span class="kw">wide</span> sentiment_country, i(<span class="fu">date</span>) j(iso2) <span class="fu">string</span></span>
-<span id="cb48-6"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-7"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="kw">tsset</span> <span class="fu">date</span></span>
-<span id="cb48-8"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="kw">tsfill</span></span>
-<span id="cb48-9"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-10"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-10" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> <span class="kw">if</span> <span class="fu">year</span>(<span class="fu">date</span>) &gt; 1990 </span>
-<span id="cb48-11"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-12"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> sentiment_country*</span>
-<span id="cb48-13"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-14"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-14" aria-hidden="true" tabindex="-1"></a>loc vlist = <span class="st">&quot;`r(varlist)&#39;&quot;</span></span>
-<span id="cb48-15"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-16"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> vv <span class="kw">in</span> <span class="ot">`vlist&#39;</span> {</span>
-<span id="cb48-17"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-18"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">di</span> <span class="st">&quot;replace `vv&#39; = 0 if mi(`vv&#39;)&quot;</span></span>
-<span id="cb48-19"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`vv&#39;</span> = 0 <span class="kw">if</span> <span class="fu">mi</span>(<span class="ot">`vv&#39;</span>)</span>
-<span id="cb48-20"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-21"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb48-22"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-22" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
-<span id="cb48-23"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-24"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-24" aria-hidden="true" tabindex="-1"></a>dfactor ((<span class="ot">`vlist&#39;</span>) = , <span class="kw">noconstant</span>) (f = , ar(1/8))</span>
-<span id="cb48-25"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-26"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-26" aria-hidden="true" tabindex="-1"></a><span class="kw">ereturn</span> <span class="ot">list</span></span>
-<span id="cb48-27"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-28"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-28" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> sentiment_global <span class="kw">if</span> <span class="fu">e</span>(<span class="kw">sample</span>), <span class="kw">factor</span> smethod(filter)</span>
-<span id="cb48-29"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-30"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-30" aria-hidden="true" tabindex="-1"></a>* Convert to z-scores</span>
-<span id="cb48-31"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-32"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-32" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> sentiment*</span>
-<span id="cb48-33"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-34"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-34" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> vv <span class="kw">in</span> <span class="ot">`r(varlist)&#39;</span> {</span>
-<span id="cb48-35"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-35" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-36"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _mean = <span class="kw">mean</span>(<span class="ot">`vv&#39;</span>)</span>
-<span id="cb48-37"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _sd = <span class="fu">sd</span>(<span class="ot">`vv&#39;</span>)</span>
-<span id="cb48-38"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-38" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-39"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`vv&#39;</span> = (<span class="ot">`vv&#39;</span> - _mean) / _sd</span>
-<span id="cb48-40"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-40" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-41"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> _mean _sd</span>
-<span id="cb48-42"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-42" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb48-43"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-44"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-44" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
-<span id="cb48-45"><a href="global-vs.-local-news-sentiment-indicators.html#cb48-45" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">&quot;..\indicator\sentiment_global.dta&quot;</span>, <span class="kw">replace</span></span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode stata"><code class="sourceCode stata"><span id="cb47-1"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">&quot;..\indicator\sentiment_country.dta&quot;</span>, <span class="kw">clear</span></span>
+<span id="cb47-2"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> iso2 <span class="fu">date</span> sentiment_country</span>
+<span id="cb47-4"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="kw">reshape</span> <span class="kw">wide</span> sentiment_country, i(<span class="fu">date</span>) j(iso2) <span class="fu">string</span></span>
+<span id="cb47-6"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="kw">tsset</span> <span class="fu">date</span></span>
+<span id="cb47-8"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="kw">tsfill</span></span>
+<span id="cb47-9"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-10"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> <span class="kw">if</span> <span class="fu">year</span>(<span class="fu">date</span>) &gt; 1990 </span>
+<span id="cb47-11"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> sentiment_country*</span>
+<span id="cb47-13"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-14"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-14" aria-hidden="true" tabindex="-1"></a>loc vlist = <span class="st">&quot;`r(varlist)&#39;&quot;</span></span>
+<span id="cb47-15"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-16"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> vv <span class="kw">in</span> <span class="ot">`vlist&#39;</span> {</span>
+<span id="cb47-17"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-18"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">di</span> <span class="st">&quot;replace `vv&#39; = 0 if mi(`vv&#39;)&quot;</span></span>
+<span id="cb47-19"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`vv&#39;</span> = 0 <span class="kw">if</span> <span class="fu">mi</span>(<span class="ot">`vv&#39;</span>)</span>
+<span id="cb47-20"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-21"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb47-22"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb47-23"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-24"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-24" aria-hidden="true" tabindex="-1"></a>dfactor ((<span class="ot">`vlist&#39;</span>) = , <span class="kw">noconstant</span>) (f = , ar(1/8))</span>
+<span id="cb47-25"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-26"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-26" aria-hidden="true" tabindex="-1"></a><span class="kw">ereturn</span> <span class="ot">list</span></span>
+<span id="cb47-27"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-28"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-28" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> sentiment_global <span class="kw">if</span> <span class="fu">e</span>(<span class="kw">sample</span>), <span class="kw">factor</span> smethod(filter)</span>
+<span id="cb47-29"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-30"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-30" aria-hidden="true" tabindex="-1"></a>* Convert to z-scores</span>
+<span id="cb47-31"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-32"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-32" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> sentiment*</span>
+<span id="cb47-33"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-34"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-34" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> vv <span class="kw">in</span> <span class="ot">`r(varlist)&#39;</span> {</span>
+<span id="cb47-35"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-36"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _mean = <span class="kw">mean</span>(<span class="ot">`vv&#39;</span>)</span>
+<span id="cb47-37"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bys</span> iso2: <span class="kw">egen</span> _sd = <span class="fu">sd</span>(<span class="ot">`vv&#39;</span>)</span>
+<span id="cb47-38"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-39"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`vv&#39;</span> = (<span class="ot">`vv&#39;</span> - _mean) / _sd</span>
+<span id="cb47-40"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-41"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> _mean _sd</span>
+<span id="cb47-42"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb47-43"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-44"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-44" aria-hidden="true" tabindex="-1"></a><span class="kw">compress</span></span>
+<span id="cb47-45"><a href="global-vs.-local-news-sentiment-indicators.html#cb47-45" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">&quot;..\indicator\sentiment_global.dta&quot;</span>, <span class="kw">replace</span></span></code></pre></div>
 
 </div>
 </div>

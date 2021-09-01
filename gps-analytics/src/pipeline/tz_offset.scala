@@ -5,6 +5,9 @@ spark.withJTS
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 
+val datapartnership = args(0)
+val country = args(1)
+
 val h3_idx = 6
 
 val id_tz_lower = (7 - 2) * 3600 // Buffer TZ by 1

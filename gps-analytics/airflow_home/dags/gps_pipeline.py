@@ -42,28 +42,37 @@ dag = DAG(
 
 geocoded_pings = SparkSubmitOperator(
         task_id='geocodePings',
-        application_file='/src/pipeline/get_geocoded_pings.scala ', \
+        application_file='/src/pipeline/get_geocoded_pings.scala ',
+        arguments=['veraset', 'country'],
         dag = dag)
 
 tz_offset = SparkSubmitOperator(
         task_id='tzOffset',
         application_file='/src/pipeline/tz_offset.scala ', \
+        arguments=['veraset', 'country'],
         dag = dag)
 
 stop_locations = SparkSubmitOperator(
         task_id='stopLocations',
         application_file='/src/pipeline/stop_locations.py ', \
+        arguments=['--country', 'country', '--stop_locations_dir', '/mnt/stops/', '--radius','50','--stay_time','300','--min_pts_per_stop_location','2','--max_time_stop_location','3600','--max_accuracy','100','--db_scan_radius','50'],
         dag = dag)
+
 
 geocode_stops = SparkSubmitOperator(
         task_id='geocodeStops',
         application_file='/src/pipeline/geocode_stop_locations.scala ', \
+        arguments=['veraset', 'country'],
         dag = dag)
 
 
 labeling = SparkSubmitOperator(
         task_id='HWlabeling',
         application_file='/src/pipeline/compute_home_and_work_locations.py ', \
+        arguments=['--country', 'country', '--stop_locations_dir', '/mnt/stops/', '--radius','50','--stay_time','300',
+        '--min_pts_per_stop_location','2','--max_time_stop_location','3600','--max_accuracy','100','--db_scan_radius','50',
+        '--result_path_spark','/mnt/results_spark', '--start_hour_day', '5', '--end_hour_day', '11', '--min_pings_home_cluster_label','2',
+        '--work_activity_average','0.2', '--hw', '49', '--ww', '49', '--mph', '49', '--mpw', '49'],
         dag = dag)
 
 
