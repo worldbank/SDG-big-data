@@ -4,9 +4,9 @@ fig:work-patterns
 fig:mobility-fig
 fig:migration-fig
 fig:groudtruthdashboard-fig
+fig:unnamed-chunk-53
 fig:unnamed-chunk-54
 fig:unnamed-chunk-55
-fig:unnamed-chunk-56
 introduction
 gps-analytics
 labor-market-analysis-with-twitter-data

@@ -24,7 +24,7 @@
 <meta name="author" content="Chapter 4 News Analytics | Big Data Analytics Group" />
 
 
-<meta name="date" content="2021-09-01" />
+<meta name="date" content="2021-09-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1179,22 +1179,22 @@ where <span class="math inline">\(N\)</span> is the number of articles in the co
 <p><em>Note: This table reports summary statistics about the (raw) daily sentiment indices for each country. Sentiment denotes our baseline measure of news sentiment. The AE and EM rows report summary statistics by country groups; the Total row reports summary statistics across all countries in our sample.</em></p>
 <p>Overall, we find that the the mean and the median of news indices are negative, reflecting the fact that our dictionary of tonal words contains more negative words. We also find very little difference in the properties of the indices across advanced and emerging markets, or among emerging markets.</p>
 <p>Unsurprisingly, we also find that the news sentiment index takes values that are, on average, higher in “good” times. The latter is true whether we define good times using real variables (e.g. when GDP growth is positive) or financial (strong equity market performance).</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-54"></span>
-<img src="big-daa_files/figure-html/unnamed-chunk-54-1.png" alt="Behaviour of the news sentiment index in good vs. bad times." width="60%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-53"></span>
+<img src="big-daa_files/figure-html/unnamed-chunk-53-1.png" alt="Behaviour of the news sentiment index in good vs. bad times." width="60%" />
 <p class="caption">
 Figure 4.1: Behaviour of the news sentiment index in good vs. bad times.
 </p>
 </div>
 <p><em>Note: This figure reports the average and median values of the (raw) sentiment index using various definitions of good and bad times. The first two columns split the sample based on periods where a country’s real GDP growth has been positive (or negative). The third and fourth columns split the sample based on each country’s stock market index being above or below its trend, where the trend is constructed using a two-sided HP filter with a smoothing parameter of 129,600, set using the <a href="https://doi.org/10.1162/003465302317411604">Ravn and Uhlig (2002)</a> rule for monthly data. The last two categories split the sample based on whether the country’s daily stock market return has been positive or negative.</em></p>
 <p>To give more intuition about the index, we also report the behaviour of the news sentiment index around key economic and financial events. We first plot the daily news sentiment index around equity crisis (left) and booms (right); where we define crisis or booms as daily variations of the local equity index greater than 3 standard deviation (on either side). As expected, we find that news sentiment collapses (or improves drastically) around equity busts (booms).</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-55"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-54"></span>
 <img src="figures/figure_1_clow3sd.PNG" alt="Sentiment indices around equity crisis (left) and booms (left)" width="49%" height="20%" /><img src="figures/figure_1_chigh3sd.PNG" alt="Sentiment indices around equity crisis (left) and booms (left)" width="49%" height="20%" />
 <p class="caption">
 Figure 4.2: Sentiment indices around equity crisis (left) and booms (left)
 </p>
 </div>
 <p>We also zoom in on specific events that occurred in advanced and emerging markets. We report the behaviour of the US sentiment index around September 15, 2018 when Lehman brothers filed for Chapter 11 bankruptcy (left), and the behaviour of the China sentiment index around June 13, 2015 when the China’s stock market bubble popped (right). In both cases, we also find that the news sentiment index tracks closely those events and reacts as expected.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-56"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-55"></span>
 <img src="figures/figure_1_gfc_US.PNG" alt="Sentiment indices around the U.S. Lehman Brothers' failure (Left) and China stock market crash (right)" width="49%" height="20%" /><img src="figures/figure_1_china2015_CN.PNG" alt="Sentiment indices around the U.S. Lehman Brothers' failure (Left) and China stock market crash (right)" width="49%" height="20%" />
 <p class="caption">
 Figure 4.3: Sentiment indices around the U.S. Lehman Brothers’ failure (Left) and China stock market crash (right)

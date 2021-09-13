@@ -5,19 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>mobility line graphs</title>
   <style>
-    body{margin:0;}
-    #form{
-      padding-left: 100px;
-      float: left;
-    }
-
-    #wealth-legend{
+    body{margin:0;
       font-family: sans-serif;
       font-weight: 300;
       font-size: 14px;
+    }
+    #form, #form2{
       float: left;
-      margin-left: 20px;
+    }
+
+    #form2{
+      padding-left: 100px;
+    }
+
+    #form{
+      padding-left: 30px;
+    }
+
+    .wealth-legend{
+      font-family: sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      clear:both;
       padding-top: 27px;
+      padding-left: 100px;
     }
 
     ul {
@@ -35,15 +46,18 @@
     }
 
     #low-li::before{
-      color: #444;
+      /* color: #444; */
+      color: #ED7D6E;
     }
 
     #mid-li::before{
-      color: #999;
+      /* color: #999; */
+      color: #FFD15C;
     }
 
     #high-li::before{
-      color: #ddd;
+      /* color: #ddd; */
+      color: #98e0eb;
     }
 
     input[type='checkbox']{
@@ -77,31 +91,9 @@
       font-weight: 300;
       padding: 5px 0;
     }
-
-
-    #bogota-box{
-      background-color:#bccf61;
-      border: 2px solid #bccf61;
-    }
-
-    #jakarta-box{
-      background-color:#24a8bc;
-      border: 2px solid #24a8bc;
-    }
-
-    #manila-box{
-      background-color: #e0a100;
-      border: 2px solid #e0a100;
-    }
-
-    #mexico-box{
-      background-color:#c92d18;
-      border: 2px solid #c92d18;
-    }
-
-    #sp-box{
-      background-color: #2F0AFF;
-      border: 2px solid #2F0AFF;
+    .w-box, .c-box{
+      background-color: #000;
+      border: 2px solid #000;
     }
 
     input[type="checkbox"]:not(:checked) {
@@ -113,31 +105,54 @@
 
     <div id="container"></div>
 
-    <div id="form">
-      <select name="graphs" id="graphs" onchange="drawgraphs(this.value)">
-        <option value="0">Time spent at home</option>
-        <option value="1">Share of commuters by income</option>
-        <option value="2">Share of commuters by home value</option>
-      </select><br/>
-    <input type="checkbox" id="bogota-box" class="c-box CO-box" name="bogota-box" value="CO" checked="true" onchange="toggleClass(this.value,this.checked)">
-    <label for="bogota-box">Bogota</label><br>
-    <input type="checkbox" id="jakarta-box" class="c-box ID-box" name="jakarta-box" value="ID" checked="true" onchange="toggleClass(this.value,this.checked)">
-    <label for="jakarta-box">Jakarta</label><br>
-    <input type="checkbox" id="manila-box" class="c-box PH-box" name="manila-box" value="PH" checked="true" onchange="toggleClass(this.value,this.checked)">
-    <label for="manila-box">Manila</label><br>
-    <input type="checkbox" id="mexico-box" class="c-box MX-box" name="mexico-box" value="MX" checked="true" onchange="toggleClass(this.value,this.checked)">
-    <label for="mexico-box">Mexico City</label><br>
-    <input type="checkbox" id="sp-box" class="c-box BR-box" name="sp-box" value="BR" checked="true" onchange="toggleClass(this.value,this.checked)">
-    <label for="sp-box">S&#227o Paulo</label><br>
-    <br/>
-
+    <div id="form2">
+      <p style="margin-bottom:0">Metropolitan Area</p>
+      <input type="checkbox" id="bogota-box" class="c-box CO-box" name="bogota-box" value="CO" checked="true" onchange="toggleClass(this.value,this.checked)">
+      <label for="bogota-box">Bogota</label><br>
+      <input type="checkbox" id="jakarta-box" class="c-box ID-box" name="jakarta-box" value="ID" checked="true" onchange="toggleClass(this.value,this.checked)">
+      <label for="jakarta-box">Jakarta</label><br>
+      <input type="checkbox" id="manila-box" class="c-box PH-box" name="manila-box" value="PH" checked="true" onchange="toggleClass(this.value,this.checked)">
+      <label for="manila-box">Manila</label><br>
+      <input type="checkbox" id="mexico-box" class="c-box MX-box" name="mexico-box" value="MX" checked="true" onchange="toggleClass(this.value,this.checked)">
+      <label for="mexico-box">Mexico City</label><br>
+      <input type="checkbox" id="sp-box" class="c-box BR-box" name="sp-box" value="BR" checked="true" onchange="toggleClass(this.value,this.checked)">
+      <label for="sp-box">S&#227o Paulo</label><br>
     </div>
-    <div id="wealth-legend">
+
+    <div id="form">
+    <p style="margin-bottom:0">Indicator</p>
+    <input type="checkbox" id="w-box0" class="w-box h-box" name="home-box" value="0" checked="false" onchange="drawgraphs(this.value)">
+    <label for="home-box">Time spent at home</label><br>
+    <input type="checkbox" id="w-box1" class="w-box s-box" name="share-box" value="1" checked="false" onchange="drawgraphs(this.value)">
+    <label for="share-box">Share of commuters by administrative wealth level</label><br>
+    <input type="checkbox" id="w-box2" class="w-box a-box" name="admin-box" value="2" checked="false" onchange="drawgraphs(this.value)">
+    <label for="admin-box">Share of commuters by administrative wealth level</label><br>
+    </div>
+
+    <div class="wealth-legend" id="wl0">
       <p style="margin-bottom:5px;">Wealth Level</p>
       <ul>
-        <li id="high-li">High</li>
-        <li id="mid-li">Mid</li>
-        <li id="low-li">Low</li>
+        <li id="high-li">High-wealth users</li>
+        <li id="mid-li">Medium-wealth users</li>
+        <li id="low-li">Low-wealth users</li>
+      </ul>
+    </div>
+
+    <div class="wealth-legend" id="wl1">
+      <p style="margin-bottom:5px;">Wealth Level</p>
+      <ul>
+        <li id="high-li">Users living in high-wealth administrative units</li>
+        <li id="mid-li">Users living in medium-wealth administrative units</li>
+        <li id="low-li">Users living in low-wealth administrative units</li>
+      </ul>
+    </div>
+
+    <div class="wealth-legend" id="wl2">
+      <p style="margin-bottom:5px;">Wealth Level</p>
+      <ul>
+        <li id="high-li">Users living in high-wealth administrative units</li>
+        <li id="mid-li">Users living in medium-wealth administrative units</li>
+        <li id="low-li">Users living in low-wealth administrative units</li>
       </ul>
     </div>
 
@@ -148,14 +163,12 @@
     <script type="text/javascript"  src="js/config.js"></script>
 	<script>
   var colorScheme = {
-    "PH":{"low":"#664900","med":"#e0a100","high":"#FFD15C"},
-    "ID":{"low":"#15616d","med":"#24a8bc","high":"#98e0eb"},
-    "CO":{"low":"#7C8C2B","med":"#bccf61","high":"#DEE7B1"},
-    "BR":{"low":"#15008F","med":"#2F0AFF","high":"#9785FF"},
-    "MX":{"low":"#5B140B","med":"#c92d18","high":"#ED7D6E"}
+    "low":"#ED7D6E",
+    "med":"#FFD15C",
+    "high":"#98e0eb"
   }
   var margin = {top: 100, right: 80, bottom: 30, left: 100},
-          width = 672 - margin.left - margin.right,
+          width = 650 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
 
   var svg = d3.select("#container").append("svg")
@@ -252,9 +265,10 @@
             .attr("d", nline)
             .attr("stroke",function(d){
               var c = d[0].country;
-              return colorScheme[c][wealth];
+              //return colorScheme[c][wealth];
+              return colorScheme[wealth];
             })
-            .attr("stroke-width",1.25)
+            .attr("stroke-width",2)
             .attr("fill","none")
             .attr("opacity",function(d){
               if(h==2){
@@ -273,8 +287,8 @@
       d3.selectAll(".y-label").remove();
       group.append("text")
        .text(function(){
-         if(g==0){return "Time spent at home (% change)"}
-         else{return "Share of commuters (% change)"}
+         if(g==0){return "Time spent at home"}
+         else{return "Share of commuters"}
        })
        .style("transform","rotate(-90deg)")
        .style("font-family","sans-serif")
@@ -286,6 +300,10 @@
        .attr("text-anchor","middle")
        .attr("fill","#999");
 
+       d3.selectAll(".wealth-legend").style("display","none");
+       d3.select("#wl"+g).style("display","block");
+       d3.selectAll(".w-box").property("checked",false);
+       d3.select("#w-box"+g).property("checked",true);
        updateAxes();
 
     //}
@@ -315,7 +333,6 @@
        d3.selectAll(".c-box").property("checked",true);
       }
      if(cname == "BR" || cname == "PH" || cname=="MX" || cname=="CO" || cname=="ID"){
-       d3.selectAll(".w-box").property("checked",true);
        d3.selectAll(".c-box").property("checked",false);
        d3.select("."+cname+"-box").property("checked",true);
      }

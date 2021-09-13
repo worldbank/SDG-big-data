@@ -30,8 +30,6 @@
   </style>
 </head>
 <body>
-	<button id="generate" style="position:absolute;">Save as SVG</button><br/><br/>
-
     <div id="container"></div>
 
     <div id="form">
@@ -52,7 +50,7 @@
     <script type="text/javascript"  src="js/config.js"></script>
 	<script>
   var margin = {top: 100, right: 80, bottom: 30, left: 100},
-          width = 672 - margin.left - margin.right,
+          width = 650 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
 
   var svg = d3.select("#container").append("svg")
@@ -183,7 +181,7 @@
 
       d3.selectAll(".y-label").remove();
       YaxisGroup.append("text")
-       .text("Sentiment")
+       .text("Sentiment (z-score of value)")
        .style("transform","rotate(-90deg)")
        .style("font-family","sans-serif")
        .style("font-weight","300")

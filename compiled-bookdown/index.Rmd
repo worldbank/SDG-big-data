@@ -45,11 +45,7 @@ The indicators resulting from this study can be found below, for the US, Brazil 
 - have lost their job
 
 ```{r echo=FALSE}
-knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-country.html", height = "750px")
-```
-
-```{r echo=FALSE}
-knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-city.html", height = "750px")
+knitr::include_url("https://worldbank.github.io/SDG-big-data/charts/twitter-combined", height = "750px")
 ```
 
 ## [News analysis with Twitter data](#news)
