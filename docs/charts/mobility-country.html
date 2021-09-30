@@ -47,7 +47,7 @@
 
     #low-li::before{
       /* color: #444; */
-      color: #ED7D6E;
+      color: #98e0eb;
     }
 
     #mid-li::before{
@@ -57,7 +57,7 @@
 
     #high-li::before{
       /* color: #ddd; */
-      color: #98e0eb;
+      color: #ED7D6E;
     }
 
     input[type='checkbox']{
@@ -124,17 +124,17 @@
     <input type="checkbox" id="w-box0" class="w-box h-box" name="home-box" value="0" checked="false" onchange="drawgraphs(this.value)">
     <label for="home-box">Time spent at home</label><br>
     <input type="checkbox" id="w-box1" class="w-box s-box" name="share-box" value="1" checked="false" onchange="drawgraphs(this.value)">
-    <label for="share-box">Share of commuters by administrative wealth level</label><br>
+    <label for="share-box">Share of commuters</label><br>
     <input type="checkbox" id="w-box2" class="w-box a-box" name="admin-box" value="2" checked="false" onchange="drawgraphs(this.value)">
-    <label for="admin-box">Share of commuters by administrative wealth level</label><br>
+    <label for="admin-box">Share of commuters living in low-wealth administrative units</label><br>
     </div>
 
     <div class="wealth-legend" id="wl0">
       <p style="margin-bottom:5px;">Wealth Level</p>
       <ul>
-        <li id="high-li">High-wealth users</li>
-        <li id="mid-li">Medium-wealth users</li>
-        <li id="low-li">Low-wealth users</li>
+        <li id="high-li">Users living in high-wealth administrative units</li>
+        <li id="mid-li">Users living in medium-wealth administrative units</li>
+        <li id="low-li">Users living in low-wealth administrative units</li>
       </ul>
     </div>
 
@@ -150,9 +150,9 @@
     <div class="wealth-legend" id="wl2">
       <p style="margin-bottom:5px;">Wealth Level</p>
       <ul>
-        <li id="high-li">Users living in high-wealth administrative units</li>
-        <li id="mid-li">Users living in medium-wealth administrative units</li>
-        <li id="low-li">Users living in low-wealth administrative units</li>
+        <li id="high-li">Users commuting to high-wealth administrative units</li>
+        <li id="mid-li">Users commuting to medium-wealth administrative units</li>
+        <li id="low-li">Users commuting to low-wealth administrative units</li>
       </ul>
     </div>
 
@@ -163,9 +163,9 @@
     <script type="text/javascript"  src="js/config.js"></script>
 	<script>
   var colorScheme = {
-    "low":"#ED7D6E",
+    "low":"#98e0eb",
     "med":"#FFD15C",
-    "high":"#98e0eb"
+    "high":"#ED7D6E"
   }
   var margin = {top: 100, right: 80, bottom: 30, left: 100},
           width = 650 - margin.left - margin.right,

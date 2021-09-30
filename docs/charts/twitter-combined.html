@@ -13,6 +13,7 @@
     #form{
       padding-left: 100px;
       float: left;
+      margin-bottom: 20px;
     }
 
     select{
@@ -23,7 +24,7 @@
     }
     #form2,#form3,#form4{
       float: left;
-      margin-left: 30px;
+      margin-left: 50px;
     }
     #form2{
       padding-left: 100px;
@@ -32,6 +33,12 @@
     }
     #form4{
       display: none;
+    }
+    #topic-menu,#res-menu{
+      float:left;
+    }
+    #topic-menu{
+      margin-right: 50px;
     }
     input[type='checkbox']{
       appearance:none;
@@ -55,16 +62,16 @@
       border: 2px solid #000;
     }
     #Brazil-box{
-      background-color: #9785FF;
-      border: 2px solid #9785FF;
+      background-color: #5c3ffc;
+      border: 2px solid #5c3ffc;
     }
     #Mexico-box{
-      background-color:#ED7D6E;
-      border: 2px solid #ED7D6E;
+      background-color:#ff5f4a;
+      border: 2px solid #ff5f4a;
     }
     #United-States-box{
-      background-color:#78d9ad;
-      border: 2px solid #78d9ad;
+      background-color:#4bbf8a;
+      border: 2px solid #4bbf8a;
     }
     #tline-box{
       background-color: #999;
@@ -78,7 +85,7 @@
       background-color:#444;
       border: 2px solid #444;
     }
-    .r-box{
+    .r-box, .w-box{
       background-color:#000;
       border: 2px solid #000;
     }
@@ -92,14 +99,17 @@
 
     <div id="container"></div>
     <div id="form">
-      <p>Indicator</p>
-      <select name="topic-menu" id="topic-menu" onchange="topicGraph(this.value)">
-      </select>
-      <p style="margin-bottom:5px;">Resolution Level</p>
-      <input type="checkbox" id="country-box" class="r-box" name="country-box" value="country" checked="false" onchange="changeRes(this.value,this.checked)">
-      <label for="female-box">Country</label><br>
-      <input type="checkbox" id="city-box" class="r-box" name="city-box" value="city" checked="true" onchange="changeRes(this.value,this.checked)">
-      <label for="all-box">City</label><br>
+      <!-- <select name="topic-menu" id="topic-menu" onchange="topicGraph(this.value)"></select> -->
+      <div id="topic-menu">
+        <p style="margin-bottom:5px;">Indicator</p>
+      </div>
+      <div id="res-menu">
+        <p style="margin-bottom:5px;">Resolution Level</p>
+        <input type="checkbox" id="country-box" class="r-box" name="country-box" value="country" checked="false" onchange="changeRes(this.value,this.checked)">
+        <label for="female-box">Country</label><br>
+        <input type="checkbox" id="city-box" class="r-box" name="city-box" value="city" checked="true" onchange="changeRes(this.value,this.checked)">
+        <label for="all-box">City</label><br>
+    </div>
     </div>
 
     <div id="form2">
@@ -135,14 +145,14 @@
     <script type="text/javascript"  src="js/fileSaver.js"></script>
     <script type="text/javascript"  src="js/config.js"></script>
 	<script>
-  var margin = {top: 100, right: 80, bottom: 30, left: 100},
+  var margin = {top: 10, right: 80, bottom: 30, left: 100},
           width = 650 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
 
   var w2 = width + margin.left + margin.right;
 
   var svg = d3.select("#container").append("svg")
-      .attr("width", (width + margin.left + margin.right)*2)
+      .attr("width", (width + margin.left + margin.right))
       .attr("height", height + margin.top + margin.bottom );
 
   let yScale = d3.scaleLinear().range([height,0]);
@@ -168,9 +178,9 @@
   var dat,dat2, gDat, gDat2={}, tGroup, cGroup, selectedTopic = " ", selectedCountry ="Brazil", selectedCity ="city0", selectedRes = "country";
 
   var colorScheme = {
-    "Mexico":{"all":"#c92d18","male":"#5B140B","female":"#ED7D6E"},
-    "Brazil":{"all":"#2F0AFF","male":"#15008F","female":"#9785FF"},
-    "United States":{"all":"#2D9F6E","male":"#1B5F42","female":"#78d9ad"}}
+    "Mexico":{"all":"#ff5f4a","male":"#5B140B","female":"#ff9e91"},
+    "Brazil":{"all":"#5c3ffc","male":"#15008F","female":"#b5a8ff"},
+    "United States":{"all":"#4bbf8a","male":"#1B5F42","female":"#a0f2cd"}}
 
     var menuText = {
       "pct_lost_job_1mo":"Lost their job in the past month",
@@ -220,7 +230,23 @@
 
       for(c=0;c<dat.columns.length;c++){
         if(c>4&&c<10){
-          d3.select("#topic-menu").append("option").attr("value",dat.columns[c]).html(menuText[dat.columns[c]]);
+          //d3.select("#topic-menu").append("option").attr("value",dat.columns[c]).html(menuText[dat.columns[c]]);
+
+          d3.select("#topic-menu").append("input")
+            .attr("type","checkbox")
+            .attr("id","w-box"+c)
+            .attr("class","w-box "+dat.columns[c])
+            .attr("value",dat.columns[c])
+            .attr("name","w-box"+c)
+            .on("change",function(){topicGraph(this.value);})
+            .property("checked",false);
+
+          d3.select("#topic-menu").append("label")
+            .attr("for","w-box"+c)
+            .html(menuText[dat.columns[c]]);
+
+         d3.select("#topic-menu").append("br")
+
         }
       }
       for(c=0;c<gDat.length;c++){
@@ -235,12 +261,16 @@
       d3.selectAll(".c-box").property("checked",false);
       d3.selectAll("#city-box").property("checked",false);
       d3.selectAll("#country-box").property("checked",true);
+      d3.selectAll("#w-box5").property("checked",true);
     });
   });
 
 
 
   function topicGraph(top){
+      d3.selectAll(".w-box").property("checked",false);
+      d3.selectAll(".w-box."+top).property("checked", true);
+
       var datU;
       var gDatU;
 
@@ -379,23 +409,18 @@
   }
 
   function toggleClass(cname,val){
-    if(val == false){op = 0}else{
+    if(val == false && d3.select(".g-box#"+cname+"-box").property("checked")==true){op = 0}else{
       op = 1;
     }
-
-    d3.selectAll(".c-box").property("checked",false);
     d3.selectAll(".g-box").property("checked",false);
+    d3.selectAll(".c-box").property("checked",false);
     d3.selectAll(".city-box").property("checked",false);
 
     d3.selectAll(".plotline").attr("opacity",0);
-    d3.selectAll("."+cname).attr("opacity",op);
+    d3.selectAll(".plotline."+cname).attr("opacity",op);
 
     if(cname == "Brazil" || cname=="Mexico" || cname=="United-States"){
-      if(cname=="United-States"){
-        selectedCountry = "United States";
-      }else{
-        selectedCountry = cname;
-      }
+      if(cname=="United-States"){selectedCountry = "United States";}else{selectedCountry = cname;}
       updateCityList();
       topicGraph(selectedTopic);
     }
@@ -403,37 +428,56 @@
       selectedCity = cname;
     }
     if(cname !="tline" && cname!="fline" && cname!="mline"){
-      d3.select("#"+selectedCountry+"-box").property("checked",true);
+      d3.selectAll(".g-box").property("checked",true);
       d3.select("#"+selectedCity+"-box").property("checked",true);
+      d3.select("#"+selectedCountry+"-box").property("checked",true);
+      if(selectedCountry == "United States"){
+        d3.select("#United-States-box").property("checked",true);
+      }
+    }else{
+      if(selectedRes == "city"){
+        d3.select("#"+selectedCountry+"-box").property("checked",true);
+        if(selectedCountry == "United States"){
+          d3.select("#United-States-box").property("checked",true);
+        }
+      }
     }
     d3.selectAll("#"+cname+"-box").property("checked",true);
-
   }
+
+
 
   function changeRes(cname,val){
     selectedRes = cname;
     d3.selectAll(".r-box").property("checked",false);
     d3.selectAll("#"+cname+"-box").property("checked",true);
+    d3.selectAll(".g-box").property("checked",true);
+    if(selectedCountry == "United States"){
+      toggleClass("United-States",true);
+    }else{toggleClass(selectedCountry,true);}
 
     if(cname == "city"){
       d3.select("#form4").style("display","block");
       d3.selectAll(".c-box").property("checked",false);
-      d3.selectAll(".g-box").property("checked",false);
       d3.selectAll(".city-box").property("checked",false);
-      d3.selectAll("#"+selectedCountry+"-box").property("checked",true);
       d3.select("#"+selectedCity+"-box").property("checked",true);
-      updateCityList();
-      topicGraph(selectedTopic);
+      d3.selectAll("#"+selectedCountry+"-box").property("checked",true);
+      if(selectedCountry == "United States"){
+        d3.select("#United-States-box").property("checked",true);
+      }
     }else{
       d3.select("#form4").style("display","none");
-      updateCityList();
-      topicGraph(selectedTopic);
+      d3.selectAll("#"+cname+"-box").property("checked",true);
     }
+    updateCityList();
+    topicGraph(selectedTopic);
   }
 
+
+
   function updateCityList(){
-    d3.selectAll(".city-box").style("background-color",colorScheme[selectedCountry]["female"]);
-    d3.selectAll(".city-box").style("border-color",colorScheme[selectedCountry]["female"]);
+    d3.selectAll(".city-box").style("background-color",colorScheme[selectedCountry]["all"]);
+    d3.selectAll(".city-box").style("border-color",colorScheme[selectedCountry]["all"]);
     d3.select("#form4 label:nth-child(3)").html(citynames[selectedCountry]["city0"]);
     d3.select("#form4 label:nth-child(6)").html(citynames[selectedCountry]["city1"]);
     d3.select("#form4 label:nth-child(9)").html(citynames[selectedCountry]["city2"]);
