@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Labor Market | Big Data Analytics</title>
+  <meta name="description" content="SDG Bookdown" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Labor Market | Big Data Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="SDG Bookdown" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Labor Market | Big Data Analytics" />
+  
+  <meta name="twitter:description" content="SDG Bookdown" />
+  
+
+<meta name="author" content="Chapter 3 Labor Market | Big Data Analytics Group" />
+
+
+<meta name="date" content="2021-10-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="gps.html"/>
+<link rel="next" href="news.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Big Data Analysis</a></li>
+
+<li class="divider"></li>
+<li class="part"><span><b>Introduction</b></span></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#gps-analytics"><i class="fa fa-check"></i><b>1.1</b> <span>GPS Analytics</span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#labor-market-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.2</b> <span>Labor market analysis with Twitter data</span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#news-analysis-with-twitter-data"><i class="fa fa-check"></i><b>1.3</b> <span>News analysis with Twitter data</span></a></li>
+</ul></li>
+<li class="part"><span><b>GPS Analytics</b></span></li>
+<li class="chapter" data-level="2" data-path="gps.html"><a href="gps.html"><i class="fa fa-check"></i><b>2</b> GPS</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="gps.html"><a href="gps.html#data"><i class="fa fa-check"></i><b>2.1</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="gps.html"><a href="gps.html#gps-data"><i class="fa fa-check"></i><b>2.1.1</b> GPS Data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="gps.html"><a href="gps.html#wealth-index-data"><i class="fa fa-check"></i><b>2.1.2</b> Wealth Index Data</a></li>
+<li class="chapter" data-level="2.1.3" data-path="gps.html"><a href="gps.html#administrative-boundaries-data"><i class="fa fa-check"></i><b>2.1.3</b> Administrative Boundaries Data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="gps.html"><a href="gps.html#geocode"><i class="fa fa-check"></i><b>2.2</b> Geocode</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="gps.html"><a href="gps.html#efficient-spatial-joining-and-geospatial-indexing"><i class="fa fa-check"></i><b>2.2.1</b> Efficient spatial joining and Geospatial Indexing</a></li>
+<li class="chapter" data-level="2.2.2" data-path="gps.html"><a href="gps.html#code"><i class="fa fa-check"></i><b>2.2.2</b> Code</a></li>
+<li class="chapter" data-level="2.2.3" data-path="gps.html"><a href="gps.html#initial-coarse-geo-spatial-join-with-shapefiles"><i class="fa fa-check"></i><b>2.2.3</b> Initial coarse geo-spatial join with shapefiles</a></li>
+<li class="chapter" data-level="2.2.4" data-path="gps.html"><a href="gps.html#final-exact-join-with-a-subset-of-the-shapefiles"><i class="fa fa-check"></i><b>2.2.4</b> Final exact join with a subset of the shapefiles</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="gps.html"><a href="gps.html#stops"><i class="fa fa-check"></i><b>2.3</b> Finding Stops</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="gps.html"><a href="gps.html#definition"><i class="fa fa-check"></i><b>2.3.1</b> Definition</a></li>
+<li class="chapter" data-level="2.3.2" data-path="gps.html"><a href="gps.html#clustering-recurrent-stops"><i class="fa fa-check"></i><b>2.3.2</b> Clustering recurrent stops</a></li>
+<li class="chapter" data-level="2.3.3" data-path="gps.html"><a href="gps.html#appending-pings-from-recent-dates"><i class="fa fa-check"></i><b>2.3.3</b> Appending pings from recent dates</a></li>
+<li class="chapter" data-level="2.3.4" data-path="gps.html"><a href="gps.html#stops-geocoding"><i class="fa fa-check"></i><b>2.3.4</b> Stops geocoding</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="gps.html"><a href="gps.html#labeling"><i class="fa fa-check"></i><b>2.4</b> Defining Home and Work Locations</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="gps.html"><a href="gps.html#seasonal-patterns"><i class="fa fa-check"></i><b>2.4.1</b> Seasonal patterns</a></li>
+<li class="chapter" data-level="2.4.2" data-path="gps.html"><a href="gps.html#code-1"><i class="fa fa-check"></i><b>2.4.2</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="gps.html"><a href="gps.html#mobility"><i class="fa fa-check"></i><b>2.5</b> Mobility Patterns</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="gps.html"><a href="gps.html#socio-economic-groups"><i class="fa fa-check"></i><b>2.5.1</b> Socio-economic groups</a></li>
+<li class="chapter" data-level="2.5.2" data-path="gps.html"><a href="gps.html#selection"><i class="fa fa-check"></i><b>2.5.2</b> Individual’s selection</a></li>
+<li class="chapter" data-level="2.5.3" data-path="gps.html"><a href="gps.html#measures"><i class="fa fa-check"></i><b>2.5.3</b> Measures</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="gps.html"><a href="gps.html#migration"><i class="fa fa-check"></i><b>2.6</b> Migration Patterns</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="gps.html"><a href="gps.html#description"><i class="fa fa-check"></i><b>2.6.1</b> Description</a></li>
+<li class="chapter" data-level="2.6.2" data-path="gps.html"><a href="gps.html#user-selection"><i class="fa fa-check"></i><b>2.6.2</b> User selection</a></li>
+<li class="chapter" data-level="2.6.3" data-path="gps.html"><a href="gps.html#code-2"><i class="fa fa-check"></i><b>2.6.3</b> Code</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="gps.html"><a href="gps.html#optimization"><i class="fa fa-check"></i><b>2.7</b> Location labeling and parameter optimization</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="gps.html"><a href="gps.html#ground-truth"><i class="fa fa-check"></i><b>2.7.1</b> Ground truth</a></li>
+<li class="chapter" data-level="2.7.2" data-path="gps.html"><a href="gps.html#parameter-optimization"><i class="fa fa-check"></i><b>2.7.2</b> Parameter optimization</a></li>
+<li class="chapter" data-level="2.7.3" data-path="gps.html"><a href="gps.html#parameter-configuration-selection"><i class="fa fa-check"></i><b>2.7.3</b> Parameter configuration selection</a></li>
+</ul></li>
+<li class="part"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="2.8" data-path="gps.html"><a href="gps.html#windex"><i class="fa fa-check"></i><b>2.8</b> Wealth Index</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="gps.html"><a href="gps.html#variables-to-estimate-the-social-gap-index-in-mexico"><i class="fa fa-check"></i><b>2.8.1</b> Variables to estimate the Social Gap Index in Mexico</a></li>
+<li class="chapter" data-level="2.8.2" data-path="gps.html"><a href="gps.html#education"><i class="fa fa-check"></i><b>2.8.2</b> Education</a></li>
+<li class="chapter" data-level="2.8.3" data-path="gps.html"><a href="gps.html#household-characteristics"><i class="fa fa-check"></i><b>2.8.3</b> Household Characteristics</a></li>
+<li class="chapter" data-level="2.8.4" data-path="gps.html"><a href="gps.html#assets-ownership"><i class="fa fa-check"></i><b>2.8.4</b> Assets Ownership</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - Labor Market</b></span></li>
+<li class="chapter" data-level="3" data-path="twitter.html"><a href="twitter.html"><i class="fa fa-check"></i><b>3</b> Labor Market</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="twitter.html"><a href="twitter.html#labor-market-analysis-with-twitter-data-1"><i class="fa fa-check"></i><b>3.1</b> Labor market analysis with Twitter data</a></li>
+<li class="chapter" data-level="3.2" data-path="twitter.html"><a href="twitter.html#training-data-preparation"><i class="fa fa-check"></i><b>3.2</b> Training data preparation</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="twitter.html"><a href="twitter.html#sampling"><i class="fa fa-check"></i><b>3.2.1</b> Sampling</a></li>
+<li class="chapter" data-level="3.2.2" data-path="twitter.html"><a href="twitter.html#labelling"><i class="fa fa-check"></i><b>3.2.2</b> Labelling</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="twitter.html"><a href="twitter.html#finetuning-bert-based-models"><i class="fa fa-check"></i><b>3.3</b> Finetuning BERT-based models</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="twitter.html"><a href="twitter.html#training-the-model"><i class="fa fa-check"></i><b>3.3.1</b> Training the model</a></li>
+<li class="chapter" data-level="3.3.2" data-path="twitter.html"><a href="twitter.html#evaluation-on-the-random-set"><i class="fa fa-check"></i><b>3.3.2</b> Evaluation on the random set</a></li>
+<li class="chapter" data-level="3.3.3" data-path="twitter.html"><a href="twitter.html#active-learning"><i class="fa fa-check"></i><b>3.3.3</b> Active learning</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="twitter.html"><a href="twitter.html#unemployment-indicators"><i class="fa fa-check"></i><b>3.4</b> Unemployment indicators</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="twitter.html"><a href="twitter.html#building-unemployment-indicators-from-individual-tweets"><i class="fa fa-check"></i><b>3.4.1</b> Building unemployment indicators from individual tweets</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Twitter Analytics - News</b></span></li>
+<li class="chapter" data-level="4" data-path="news.html"><a href="news.html"><i class="fa fa-check"></i><b>4</b> News Analytics</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="news.html"><a href="news.html#news-articles"><i class="fa fa-check"></i><b>4.1</b> News articles</a></li>
+<li class="chapter" data-level="4.2" data-path="news.html"><a href="news.html#global-vs.-local-news-sentiment-indicators"><i class="fa fa-check"></i><b>4.2</b> Global vs. local news sentiment indicators</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="news.html"><a href="news.html#local-news-sentiment-indicator"><i class="fa fa-check"></i><b>4.2.1</b> Local news sentiment indicator</a></li>
+<li class="chapter" data-level="4.2.2" data-path="news.html"><a href="news.html#global-news-sentiment-indicator"><i class="fa fa-check"></i><b>4.2.2</b> Global news sentiment indicator</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="news.html"><a href="news.html#news-sentiment-measures"><i class="fa fa-check"></i><b>4.3</b> News-sentiment measures</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="news.html"><a href="news.html#bag-of-words-model"><i class="fa fa-check"></i><b>4.3.1</b> Bag-of-words model</a></li>
+<li class="chapter" data-level="4.3.2" data-path="news.html"><a href="news.html#country-specific-news-sentiment-indicator"><i class="fa fa-check"></i><b>4.3.2</b> Country-specific news sentiment indicator</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="news.html"><a href="news.html#stylized-facts"><i class="fa fa-check"></i><b>4.4</b> Stylized facts</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Big Data Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="twitter" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Labor Market</h1>
+<div id="labor-market-analysis-with-twitter-data-1" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Labor market analysis with Twitter data</h2>
+<p>Online social networks, such as Twitter, play a key role in the diffusion of information on jobs. For instance, companies and job aggregators post job offers while users disclose their labor market situation seeking emotional support or new job opportunities through their online network. In this context, Twitter data can be seen as a complementary data source to official statistics as it provides timely information about labor market trends.</p>
+<p>In this project, we leverage state-of-the-art language models (Devlin et al, 2018) to accurately identify disclosures on personal labor market situations as well as job offers. In practice, we intend to recognize disclosures about being unemployed, losing one’s job or being hired, searching for a job as well as job offers. We focus on three countries for this study: the USA, Mexico and Brazil. The methodology is presented in this <a href="https://www.youtube.com/watch?v=ZxFrtUW2dYA">IC2S2 2020 presentation</a> and detailed in Tonneau et al. (2021, in submission). Aggregating this individual information at the city and country levels, we then built Twitter-based labor market indexes and used them to better predict future labor market trends.</p>
+<p>In this book, we present the following:
+- building a training set allowing to recognize disclosures on personal job situation in tweets
+- finetuning and evaluating a BERT-based classifier
+- improving a classifier’s performance through active learning
+- building unemployment indicators using the classifier’s output</p>
+
+</div>
+<div id="training-data-preparation" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Training data preparation</h2>
+<div id="sampling" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Sampling</h3>
+<p>The first step in order to train classifiers to detect disclosures of labor market situation is to sample informative tweets and have them labelled. Owing to the very low share of tweets containing these disclosures, a random sampling would yield very few positive examples which would not allow to train a good-performing classifier. We instead decided to opt for stratified sampling, namely by defining a list of n-grams, both specific to the labor market context and frequent enough, and sampling tweets containing these n-grams.</p>
+<p>In practice, we wrote code in PySpark as we had to handle big amounts of data. Here’s a snippet of the code we used: after loading the data in the dataframe <code>df</code> and having <code>text_lowercase</code> as the column where the lowercased text is stored, we define the list of ngrams to sample from and then sample from it.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="twitter.html#cb30-1" aria-hidden="true" tabindex="-1"></a>ngram_list <span class="op">=</span> [[<span class="st">&#39; i &#39;</span>, <span class="st">&#39;fired &#39;</span>], [<span class="st">&#39;fired me&#39;</span>], [<span class="st">&#39;laid off&#39;</span>], [<span class="st">&#39;lost my job&#39;</span>]]</span>
+<span id="cb30-2"><a href="twitter.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ngram <span class="kw">in</span> ngram_list:</span>
+<span id="cb30-3"><a href="twitter.html#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(ngram) <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb30-4"><a href="twitter.html#cb30-4" aria-hidden="true" tabindex="-1"></a>        df_ngram <span class="op">=</span> df.<span class="bu">filter</span>(df.text_lowercase.contains(ngram[<span class="dv">0</span>]))</span>
+<span id="cb30-5"><a href="twitter.html#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">len</span>(ngram) <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb30-6"><a href="twitter.html#cb30-6" aria-hidden="true" tabindex="-1"></a>        regex <span class="op">=</span> <span class="ss">f&quot;</span><span class="sc">{</span>ngram[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">[.\w\s\d]*</span><span class="sc">{</span>ngram[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb30-7"><a href="twitter.html#cb30-7" aria-hidden="true" tabindex="-1"></a>        df_ngram <span class="op">=</span> df.<span class="bu">filter</span>(df.text_lowercase.rlike(regex))</span>
+<span id="cb30-8"><a href="twitter.html#cb30-8" aria-hidden="true" tabindex="-1"></a>    share <span class="op">=</span> <span class="bu">min</span>(<span class="bu">float</span>(<span class="dv">150</span> <span class="op">/</span> df_ngram.count()), <span class="fl">1.0</span>)</span>
+<span id="cb30-9"><a href="twitter.html#cb30-9" aria-hidden="true" tabindex="-1"></a>    df_ngram_sample <span class="op">=</span> df_ngram.sample(<span class="va">False</span>, share, seed<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div>
+<p>We sample 150 tweets per n-gram for each class and language. In total, we end up with approximately 5000 samples for each language. A detailed list of n-grams for each language and class can be found in Tonneau et al. (2021).</p>
+</div>
+<div id="labelling" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Labelling</h3>
+<p>After sampling informative tweets, we have them labelled by crowdworkers. We use the crowdsourcing platform Amazon Mechanical Turk. This platform has the advantage of having an international workforce speaking several languages, including Spanish and Brazilian Portuguese on top of English.</p>
+<div id="creating-a-qualtrics-survey" class="section level4" number="3.2.2.1">
+<h4><span class="header-section-number">3.2.2.1</span> Creating a Qualtrics survey</h4>
+<p>The first step was to create a survey we would then send to crowdworkers. For this, we use Qualtrics which implies having a Qualtrics API token and a datacenter ID. We build beforehand a survey template one can create manually on Qualtrics that we can then load questions from for the different labelling sessions.</p>
+<p>With this information, we are able to create a new blank survey for which we can define the name <code>SurveyName</code> and the <code>language</code>:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="twitter.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_survey(SurveyName, apiToken, dataCenter, language):</span>
+<span id="cb31-2"><a href="twitter.html#cb31-2" aria-hidden="true" tabindex="-1"></a>    baseUrl <span class="op">=</span> <span class="st">&quot;https://</span><span class="sc">{0}</span><span class="st">.qualtrics.com/API/v3/survey-definitions&quot;</span>.<span class="bu">format</span>(</span>
+<span id="cb31-3"><a href="twitter.html#cb31-3" aria-hidden="true" tabindex="-1"></a>        dataCenter)</span>
+<span id="cb31-4"><a href="twitter.html#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="twitter.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {</span>
+<span id="cb31-6"><a href="twitter.html#cb31-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;x-api-token&quot;</span>: apiToken,</span>
+<span id="cb31-7"><a href="twitter.html#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;content-type&quot;</span>: <span class="st">&quot;application/json&quot;</span>,</span>
+<span id="cb31-8"><a href="twitter.html#cb31-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Accept&quot;</span>: <span class="st">&quot;application/json&quot;</span></span>
+<span id="cb31-9"><a href="twitter.html#cb31-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb31-10"><a href="twitter.html#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="twitter.html#cb31-11" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> {</span>
+<span id="cb31-12"><a href="twitter.html#cb31-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;SurveyName&quot;</span>: SurveyName,</span>
+<span id="cb31-13"><a href="twitter.html#cb31-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Language&quot;</span>: language,</span>
+<span id="cb31-14"><a href="twitter.html#cb31-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;ProjectCategory&quot;</span>: <span class="st">&quot;CORE&quot;</span></span>
+<span id="cb31-15"><a href="twitter.html#cb31-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb31-16"><a href="twitter.html#cb31-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-17"><a href="twitter.html#cb31-17" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.post(baseUrl, json<span class="op">=</span>data, headers<span class="op">=</span>headers)</span>
+<span id="cb31-18"><a href="twitter.html#cb31-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-19"><a href="twitter.html#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> json.loads(response.text)[<span class="st">&quot;meta&quot;</span>][<span class="st">&quot;httpStatus&quot;</span>] <span class="op">!=</span> <span class="st">&#39;200 - OK&#39;</span>:</span>
+<span id="cb31-20"><a href="twitter.html#cb31-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(json.loads(response.text)[<span class="st">&quot;meta&quot;</span>][<span class="st">&quot;httpStatus&quot;</span>])</span>
+<span id="cb31-21"><a href="twitter.html#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="twitter.html#cb31-22" aria-hidden="true" tabindex="-1"></a>    SurveyID <span class="op">=</span> json.loads(response.text)[<span class="st">&#39;result&#39;</span>][<span class="st">&#39;SurveyID&#39;</span>]</span>
+<span id="cb31-23"><a href="twitter.html#cb31-23" aria-hidden="true" tabindex="-1"></a>    DefaultBlockID <span class="op">=</span> json.loads(response.text)[<span class="st">&#39;result&#39;</span>][<span class="st">&#39;DefaultBlockID&#39;</span>]</span>
+<span id="cb31-24"><a href="twitter.html#cb31-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-25"><a href="twitter.html#cb31-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> SurveyID, DefaultBlockID</span></code></pre></div>
+<p>We can then retrieve questions from our template, by specifying the <code>QuestionID</code> from the question we want to retrieve and the <code>SurveyID</code> from the template.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="twitter.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_question(QuestionID, SurveyID, apiToken, dataCenter):</span>
+<span id="cb32-2"><a href="twitter.html#cb32-2" aria-hidden="true" tabindex="-1"></a>    baseUrl <span class="op">=</span> <span class="st">&quot;https://</span><span class="sc">{0}</span><span class="st">.qualtrics.com/API/v3/survey-definitions/</span><span class="sc">{1}</span><span class="st">/questions/</span><span class="sc">{2}</span><span class="st">&quot;</span>.<span class="bu">format</span>(</span>
+<span id="cb32-3"><a href="twitter.html#cb32-3" aria-hidden="true" tabindex="-1"></a>        dataCenter, SurveyID, QuestionID)</span>
+<span id="cb32-4"><a href="twitter.html#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="twitter.html#cb32-5" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {</span>
+<span id="cb32-6"><a href="twitter.html#cb32-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;x-api-token&quot;</span>: apiToken,</span>
+<span id="cb32-7"><a href="twitter.html#cb32-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb32-8"><a href="twitter.html#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="twitter.html#cb32-9" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(baseUrl, headers<span class="op">=</span>headers)</span>
+<span id="cb32-10"><a href="twitter.html#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="twitter.html#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> json.loads(response.text)[<span class="st">&quot;meta&quot;</span>][<span class="st">&quot;httpStatus&quot;</span>] <span class="op">!=</span> <span class="st">&#39;200 - OK&#39;</span>:</span>
+<span id="cb32-12"><a href="twitter.html#cb32-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(json.loads(response.text)[<span class="st">&quot;meta&quot;</span>][<span class="st">&quot;httpStatus&quot;</span>])</span>
+<span id="cb32-13"><a href="twitter.html#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="twitter.html#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.loads(response.text)[<span class="st">&quot;result&quot;</span>]</span></code></pre></div>
+<p>The survey template contains questions that don’t need to be modified, such as asking for a participant’s MTurk ID. For the labelling question though, we need to update the question’s text with the tweet to be labelled. We do this the following way, with <code>tweet</code> being the tweet in string format:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="twitter.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_question(QuestionData, QuestionID, SurveyID, apiToken, dataCenter):</span>
+<span id="cb33-2"><a href="twitter.html#cb33-2" aria-hidden="true" tabindex="-1"></a>    baseUrl <span class="op">=</span> <span class="st">&quot;https://</span><span class="sc">{0}</span><span class="st">.qualtrics.com/API/v3/survey-definitions/</span><span class="sc">{1}</span><span class="st">/questions/</span><span class="sc">{2}</span><span class="st">&quot;</span>.<span class="bu">format</span>(</span>
+<span id="cb33-3"><a href="twitter.html#cb33-3" aria-hidden="true" tabindex="-1"></a>        dataCenter, SurveyID, QuestionID)</span>
+<span id="cb33-4"><a href="twitter.html#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="twitter.html#cb33-5" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {</span>
+<span id="cb33-6"><a href="twitter.html#cb33-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;accept&#39;</span>: <span class="st">&quot;application/json&quot;</span>,</span>
+<span id="cb33-7"><a href="twitter.html#cb33-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;content-type&#39;</span>: <span class="st">&quot;application/json&quot;</span>,</span>
+<span id="cb33-8"><a href="twitter.html#cb33-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;x-api-token&quot;</span>: apiToken,</span>
+<span id="cb33-9"><a href="twitter.html#cb33-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb33-10"><a href="twitter.html#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="twitter.html#cb33-11" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.put(baseUrl, json<span class="op">=</span>QuestionData, headers<span class="op">=</span>headers)</span>
+<span id="cb33-12"><a href="twitter.html#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-13"><a href="twitter.html#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> json.loads(response.text)[<span class="st">&quot;meta&quot;</span>][<span class="st">&quot;httpStatus&quot;</span>] <span class="op">!=</span> <span class="st">&#39;200 - OK&#39;</span>:</span>
+<span id="cb33-14"><a href="twitter.html#cb33-14" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(json.loads(response.text)[<span class="st">&quot;meta&quot;</span>][<span class="st">&quot;httpStatus&quot;</span>])</span>
+<span id="cb33-15"><a href="twitter.html#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="twitter.html#cb33-16" aria-hidden="true" tabindex="-1"></a>QuestionData <span class="op">=</span> get_question(QuestionID<span class="op">=</span>QuestionID, SurveyID<span class="op">=</span>SurveyID, apiToken<span class="op">=</span>apiToken, dataCenter<span class="op">=</span>dataCenter)</span>
+<span id="cb33-17"><a href="twitter.html#cb33-17" aria-hidden="true" tabindex="-1"></a>QuestionData[<span class="st">&#39;QuestionText&#39;</span>] <span class="op">=</span> tweet</span>
+<span id="cb33-18"><a href="twitter.html#cb33-18" aria-hidden="true" tabindex="-1"></a>update_question(QuestionData<span class="op">=</span>QuestionData, QuestionID<span class="op">=</span>QuestionID, SurveyID<span class="op">=</span>SurveyID, apiToken<span class="op">=</span>apiToken,</span>
+<span id="cb33-19"><a href="twitter.html#cb33-19" aria-hidden="true" tabindex="-1"></a>                dataCenter<span class="op">=</span>dataCenter)</span></code></pre></div>
+<p>The entire code we used to create a Qualtrics survey using Python and the Qualtrics API is available at <code>src/1-training_data_preparation/qualtrics/get_training_set_to_qualtrics_API_classification.py</code>. After loading the questions and embedding the data into them, the survey is ready to be sent to crowdworkers.</p>
+</div>
+<div id="sharing-the-survey-on-mturk" class="section level4" number="3.2.2.2">
+<h4><span class="header-section-number">3.2.2.2</span> Sharing the survey on MTurk</h4>
+<p>To share the Qualtrics survey on MTurk, we use the Python package <code>boto3</code>. After collecting our access and secret access keys (respectively <code>access_key_id</code> and <code>secret_access_key</code>), we initiate the client:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="twitter.html#cb34-1" aria-hidden="true" tabindex="-1"></a>mturk <span class="op">=</span> boto3.client(<span class="st">&#39;mturk&#39;</span>,</span>
+<span id="cb34-2"><a href="twitter.html#cb34-2" aria-hidden="true" tabindex="-1"></a>                     aws_access_key_id<span class="op">=</span>access_key_id,</span>
+<span id="cb34-3"><a href="twitter.html#cb34-3" aria-hidden="true" tabindex="-1"></a>                     aws_secret_access_key<span class="op">=</span>secret_access_key,</span>
+<span id="cb34-4"><a href="twitter.html#cb34-4" aria-hidden="true" tabindex="-1"></a>                     region_name<span class="op">=</span><span class="st">&#39;us-east-1&#39;</span>,</span>
+<span id="cb34-5"><a href="twitter.html#cb34-5" aria-hidden="true" tabindex="-1"></a>                     endpoint_url<span class="op">=</span><span class="st">&#39;https://mturk-requester.us-east-1.amazonaws.com&#39;</span></span>
+<span id="cb34-6"><a href="twitter.html#cb34-6" aria-hidden="true" tabindex="-1"></a>                     )</span></code></pre></div>
+<p>To create an MTurk task, usually called a HIT, we need to provide an XML file containing all of the HIT’s information and content. We therefore prepare dictionaries containing specific content, such as HIT title or description, for each language. For instance, for the HIT title, we create this dictionary with <code>ntweets</code> being the number of tweets:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="twitter.html#cb35-1" aria-hidden="true" tabindex="-1"></a>title_dict <span class="op">=</span> {</span>
+<span id="cb35-2"><a href="twitter.html#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;US&#39;</span>: <span class="st">&#39;Read </span><span class="sc">%d</span><span class="st"> English Tweets and answer a few questions&#39;</span> <span class="op">%</span> (ntweets),</span>
+<span id="cb35-3"><a href="twitter.html#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;MX&#39;</span>: <span class="st">&#39;Lea </span><span class="sc">%d</span><span class="st"> Tweets en español mexicano y responda algunas preguntas&#39;</span> <span class="op">%</span> (ntweets),</span>
+<span id="cb35-4"><a href="twitter.html#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;BR&#39;</span>: <span class="st">&#39;Leia </span><span class="sc">%d</span><span class="st"> tweets em português e responda algumas perguntas&#39;</span> <span class="op">%</span> (ntweets)</span>
+<span id="cb35-5"><a href="twitter.html#cb35-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>After preparing all of these dictionaries, we can then feed them to the <code>question_generator</code> function which will load a template previously created in HTML format (<code>template.html</code>), adapt it to the related survey and prepare the content of the related XML file in string format:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="twitter.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> question_generator(country_code, survey_link, instructions_dict, survey_link_text_dict, worker_input_text_dict,</span>
+<span id="cb36-2"><a href="twitter.html#cb36-2" aria-hidden="true" tabindex="-1"></a>                       submit_dict):</span>
+<span id="cb36-3"><a href="twitter.html#cb36-3" aria-hidden="true" tabindex="-1"></a>    xml_wrapper_begin <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb36-4"><a href="twitter.html#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;HTMLQuestion xmlns=&quot;http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2011-11-11/HTMLQuestion.xsd&quot;&gt;</span></span>
+<span id="cb36-5"><a href="twitter.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;HTMLContent&gt;&lt;![CDATA[</span></span>
+<span id="cb36-6"><a href="twitter.html#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;!-- YOUR HTML BEGINS --&gt;</span></span>
+<span id="cb36-7"><a href="twitter.html#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;!DOCTYPE html&gt;</span></span>
+<span id="cb36-8"><a href="twitter.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb36-9"><a href="twitter.html#cb36-9" aria-hidden="true" tabindex="-1"></a>    xml_wrapper_end <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb36-10"><a href="twitter.html#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;!-- YOUR HTML ENDS --&gt;</span></span>
+<span id="cb36-11"><a href="twitter.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="st">    ]]&gt;</span></span>
+<span id="cb36-12"><a href="twitter.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;/HTMLContent&gt;</span></span>
+<span id="cb36-13"><a href="twitter.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;FrameHeight&gt;0&lt;/FrameHeight&gt;</span></span>
+<span id="cb36-14"><a href="twitter.html#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;/HTMLQuestion&gt;</span></span>
+<span id="cb36-15"><a href="twitter.html#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb36-16"><a href="twitter.html#cb36-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-17"><a href="twitter.html#cb36-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(</span>
+<span id="cb36-18"><a href="twitter.html#cb36-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;template.html&quot;</span>,</span>
+<span id="cb36-19"><a href="twitter.html#cb36-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb36-20"><a href="twitter.html#cb36-20" aria-hidden="true" tabindex="-1"></a>        content <span class="op">=</span> f.read()</span>
+<span id="cb36-21"><a href="twitter.html#cb36-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-22"><a href="twitter.html#cb36-22" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> content.replace(<span class="st">&quot;$</span><span class="sc">{INSTRUCTIONS}</span><span class="st">&quot;</span>, instructions_dict[country_code])</span>
+<span id="cb36-23"><a href="twitter.html#cb36-23" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> content.replace(<span class="st">&quot;$</span><span class="sc">{SURVEY_LINK}</span><span class="st">&quot;</span>, survey_link)</span>
+<span id="cb36-24"><a href="twitter.html#cb36-24" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> content.replace(<span class="st">&quot;$</span><span class="sc">{SURVEY_LINK_TEXT}</span><span class="st">&quot;</span>, survey_link_text_dict[country_code])</span>
+<span id="cb36-25"><a href="twitter.html#cb36-25" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> content.replace(<span class="st">&quot;$</span><span class="sc">{WORKER_INPUT_TEXT}</span><span class="st">&quot;</span>, worker_input_text_dict[country_code])</span>
+<span id="cb36-26"><a href="twitter.html#cb36-26" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> content.replace(<span class="st">&quot;$</span><span class="sc">{SUBMIT}</span><span class="st">&quot;</span>, submit_dict[country_code])</span>
+<span id="cb36-27"><a href="twitter.html#cb36-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-28"><a href="twitter.html#cb36-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xml_wrapper_begin <span class="op">+</span> content <span class="op">+</span> xml_wrapper_end</span></code></pre></div>
+<p>Afterwards, when the HIT content is ready, we need to preselect the crowdworkers to make sure they live in the same country as the authors from the tweets that they will label. That way, we make sure they speak the same language but also can better understand linguistic subtleties, such as humor or specific words from the region of origin. For example, to make sure the crowdworkers working on our HIT are based in the U.S., we create this <code>QualificationRequirements_list</code>:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="twitter.html#cb37-1" aria-hidden="true" tabindex="-1"></a>QualificationRequirements_list <span class="op">=</span> [</span>
+<span id="cb37-2"><a href="twitter.html#cb37-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb37-3"><a href="twitter.html#cb37-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;QualificationTypeId&#39;</span>: <span class="st">&#39;00000000000000000071&#39;</span>,  <span class="co"># Worker_Locale</span></span>
+<span id="cb37-4"><a href="twitter.html#cb37-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;Comparator&#39;</span>: <span class="st">&#39;EqualTo&#39;</span>,</span>
+<span id="cb37-5"><a href="twitter.html#cb37-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;LocaleValues&#39;</span>: [{</span>
+<span id="cb37-6"><a href="twitter.html#cb37-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;Country&#39;</span>: <span class="st">&#39;US&#39;</span>}],</span>
+<span id="cb37-7"><a href="twitter.html#cb37-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;RequiredToPreview&#39;</span>: <span class="va">True</span>,</span>
+<span id="cb37-8"><a href="twitter.html#cb37-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;ActionsGuarded&#39;</span>: <span class="st">&#39;PreviewAndAccept&#39;</span></span>
+<span id="cb37-9"><a href="twitter.html#cb37-9" aria-hidden="true" tabindex="-1"></a>    }]</span></code></pre></div>
+<p>Finally, we can create the HIT. At this step, we can specify specific parameters, such as the maximum number of workers allowed to take the survey <code>n_workers</code> or the amount of money they get to complete the survey <code>money_for_hit</code>.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="twitter.html#cb38-1" aria-hidden="true" tabindex="-1"></a>new_hit <span class="op">=</span> mturk.create_hit(</span>
+<span id="cb38-2"><a href="twitter.html#cb38-2" aria-hidden="true" tabindex="-1"></a>    MaxAssignments<span class="op">=</span>n_workers,</span>
+<span id="cb38-3"><a href="twitter.html#cb38-3" aria-hidden="true" tabindex="-1"></a>    AutoApprovalDelayInSeconds<span class="op">=</span><span class="dv">172800</span>,</span>
+<span id="cb38-4"><a href="twitter.html#cb38-4" aria-hidden="true" tabindex="-1"></a>    LifetimeInSeconds<span class="op">=</span><span class="dv">259200</span>,</span>
+<span id="cb38-5"><a href="twitter.html#cb38-5" aria-hidden="true" tabindex="-1"></a>    AssignmentDurationInSeconds<span class="op">=</span><span class="dv">10800</span>,</span>
+<span id="cb38-6"><a href="twitter.html#cb38-6" aria-hidden="true" tabindex="-1"></a>    Reward<span class="op">=</span><span class="bu">str</span>(money_for_hit),</span>
+<span id="cb38-7"><a href="twitter.html#cb38-7" aria-hidden="true" tabindex="-1"></a>    Title<span class="op">=</span><span class="ss">f&#39;</span><span class="sc">{</span>title_dict[args.country_code]<span class="sc">}</span><span class="ss"> v</span><span class="sc">{</span>args<span class="sc">.</span>version_number<span class="sc">}</span><span class="ss">&#39;</span>,</span>
+<span id="cb38-8"><a href="twitter.html#cb38-8" aria-hidden="true" tabindex="-1"></a>    Description<span class="op">=</span>description_dict[args.country_code],</span>
+<span id="cb38-9"><a href="twitter.html#cb38-9" aria-hidden="true" tabindex="-1"></a>    Keywords<span class="op">=</span>keywords_dict[args.country_code],</span>
+<span id="cb38-10"><a href="twitter.html#cb38-10" aria-hidden="true" tabindex="-1"></a>    QualificationRequirements<span class="op">=</span>QualificationRequirements_list <span class="cf">if</span> create_hits_in_production <span class="cf">else</span> <span class="bu">list</span>(),</span>
+<span id="cb38-11"><a href="twitter.html#cb38-11" aria-hidden="true" tabindex="-1"></a>    Question<span class="op">=</span>question</span>
+<span id="cb38-12"><a href="twitter.html#cb38-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>The HIT is now online and crowdworkers are able to take it. You can check the progress on Qualtrics by looking at the number of replies to a given survey. When the number of replies reaches <code>n_workers</code>, the HIT is finished. The labelled data can then be extracted from Qualtrics.</p>
+
+</div>
+</div>
+</div>
+<div id="finetuning-bert-based-models" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Finetuning BERT-based models</h2>
+<p>In the past few years, pretrained language models have revolutionized the field of NLP by achieving state-of-the-art results in a variety of natural language understanding tasks (Peters et al., 2018; Devlin et al., 2019). These models improve on existing word embedding methods, such as Word2Vec (Mikolov et al., 2013), by learning stable embedding representations from massive text corpora.</p>
+<p>One of the models leading this revolution is the Bidirectional Encoder Representations from Transformers model (BERT, Devlin et al., 2019), which allowed for bi-directionality, through masked language modeling, and leveraged self-attention through its Transformer-based architecture (Vaswani et al., 2017). The model was pretrained on BooksCorpus (800M words) (Zhu et al., 2015) and English Wikipedia (2.5B words) using two unsupervised tasks, namely masked language modeling and next-sentence prediction. This model can later be fine-tuned on a variety of downstream tasks, including text classification, achieving high performance.</p>
+<p>In this part, we show how to fine-tune a BERT-based model for tweet classification. To do so, we mostly rely on the Python package <code>simpletransformers</code>, built on top of the famous <code>transformers</code> Python package developed by Hugging Face.</p>
+<div id="training-the-model" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Training the model</h3>
+<p>After loading the set of labelled tweets in a dataframe <code>df</code>, we perform a train-test split (70-30) on it:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="twitter.html#cb39-1" aria-hidden="true" tabindex="-1"></a>train_df <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="fl">0.7</span>,random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb39-2"><a href="twitter.html#cb39-2" aria-hidden="true" tabindex="-1"></a>val_df <span class="op">=</span> df.drop(train_df.index).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<p>We then define specific arguments for the fine-tuning such as the batch size <code>train_batch_size</code>, the number of epochs <code>num_train_epochs</code> or the output path <code>output_dir</code>. The models are evaluated at every epoch in terms of AUROC on the test set. The model with the highest AUROC on the test set is considered the best model and saved at <code>best_model_dir</code>. We also use early stopping which consists in stopping the training if the AUROC on the test set has not improved after <code>early_stopping_patience</code> epochs. A complete list of the training arguments can be found <a href="https://simpletransformers.ai/docs/usage/#configuring-a-simple-transformers-model">here</a>.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="twitter.html#cb40-1" aria-hidden="true" tabindex="-1"></a>    classification_args <span class="op">=</span> { <span class="st">&#39;train_batch_size&#39;</span>: <span class="dv">8</span>,</span>
+<span id="cb40-2"><a href="twitter.html#cb40-2" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;overwrite_output_dir&#39;</span>: <span class="va">True</span>,</span>
+<span id="cb40-3"><a href="twitter.html#cb40-3" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;evaluate_during_training&#39;</span>: <span class="va">True</span>,</span>
+<span id="cb40-4"><a href="twitter.html#cb40-4" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;save_model_every_epoch&#39;</span>: <span class="va">True</span>,</span>
+<span id="cb40-5"><a href="twitter.html#cb40-5" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;save_eval_checkpoints&#39;</span>: <span class="va">True</span>,</span>
+<span id="cb40-6"><a href="twitter.html#cb40-6" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;output_dir&#39;</span>: path_to_store_model,</span>
+<span id="cb40-7"><a href="twitter.html#cb40-7" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;best_model_dir&#39;</span>: path_to_store_best_model,</span>
+<span id="cb40-8"><a href="twitter.html#cb40-8" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;evaluate_during_training_verbose&#39;</span>: <span class="va">True</span>,</span>
+<span id="cb40-9"><a href="twitter.html#cb40-9" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;num_train_epochs&#39;</span>: num_train_epochs,</span>
+<span id="cb40-10"><a href="twitter.html#cb40-10" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;use_early_stopping&quot;</span>: <span class="va">True</span>,</span>
+<span id="cb40-11"><a href="twitter.html#cb40-11" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;early_stopping_delta&quot;</span>: <span class="dv">0</span>,</span>
+<span id="cb40-12"><a href="twitter.html#cb40-12" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;early_stopping_metric&quot;</span>: <span class="st">&quot;auroc&quot;</span>,</span>
+<span id="cb40-13"><a href="twitter.html#cb40-13" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;early_stopping_metric_minimize&quot;</span>: <span class="va">False</span>,</span>
+<span id="cb40-14"><a href="twitter.html#cb40-14" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&#39;early_stopping_patience&#39;</span>: <span class="dv">3</span>}</span></code></pre></div>
+<p>Once the classification arguments are defined, we can initiate the fine-tuning. In our case, for English tweet classification, we use a version of BERT that was further pretrained on English tweets by <a href="https://deeppavlov.ai">Deep Pavlov</a>, therefore enhancing the classification performance in the Twitter context. We need to define the <code>model_name</code>, which is <code>bert</code> in our case but can also be other more sophisticated architectures such as <code>roberta</code>. The <code>model_type</code> refers to the model name on the <a href="https://huggingface.co/models">Hugging Face model hub</a>. As we only cover binary classification here, the number of labels <code>num_labels</code> is set to 2.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="twitter.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> simpletransformers.classification <span class="im">import</span> ClassificationModel</span>
+<span id="cb41-2"><a href="twitter.html#cb41-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ClassificationModel(model_name<span class="op">=</span><span class="st">&#39;bert&#39;</span>,</span>
+<span id="cb41-3"><a href="twitter.html#cb41-3" aria-hidden="true" tabindex="-1"></a>                            model_type<span class="op">=</span><span class="st">&#39;DeepPavlov/bert-base-cased-conversational&#39;</span>,</span>
+<span id="cb41-4"><a href="twitter.html#cb41-4" aria-hidden="true" tabindex="-1"></a>                            num_labels<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb41-5"><a href="twitter.html#cb41-5" aria-hidden="true" tabindex="-1"></a>                            use_cuda<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb41-6"><a href="twitter.html#cb41-6" aria-hidden="true" tabindex="-1"></a>                            args<span class="op">=</span>classification_args)</span></code></pre></div>
+<p>Once the model has been loaded, we can launch the fine-tuning:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="twitter.html#cb42-1" aria-hidden="true" tabindex="-1"></a>model.train_model(train_df<span class="op">=</span>train_df, eval_df<span class="op">=</span>eval_df, output_dir<span class="op">=</span>path_to_store_model)</span></code></pre></div>
+<p>The training is now launched. When it is finished, we can use the best model in terms of AUROC on the test set and evaluate it on a bigger random set of tweets.</p>
+</div>
+<div id="evaluation-on-the-random-set" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Evaluation on the random set</h3>
+<p>While evaluating the model on the test set is useful to determine which classifier is best suited for the task, this performance might not be representative of the performance on a random set of tweets as the imbalance on the latter is much more extreme than on the test set. In this case, we needed to find a way to evaluate our classifiers in real-world settings. To do so, we used the best model from our training iterations to infer the confidences scores of each tweet out of a large random sample of 100 million tweets. We then ranked the tweets based on their confidence score in a descending way and sampled tweets along the confidence score distribution, overweighting the top of the distribution. In total, we sampled 200 tweets out of the 100 million random sample with ranks ranging from 1 to 1 million. The function used to do this sampling is as follows:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="twitter.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_sampled_indices(n_sample<span class="op">=</span><span class="dv">10</span>, n_cutoff<span class="op">=</span><span class="dv">6</span>):</span>
+<span id="cb43-2"><a href="twitter.html#cb43-2" aria-hidden="true" tabindex="-1"></a>    sampled_points <span class="op">=</span> []  <span class="co"># index of scores around which we sample n_sample tweets</span></span>
+<span id="cb43-3"><a href="twitter.html#cb43-3" aria-hidden="true" tabindex="-1"></a>    sampled_ranks <span class="op">=</span> []  <span class="co"># ranks of sampled tweets</span></span>
+<span id="cb43-4"><a href="twitter.html#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> point, rank <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">sorted</span>(<span class="bu">set</span>([<span class="bu">int</span>(x) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_cutoff) <span class="cf">for</span> x <span class="kw">in</span> np.logspace(i, i <span class="op">+</span> <span class="dv">1</span>, i <span class="op">+</span> <span class="dv">1</span>)]))):</span>
+<span id="cb43-5"><a href="twitter.html#cb43-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> point:</span>
+<span id="cb43-6"><a href="twitter.html#cb43-6" aria-hidden="true" tabindex="-1"></a>            new_ranks <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(rank, rank <span class="op">+</span> n_sample))</span>
+<span id="cb43-7"><a href="twitter.html#cb43-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb43-8"><a href="twitter.html#cb43-8" aria-hidden="true" tabindex="-1"></a>            new_ranks <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(rank <span class="op">+</span> <span class="dv">1</span>, rank <span class="op">+</span> n_sample <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb43-9"><a href="twitter.html#cb43-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&#39;Index of sampled point:&#39;</span>, point)</span>
+<span id="cb43-10"><a href="twitter.html#cb43-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&#39;Sampled ranks:&#39;</span>, new_ranks)</span>
+<span id="cb43-11"><a href="twitter.html#cb43-11" aria-hidden="true" tabindex="-1"></a>        sampled_points.extend([point] <span class="op">*</span> n_sample)</span>
+<span id="cb43-12"><a href="twitter.html#cb43-12" aria-hidden="true" tabindex="-1"></a>        sampled_ranks.extend(new_ranks)</span>
+<span id="cb43-13"><a href="twitter.html#cb43-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sampled_points, sampled_ranks</span></code></pre></div>
+<p>We then labelled these sampled tweets, which allowed us to get the percentage of positive tweets for given points in the rank distribution. Below is an example of an evaluation plot for the class <code>job_search</code> with the tweet rank as x-axis and the percentage of positive tweets for the class <code>job_search</code> as y-axis.</p>
+<div class="figure">
+<img src="figures/job_search.png" alt="" />
+<p class="caption">Precision (y-axis) as a function of tweet rank based on confidence score i.e. positive label probability output by the model (x-axis).</p>
+</div>
+</div>
+<div id="active-learning" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Active learning</h3>
+<p>While determining an initial list of n-grams to build a labelled set from is a good strategy to get a decent classification performance, it is unlikely to capture all the linguistic subtleties humans use on social media to talk about their labor market situation. In this case, we ideally need to label more tweets and need to determine which are the most informative to respect our labeling budget constraint.</p>
+<p>When faced with a classification task in which the minority class is extremely rare, active learning allows to minimize the number of labels required for a classifier to achieve good performance. At each iteration, a trained model is used to query new samples expected to lead to high improvements in validation accuracy. These samples are, in turn, labeled by humans and then used for training in the next iteration of the model. There are two main approaches to identifying the most informative samples: uncertainty sampling (Lewis and Gale, 1994) and diversity sampling (Cohn et al., 1994), which have been coined as the ``two faces of active learning’’(Dasgupta, 2011). While uncertainty sampling defines the most informative samples as the ones the model is the most uncertain about (e.g. in a binary context, this boundary is at 0.5), diversity sampling consists of selecting examples to label from different homogeneous clusters of the feature space.</p>
+<p>Here, we provide an example on how to select the most informative tweets to label using uncertainty sampling on uncalibrated BERT confidence scores. In this setting, we sample tweets with BERT confidence scores around 0.5. Having the data stored in a dataframe <code>df</code> containing the confidence scores in the <code>score</code> column, we create a <code>modified_score</code> which is the confidence score minus 0.5. We then select 50 tweets with the smallest positive <code>modified_score</code> and 50 tweets with the highest negative <code>modified_score</code>.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="twitter.html#cb44-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;modified_score&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;score&#39;</span>] <span class="op">-</span> <span class="fl">0.5</span></span>
+<span id="cb44-2"><a href="twitter.html#cb44-2" aria-hidden="true" tabindex="-1"></a>above_threshold_df <span class="op">=</span> df.loc[df[<span class="st">&#39;modified_score&#39;</span>] <span class="op">&gt;</span> <span class="dv">0</span>].nsmallest(<span class="dv">50</span>, <span class="st">&#39;modified_score&#39;</span>)</span>
+<span id="cb44-3"><a href="twitter.html#cb44-3" aria-hidden="true" tabindex="-1"></a>below_threshold_df <span class="op">=</span> df.loc[df[<span class="st">&#39;modified_score&#39;</span>] <span class="op">&lt;</span> <span class="dv">0</span>].nlargest(<span class="dv">50</span>, <span class="st">&#39;modified_score&#39;</span>)</span>
+<span id="cb44-4"><a href="twitter.html#cb44-4" aria-hidden="true" tabindex="-1"></a>sample_df <span class="op">=</span> pd.concat([above_threshold_df, below_threshold_df]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<p>In the end, the <code>sample_df</code> are sent to labelling. When labelled, the new samples are added to the existing labels and a new train-test split is applied. The training and evaluation then takes place as described earlier.</p>
+<p>In practice, there exists many different active learning strategies. In Tonneau et al. (2021), we reviewed several active learning strategies in our extremely imbalanced setting and showed that active learning does improve performance in terms of precision, expansion and diversity but that no active learning strategy was systematically better than others for our problem.</p>
+
+</div>
+</div>
+<div id="unemployment-indicators" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Unemployment indicators</h2>
+<div id="building-unemployment-indicators-from-individual-tweets" class="section level3" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> Building unemployment indicators from individual tweets</h3>
+<p>After reaching good classification performance in detecting disclosures about personal labor market situations, we now need to aggregate this individual information to build timely unemployment indicators from Twitter data.</p>
+<p>The first step is to agree on a classification threshold to determine which tweets are positives and negatives. To choose this threshold, we rely on the labelled tweets sampled along the confidence score distribution, as described in the previous part. To define the cutoff, we identify the two points in the rank distribution between which the share of positives goes from over 0.5 to below 0.5. We take the average together the confidence scores at these two points and consider the result as our cutoff.</p>
+<p>Once the cutoff is defined, for a given class, we can isolate tweets considered as positives, that is with a confidence score above the cutoff score previously defined. Using this information, we can then determine the number of users with positive tweets for a given month and year, location, gender, etc… After storing the confidence scores for each tweet in the dataframe <code>tweet_scores</code> and for a given class <code>class_</code> and <code>cutoff</code>:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="twitter.html#cb45-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="op">=</span> tweet_scores.<span class="bu">filter</span>(tweet_scores[class_] <span class="op">&gt;=</span> cutoff).groupby(<span class="st">&#39;year&#39;</span>, <span class="st">&#39;month&#39;</span>, <span class="st">&#39;user_location&#39;</span>, <span class="st">&#39;gender&#39;</span>).agg(</span>
+<span id="cb45-2"><a href="twitter.html#cb45-2" aria-hidden="true" tabindex="-1"></a>    F.countDistinct(<span class="st">&quot;user_id&quot;</span>).alias(class_))</span></code></pre></div>
+<p>More information about these unemployment indicators, including data and code, can be found in <code>SDG-big-data/twitter-analytics/twitter-indicator</code>.</p>
+
+</div>
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="gps.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="news.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/worldbank/SDG-big-data/10-introduction.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["big-daa.pdf", "big-daa.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

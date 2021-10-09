@@ -58,7 +58,7 @@ education
 health-services-access
 household-characteristics
 assets-ownership
-labor
+twitter
 labor-market-analysis-with-twitter-data-1
 training-data-preparation
 sampling
