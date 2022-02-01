@@ -80,6 +80,3 @@ news-sentiment-measures
 bag-of-words-model
 country-specific-news-sentiment-indicator
 stylized-facts
-infostop
-data-preparation
-code-3

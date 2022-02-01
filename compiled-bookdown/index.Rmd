@@ -1,6 +1,6 @@
 ---
 title: "Big Data Analytics"
-author: "Big Data Analytics Group"
+author: "Development Data Group - Data Analytics and Tools"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
